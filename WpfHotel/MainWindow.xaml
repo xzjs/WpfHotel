@@ -11,11 +11,14 @@
             <StackPanel  DockPanel.Dock="Top">
                 <Label Content="720营地运营-营地管理系统" FontSize="30"></Label>
             </StackPanel>
-            <StackPanel DockPanel.Dock="Left">
+            <DockPanel DockPanel.Dock="Left">
+                <WrapPanel DockPanel.Dock="Bottom">
+                    <TextBlock x:Name="TimeTextBlock">时间</TextBlock>
+                </WrapPanel>
                 <TreeView FontSize="24" >
                     <TreeViewItem Header="预约/入住办理">
                         <TreeViewItem Header="预约办理"></TreeViewItem>
-                        <TreeViewItem Header="入住办理"></TreeViewItem>
+                        <TreeViewItem Header="入住办理" MouseLeftButtonUp="TreeViewItem_MouseLeftButtonUp"></TreeViewItem>
                     </TreeViewItem>
                     <TreeViewItem Header="房态中心">
                         <TreeViewItem Header="房态图"></TreeViewItem>
@@ -29,73 +32,11 @@
                         <TreeViewItem Header="在线支付报表"/>
                     </TreeViewItem>
                 </TreeView>
-            </StackPanel>
-            <DockPanel>
-                <StackPanel DockPanel.Dock="Bottom">
-                    
-                </StackPanel>
-                <WrapPanel>
-                    <Button Width="115" Height="72" Background="#FF66FF99">
-                        <Label FontSize="24">1101</Label>
-                    </Button>
-                    <Button Width="115" Background="#FF89D4FB">
-                        <Grid>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock TextAlignment="Center" Width="51">1102<LineBreak/>老王</TextBlock>
-                                <Image Source="img/head.png" Width="64"></Image>
-                            </StackPanel>
-                        </Grid>
-                    </Button>
-                    <Button Width="115" Background="#FF89D4FB">
-                        <Grid>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock TextAlignment="Center" Width="51">1103<LineBreak/>老王<LineBreak/>老李</TextBlock>
-                                <Image Source="img/head.png" Width="64"></Image>
-                            </StackPanel>
-                        </Grid>
-                    </Button>
-                    <Button Width="115" Background="#FF33CCFF">
-                        <Grid>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock TextAlignment="Center" Width="51">1104</TextBlock>
-                                <Image Source="img/walk.png" Width="64"></Image>
-                            </StackPanel>
-                        </Grid>
-                    </Button>
-                    <Button Width="115" Background="#FFD0D7DB">
-                        <Grid>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock TextAlignment="Center" Width="51">1105</TextBlock>
-                                <Image Source="img/drity.png" Width="64"></Image>
-                            </StackPanel>
-                        </Grid>
-                    </Button>
-                    <Button Width="115" Background="#FFFC716A">
-                        <Grid>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock TextAlignment="Center" Width="51">1106</TextBlock>
-                                <Image Source="img/fix.png" Width="64"></Image>
-                            </StackPanel>
-                        </Grid>
-                    </Button>
-                    <Button Width="115" Background="#FFF19149">
-                        <Grid>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock TextAlignment="Center" Width="51">1107</TextBlock>
-                                <Image Source="img/forbid.png" Width="64"></Image>
-                            </StackPanel>
-                        </Grid>
-                    </Button>
-                    <Button Width="115" Background="#FFC4D9EE">
-                        <Grid>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock TextAlignment="Center" Width="51">1108</TextBlock>
-                                <Image Source="img/arrived.png" Width="64"></Image>
-                            </StackPanel>
-                        </Grid>
-                    </Button>
-                </WrapPanel>
             </DockPanel>
+            <Frame x:Name="MainPage">
+                
+            </Frame>
+            
         </DockPanel>
     </Grid>
 </Window>

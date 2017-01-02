@@ -1,0 +1,46 @@
+﻿<Window x:Class="WpfHotel.CheckWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfHotel"
+        mc:Ignorable="d"
+        Title="CheckWindow" Height="570" Width="730">
+    <Grid>
+        <GroupBox x:Name="groupBox" Header="入住信息" HorizontalAlignment="Left" Margin="10,10,10,0" VerticalAlignment="Top" Height="150" Width="700">
+            <Canvas>
+                <TextBlock Canvas.Top="4">房间类型：</TextBlock>
+                <ComboBox x:Name="comboBox" Canvas.Left="65" Width="120" SelectedIndex="0">
+                    <ComboBoxItem Content="房车"/>
+                </ComboBox>
+                <TextBlock x:Name="textBlock" Canvas.Left="190" TextWrapping="Wrap" Text="111元/天" Canvas.Top="4"/>
+                <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="房间号：" VerticalAlignment="Top" Canvas.Left="289" Canvas.Top="4"/>
+                <ComboBox x:Name="comboBox1" Canvas.Left="356" Width="120" Canvas.Top="1" SelectedIndex="0">
+                    <ComboBoxItem Content="101"/>
+                </ComboBox>
+                <TextBlock x:Name="textBlock2" TextWrapping="Wrap" Text="入住时间：" Canvas.Top="48" RenderTransformOrigin="0.144,-0.095"/>
+                <DatePicker Canvas.Left="65" Canvas.Top="44"/>
+                <TextBlock x:Name="textBlock3" Canvas.Left="190" TextWrapping="Wrap" Text="离开时间：" Canvas.Top="48" RenderTransformOrigin="0.162,0.448"/>
+                <DatePicker Canvas.Left="255" Canvas.Top="44"/>
+                <TextBlock x:Name="textBlock4" Canvas.Left="356" TextWrapping="Wrap" Text="入住天数：" Canvas.Top="48"/>
+                <ComboBox x:Name="comboBox2" Canvas.Left="421" Canvas.Top="47" Width="120" SelectedIndex="0">
+                    <ComboBoxItem Content="1"/>
+                </ComboBox>
+                <TextBlock x:Name="textBlock5" TextWrapping="Wrap" Text="备注信息：" Canvas.Top="103"/>
+                <TextBox x:Name="textBox" Height="23" Canvas.Left="65" TextWrapping="Wrap" Canvas.Top="95" Width="476"/>
+            </Canvas>
+        </GroupBox>
+        <GroupBox x:Name="groupBox1" Header="客人信息" Margin="12,0,10,73" VerticalAlignment="Bottom" Width="700" Height="295">
+            <WrapPanel>
+                <ListView>
+                    <ListViewItem>
+                        <Grid>
+                            <TextBlock Grid.Column="0" Text="张三"/>
+                            <TextBlock Grid.Column="1" Text="男"/>
+                        </Grid>
+                    </ListViewItem>
+                </ListView>
+            </WrapPanel>
+        </GroupBox>
+    </Grid>
+</Window>
