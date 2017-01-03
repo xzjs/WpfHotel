@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfHotel"
         mc:Ignorable="d"
-        Title="CheckWindow" Height="570" Width="730">
+        Title="入住办理" Height="570" Width="730">
     <Grid>
         <GroupBox x:Name="groupBox" Header="入住信息" HorizontalAlignment="Left" Margin="10,10,10,0" VerticalAlignment="Top" Height="150" Width="700">
             <Canvas>
@@ -31,16 +31,84 @@
             </Canvas>
         </GroupBox>
         <GroupBox x:Name="groupBox1" Header="客人信息" Margin="12,0,10,73" VerticalAlignment="Bottom" Width="700" Height="295">
-            <WrapPanel>
-                <ListView>
-                    <ListViewItem>
-                        <Grid>
-                            <TextBlock Grid.Column="0" Text="张三"/>
-                            <TextBlock Grid.Column="1" Text="男"/>
+            <StackPanel Orientation="Horizontal">
+                <DockPanel  Width="360" HorizontalAlignment="Left" Height="250">
+                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Width="85" Height="30" Margin="5">删除</Button>
+                        <Button Width="85" Margin="5">添加</Button>
+                    </StackPanel>
+                    <DataGrid x:Name="CustomerDataGrid" ItemsSource="{Binding}" AutoGenerateColumns="False" IsReadOnly="True" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="姓名"  Binding="{Binding name}" Width="*"/>
+                            <DataGridTextColumn Header="性别" Binding="{Binding sex}" Width="*"/>
+                            <DataGridTextColumn Header="证件类型" Binding="{Binding type}" Width="*"/>
+                            <DataGridTextColumn Header="证件号码" Binding="{Binding idCard}" Width="*"/>
+                            <DataGridTextColumn Header="手机号" Binding="{Binding phone}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Bottom">
+                        <Button Width="85" Height="30" Margin="5">确定</Button>
+                    </StackPanel>
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock FontSize="20" Grid.Column="0" VerticalAlignment="Center">客户姓名：</TextBlock>
+                            <TextBox Grid.Column="1" Width="200"></TextBox>
                         </Grid>
-                    </ListViewItem>
-                </ListView>
-            </WrapPanel>
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock FontSize="20" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Right">性别：</TextBlock>
+                            <ComboBox Grid.Column="1" Width="200" IsSynchronizedWithCurrentItem="False" SelectedIndex="0" FontSize="20">
+                                <ComboBoxItem Content="男" FontSize="20"/>
+                                <ComboBoxItem Content="女" FontSize="20"/>
+                            </ComboBox>
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock FontSize="20" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Right">证件类型：</TextBlock>
+                            <ComboBox Grid.Column="1" Width="200" IsSynchronizedWithCurrentItem="False" SelectedIndex="0" FontSize="20">
+                                <ComboBoxItem Content="二代身份证" FontSize="20"/>
+                            </ComboBox>
+                        </Grid>
+                        <Grid Grid.Row="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock FontSize="20" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Right">证件号码：</TextBlock>
+                            <TextBox Grid.Column="1" Width="200"/>
+                        </Grid>
+                        <Grid Grid.Row="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock FontSize="20" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Right">手机号码：</TextBlock>
+                            <TextBox Grid.Column="1" Width="200"/>
+                        </Grid>
+                    </Grid>
+                </DockPanel>
+            </StackPanel>
         </GroupBox>
     </Grid>
 </Window>
