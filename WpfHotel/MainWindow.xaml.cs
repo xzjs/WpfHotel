@@ -53,6 +53,7 @@ namespace WpfHotel
                     w.ShowDialog();
                     break;
                 case "预约/入住办理":
+                case "房态图":
                     MainPage.Content = new MainPage();
                     break;
                 default:

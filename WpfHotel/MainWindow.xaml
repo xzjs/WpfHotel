@@ -21,7 +21,7 @@
                         <TreeViewItem Header="入住办理" MouseLeftButtonUp="TreeViewItem_MouseLeftButtonUp"></TreeViewItem>
                     </TreeViewItem>
                     <TreeViewItem Header="房态中心">
-                        <TreeViewItem Header="房态图"></TreeViewItem>
+                        <TreeViewItem Header="房态图" MouseLeftButtonUp="TreeViewItem_MouseLeftButtonUp"></TreeViewItem>
                         <TreeViewItem Header="房态统计"></TreeViewItem>
                     </TreeViewItem>
                     <TreeViewItem Header="订单中心"/>

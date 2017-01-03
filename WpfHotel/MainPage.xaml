@@ -5,39 +5,51 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfHotel"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="442.071"
+      d:DesignHeight="298.574" d:DesignWidth="883.299"
       Title="MainPage">
 
     <DockPanel>
-        <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Left" Orientation="Horizontal">
-            <StackPanel Width="83" Height="41" Background="#FF66FF99">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24">空房</TextBlock>
+        <DockPanel DockPanel.Dock="Bottom">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Width="600">
+                <StackPanel Width="83" Height="41" Background="#FF66FF99">
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24">空房</TextBlock>
+                </StackPanel>
+                <StackPanel Width="83" Height="41" Background="#FF89D4FB" Orientation="Horizontal">
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">在住房</TextBlock>
+                    <Image Source="img/head.png"></Image>
+                </StackPanel>
+                <StackPanel Width="83" Height="41" Background="#FF33CCFF" Orientation="Horizontal">
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">预离房</TextBlock>
+                    <Image Source="img/walk.png"></Image>
+                </StackPanel>
+                <StackPanel Width="83" Height="41" Background="#FFC4D9EE" Orientation="Horizontal">
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">预抵房</TextBlock>
+                    <Image Source="img/arrived.png"></Image>
+                </StackPanel>
+                <StackPanel Width="83" Height="41" Background="#FFD0D7DB" Orientation="Horizontal">
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">脏房</TextBlock>
+                    <Image Source="img/drity.png"></Image>
+                </StackPanel>
+                <StackPanel Width="83" Height="41" Background="#FFFC716A" Orientation="Horizontal">
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">维修房</TextBlock>
+                    <Image Source="img/fix.png"></Image>
+                </StackPanel>
+                <StackPanel Width="83" Height="41" Background="#FFF19149" Orientation="Horizontal">
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">停用房</TextBlock>
+                    <Image Source="img/forbid.png"></Image>
+                </StackPanel>
             </StackPanel>
-            <StackPanel Width="83" Height="41" Background="#FF89D4FB" Orientation="Horizontal">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">在住房</TextBlock>
-                <Image Source="img/head.png"></Image>
+            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                <TextBlock Text="总房数" TextAlignment="Center" Margin="5"/>
+                <TextBlock Text="100" TextAlignment="Center" Margin="5"/>
+                <TextBlock Text="在住房数" TextAlignment="Center" Margin="5"/>
+                <TextBlock Text="10" TextAlignment="Center" Margin="5"/>
+                <ComboBox Width="100" SelectedIndex="0">
+                    <ComboBoxItem Content="全部主题"/>
+                </ComboBox>
+                <DatePicker></DatePicker>
             </StackPanel>
-            <StackPanel Width="83" Height="41" Background="#FF33CCFF" Orientation="Horizontal">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">预离房</TextBlock>
-                <Image Source="img/walk.png"></Image>
-            </StackPanel>
-            <StackPanel Width="83" Height="41" Background="#FFC4D9EE" Orientation="Horizontal">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">预抵房</TextBlock>
-                <Image Source="img/arrived.png"></Image>
-            </StackPanel>
-            <StackPanel Width="83" Height="41" Background="#FFD0D7DB" Orientation="Horizontal">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">脏房</TextBlock>
-                <Image Source="img/drity.png"></Image>
-            </StackPanel>
-            <StackPanel Width="83" Height="41" Background="#FFFC716A" Orientation="Horizontal">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">维修房</TextBlock>
-                <Image Source="img/fix.png"></Image>
-            </StackPanel>
-            <StackPanel Width="83" Height="41" Background="#FFF19149" Orientation="Horizontal">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">停用房</TextBlock>
-                <Image Source="img/forbid.png"></Image>
-            </StackPanel>
-        </StackPanel>
+        </DockPanel>
         <WrapPanel>
             <Button Width="115" Height="72" Background="#FF66FF99">
                 <Label FontSize="24">1101</Label>
