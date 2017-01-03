@@ -65,6 +65,9 @@
     <Compile Include="RoomStatisticsPage.xaml.cs">
       <DependentUpon>RoomStatisticsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RoomStatusNowPage.xaml.cs">
+      <DependentUpon>RoomStatusNowPage.xaml</DependentUpon>
+    </Compile>
     <Page Include="BillPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -101,6 +104,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="RoomStatisticsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RoomStatusNowPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

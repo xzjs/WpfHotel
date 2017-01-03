@@ -62,6 +62,9 @@ namespace WpfHotel
                 case "订单中心":
                     MainPage.Content = new BillPage();
                     break;
+                case "实时房态报表":
+                    MainPage.Content = new RoomStatusNowPage();
+                    break;
                 default:
                     break;
             }

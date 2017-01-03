@@ -9,27 +9,27 @@
     <Grid>
         <DockPanel>
             <StackPanel  DockPanel.Dock="Top">
-                <Label Content="720营地运营-营地管理系统" FontSize="30"></Label>
+                <Label Content="720营地运营-营地管理系统" FontSize="30" Margin="0,10"></Label>
             </StackPanel>
             <DockPanel DockPanel.Dock="Left">
                 <WrapPanel DockPanel.Dock="Bottom">
                     <TextBlock x:Name="TimeTextBlock">时间</TextBlock>
                 </WrapPanel>
-                <TreeView FontSize="24" >
-                    <TreeViewItem Header="预约/入住办理" MouseLeftButtonUp="TreeViewItem_MouseLeftButtonUp">
+                <TreeView Margin="20" FontSize="20">
+                    <TreeViewItem Header="预约/入住办理" MouseLeftButtonUp="TreeViewItem_MouseLeftButtonUp" Margin="10,0">
                         <TreeViewItem Header="预约办理" MouseLeftButtonUp="TreeViewItem_MouseLeftButtonUp"></TreeViewItem>
                         <TreeViewItem Header="入住办理" MouseLeftButtonUp="TreeViewItem_MouseLeftButtonUp"></TreeViewItem>
                     </TreeViewItem>
-                    <TreeViewItem Header="房态中心">
+                    <TreeViewItem Header="房态中心" Margin="10,0">
                         <TreeViewItem Header="房态图" MouseLeftButtonUp="TreeViewItem_MouseLeftButtonUp"></TreeViewItem>
                         <TreeViewItem Header="房态统计" MouseLeftButtonUp="TreeViewItem_MouseLeftButtonUp"></TreeViewItem>
                     </TreeViewItem>
-                    <TreeViewItem Header="订单中心" MouseLeftButtonUp="TreeViewItem_MouseLeftButtonUp"/>
-                    <TreeViewItem Header="房务中心"/>
-                    <TreeViewItem Header="报表中心">
-                        <TreeViewItem Header="实时房态报表"/>
-                        <TreeViewItem Header="收付报表"/>
-                        <TreeViewItem Header="在线支付报表"/>
+                    <TreeViewItem Header="订单中心" MouseLeftButtonUp="TreeViewItem_MouseLeftButtonUp" Margin="10,0"/>
+                    <TreeViewItem Header="房务中心" Margin="10,0"/>
+                    <TreeViewItem Header="报表中心" Margin="10,0">
+                        <TreeViewItem Header="实时房态报表" MouseLeftButtonUp="TreeViewItem_MouseLeftButtonUp"/>
+                        <TreeViewItem Header="收付报表" MouseLeftButtonUp="TreeViewItem_MouseLeftButtonUp"/>
+                        <TreeViewItem Header="在线支付报表" MouseLeftButtonUp="TreeViewItem_MouseLeftButtonUp"/>
                     </TreeViewItem>
                 </TreeView>
             </DockPanel>
