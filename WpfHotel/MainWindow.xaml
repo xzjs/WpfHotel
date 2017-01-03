@@ -16,8 +16,8 @@
                     <TextBlock x:Name="TimeTextBlock">时间</TextBlock>
                 </WrapPanel>
                 <TreeView FontSize="24" >
-                    <TreeViewItem Header="预约/入住办理">
-                        <TreeViewItem Header="预约办理"></TreeViewItem>
+                    <TreeViewItem Header="预约/入住办理" MouseLeftButtonUp="TreeViewItem_MouseLeftButtonUp">
+                        <TreeViewItem Header="预约办理" MouseLeftButtonUp="TreeViewItem_MouseLeftButtonUp"></TreeViewItem>
                         <TreeViewItem Header="入住办理" MouseLeftButtonUp="TreeViewItem_MouseLeftButtonUp"></TreeViewItem>
                     </TreeViewItem>
                     <TreeViewItem Header="房态中心">
@@ -33,7 +33,7 @@
                     </TreeViewItem>
                 </TreeView>
             </DockPanel>
-            <Frame x:Name="MainPage">
+            <Frame x:Name="MainPage" NavigationUIVisibility="Hidden" Margin="10">
                 
             </Frame>
             

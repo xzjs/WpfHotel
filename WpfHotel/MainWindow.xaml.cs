@@ -42,8 +42,24 @@ namespace WpfHotel
 
         private void TreeViewItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Window w = new CheckWindow();
-            w.ShowDialog();
+            TreeViewItem tvi = sender as TreeViewItem;
+            switch (tvi.Header.ToString())
+            {
+                case "预约办理":
+                    MainPage.Content = new OrderPage();
+                    break;
+                case "入住办理":
+                    Window w = new CheckWindow();
+                    w.ShowDialog();
+                    break;
+                case "预约/入住办理":
+                    MainPage.Content = new MainPage();
+                    break;
+                default:
+                    break;
+            }
+            e.Handled = true;
+            
         }
     }
 }

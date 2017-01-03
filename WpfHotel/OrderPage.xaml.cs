@@ -24,5 +24,33 @@ namespace WpfHotel
         {
             InitializeComponent();
         }
+
+        private void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            StackPanel sp = new StackPanel();
+            sp.Orientation = Orientation.Horizontal;
+
+            TextBlock nameTextBlock = new TextBlock();
+            nameTextBlock.Text = "姓名：";
+            nameTextBlock.Width = 70;
+            nameTextBlock.TextAlignment = TextAlignment.Center;
+            sp.Children.Add(nameTextBlock);
+
+            TextBox nameTextBox = new TextBox();
+            nameTextBox.Width = 130;
+            sp.Children.Add(nameTextBox);
+
+            TextBlock phoneTextBlock = new TextBlock();
+            phoneTextBlock.Text = "手机号码：";
+            phoneTextBlock.Width = 70;
+            phoneTextBlock.TextAlignment = TextAlignment.Center;
+            sp.Children.Add(phoneTextBlock);
+
+            TextBox phoneTextBox = new TextBox();
+            phoneTextBox.Width = 130;
+            sp.Children.Add(phoneTextBox);
+
+            CustomerStackPanel.Children.Add(sp);
+        }
     }
 }

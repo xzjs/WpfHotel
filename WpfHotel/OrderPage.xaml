@@ -5,18 +5,75 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfHotel"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
+      d:DesignHeight="300" d:DesignWidth="658.985"
       Title="OrderPage">
 
     <Grid>
         <DockPanel>
-            <Grid DockPanel.Dock="Top">
+            <Grid DockPanel.Dock="Top" Height="200">
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock FontSize="24" Grid.Column="0" VerticalAlignment="Center">预订信息：</TextBlock>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"></ColumnDefinition>
+                        <ColumnDefinition Width="130"></ColumnDefinition>
+                        <ColumnDefinition Width="70"></ColumnDefinition>
+                        <ColumnDefinition Width="70"></ColumnDefinition>
+                        <ColumnDefinition Width="130"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" VerticalAlignment="Center" TextAlignment="Center">房间类型：</TextBlock>
+                    <ComboBox Grid.Column="1" Width="130" Height="25" SelectedIndex="0">
+                        <ComboBoxItem Content="房车"/>
+                    </ComboBox>
+                    <TextBlock Grid.Column="2" VerticalAlignment="Center" TextAlignment="Center">111元/天</TextBlock>
+                    <TextBlock Grid.Column="3" VerticalAlignment="Center" TextAlignment="Center">房间号</TextBlock>
+                    <ComboBox Grid.Column="4" Width="130" Height="25" SelectedIndex="0">
+                        <ComboBoxItem Content="101"/>
+                    </ComboBox>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"></ColumnDefinition>
+                        <ColumnDefinition Width="130"></ColumnDefinition>
+                        <ColumnDefinition Width="70"></ColumnDefinition>
+                        <ColumnDefinition Width="130"></ColumnDefinition>
+                        <ColumnDefinition Width="70"></ColumnDefinition>
+                        <ColumnDefinition Width="130"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" VerticalAlignment="Center" TextAlignment="Center">入住时间：</TextBlock>
+                    <DatePicker Grid.Column="1" VerticalAlignment="Center"></DatePicker>
+                    <TextBlock Grid.Column="2" VerticalAlignment="Center" TextAlignment="Center">离开时间：</TextBlock>
+                    <DatePicker Grid.Column="3" VerticalAlignment="Center"></DatePicker>
+                    <TextBlock Grid.Column="4" VerticalAlignment="Center" TextAlignment="Center">入住天数：</TextBlock>
+                    <ComboBox Grid.Column="5" Width="130" Height="25" SelectedIndex="0">
+                        <ComboBoxItem Content="1"/>
+                    </ComboBox>
+                </Grid>
             </Grid>
+            <StackPanel DockPanel.Dock="Bottom">
+                <Button Width="135" Height="25">预订</Button>
+            </StackPanel>
+            <StackPanel x:Name="CustomerStackPanel">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontSize="24" Text="入住人信息"></TextBlock>
+                    <Image Source="img/plus.png" Margin="10,0" Width="20" Height="20" MouseLeftButtonUp="Image_MouseLeftButtonUp"></Image>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Width="70" Text="姓名：" TextAlignment="Center"></TextBlock>
+                    <TextBox Width="130"></TextBox>
+                    <TextBlock Width="70" Text="手机号码：" TextAlignment="Center"/>
+                    <TextBox Width="130"/>
+                </StackPanel>
+            </StackPanel>
         </DockPanel>
     </Grid>
 </Page>
