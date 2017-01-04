@@ -8,9 +8,17 @@
         Title="720营地运营-营地管理系统" Height="428.436" Width="788.425" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
         <DockPanel>
-            <StackPanel  DockPanel.Dock="Top">
-                <Label Content="720营地运营-营地管理系统" FontSize="30" Margin="0,10"></Label>
-            </StackPanel>
+            <DockPanel  DockPanel.Dock="Top">
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                    <Image Source="img/ring.png" Height="40" Margin="0,0,50,0"/>
+                    <Image Source="img/s_head.png" Height="40"></Image>
+                    <TextBlock VerticalAlignment="Center" Margin="0,0,50,0">小王</TextBlock>
+                    <Image Source="img/off.png" Height="40"></Image>
+                </StackPanel>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock FontSize="24">720营地运营-营地管理系统</TextBlock>
+                </StackPanel>
+            </DockPanel>
             <DockPanel DockPanel.Dock="Left">
                 <WrapPanel DockPanel.Dock="Bottom">
                     <TextBlock x:Name="TimeTextBlock">时间</TextBlock>

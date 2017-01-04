@@ -65,6 +65,12 @@ namespace WpfHotel
                 case "实时房态报表":
                     MainPage.Content = new RoomStatusNowPage();
                     break;
+                case "收付报表":
+                    MainPage.Content = new IncomPage();
+                    break;
+                case "在线支付报表":
+                    MainPage.Content = new OnlinePage();
+                    break;
                 default:
                     break;
             }
