@@ -93,6 +93,8 @@
     <Compile Include="IncomPage.xaml.cs">
       <DependentUpon>IncomPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LoginPage.xaml.cs" />
+    <Compile Include="LoginWindow.xaml.cs" />
     <Compile Include="OnlinePage.xaml.cs">
       <DependentUpon>OnlinePage.xaml</DependentUpon>
     </Compile>
@@ -102,6 +104,7 @@
     <Compile Include="RoomStatusNowPage.xaml.cs">
       <DependentUpon>RoomStatusNowPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SetUpPage.xaml.cs" />
     <Page Include="BillPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -113,6 +116,14 @@
     <Page Include="IncomPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LoginPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LoginWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
@@ -152,6 +163,10 @@
     <Page Include="RoomStatusNowPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SetUpPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -223,6 +238,11 @@
     <Resource Include="img\off.png" />
     <Resource Include="img\ring.png" />
     <Resource Include="img\s_head.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\bg.png" />
+    <Resource Include="img\login_head.png" />
+    <Resource Include="img\pwd.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

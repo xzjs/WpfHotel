@@ -1,0 +1,48 @@
+﻿<Page x:Class="WpfHotel.SetUpPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfHotel"
+      mc:Ignorable="d" d:DesignWidth="400"
+      Title="SetUpPage">
+
+    <Grid>
+        <DockPanel>
+            <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+                <TextBlock Text="填写帮助" Foreground="White" Margin="20"></TextBlock>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel>
+                    <StackPanel>
+                        <Border BorderBrush="White" BorderThickness="2" CornerRadius="10" Margin="0,5">
+                            <StackPanel Orientation="Horizontal" Width="360" Height="55">
+                                <TextBlock Text="HTTP接口地址" Foreground="White" VerticalAlignment="Center" Margin="5,0" Width="80" TextAlignment="Right"/>
+                                <TextBox Background="Transparent" Foreground="White" VerticalAlignment="Center" Width="260" BorderBrush="Transparent" Margin="5,0"/>
+                            </StackPanel>
+                        </Border>
+                        <Border BorderBrush="White" BorderThickness="2" CornerRadius="10" Margin="0,5">
+                            <StackPanel Orientation="Horizontal" Height="55" Width="360">
+                                <TextBlock Text="TCP IP地址" Foreground="White" VerticalAlignment="Center" Margin="5,0" Width="80" TextAlignment="Right"/>
+                                <TextBox Background="Transparent" Foreground="White" VerticalAlignment="Center" Width="260" BorderBrush="Transparent" Margin="5,0"></TextBox>
+                            </StackPanel>
+                        </Border>
+                        <Border BorderBrush="White" BorderThickness="2" CornerRadius="10" Margin="0,5">
+                            <StackPanel Orientation="Horizontal" Height="55" Width="360">
+                                <TextBlock Text="TCP端口" Foreground="White" VerticalAlignment="Center" Margin="5,0" Width="80" TextAlignment="Right"></TextBlock>
+                                <TextBox Background="Transparent" Foreground="White" VerticalAlignment="Center" Width="260" BorderBrush="Transparent" Margin="5,0"></TextBox>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel>
+                        <Border Background="White" Padding="5" BorderThickness="2" CornerRadius="10" Margin="0 60">
+                            <Button  Height="50" Background="White" BorderBrush="#00707070" FontSize="20" Click="Button_Click">保存并返回登录页</Button>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+
+            </StackPanel>
+
+        </DockPanel>
+    </Grid>
+</Page>
