@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfHotel"
       mc:Ignorable="d" d:DesignWidth="400"
-      Title="SetUpPage">
+      Title="SetUpPage" d:DesignHeight="414">
 
     <Grid>
         <DockPanel>
@@ -14,30 +14,37 @@
             </StackPanel>
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel>
-                    <StackPanel>
-                        <Border BorderBrush="White" BorderThickness="2" CornerRadius="10" Margin="0,5">
-                            <StackPanel Orientation="Horizontal" Width="360" Height="55">
+                    <StackPanel x:Name="ConfigStackPanel">
+                        <Border BorderBrush="White" BorderThickness="2" CornerRadius="10" Margin="0,20,0,5">
+                            <StackPanel Orientation="Horizontal" Height="55">
+                                <Image Source="img/zhangpeng.png" Margin="10"></Image>
                                 <TextBlock Text="HTTP接口地址" Foreground="White" VerticalAlignment="Center" Margin="5,0" Width="80" TextAlignment="Right"/>
-                                <TextBox Background="Transparent" Foreground="White" VerticalAlignment="Center" Width="260" BorderBrush="Transparent" Margin="5,0"/>
+                                <TextBox Background="Transparent" Foreground="White" VerticalAlignment="Center" Width="200" BorderBrush="Transparent" Margin="5,0" Text="{Binding Http}"/>
                             </StackPanel>
                         </Border>
                         <Border BorderBrush="White" BorderThickness="2" CornerRadius="10" Margin="0,5">
-                            <StackPanel Orientation="Horizontal" Height="55" Width="360">
+                            <StackPanel Orientation="Horizontal" Height="55">
+                                <Image Source="img/zhangpeng.png" Margin="10"></Image>
                                 <TextBlock Text="TCP IP地址" Foreground="White" VerticalAlignment="Center" Margin="5,0" Width="80" TextAlignment="Right"/>
-                                <TextBox Background="Transparent" Foreground="White" VerticalAlignment="Center" Width="260" BorderBrush="Transparent" Margin="5,0"></TextBox>
+                                <TextBox Background="Transparent" Foreground="White" VerticalAlignment="Center" Width="200" BorderBrush="Transparent" Margin="5,0" Text="{Binding Tcp}"></TextBox>
                             </StackPanel>
                         </Border>
                         <Border BorderBrush="White" BorderThickness="2" CornerRadius="10" Margin="0,5">
-                            <StackPanel Orientation="Horizontal" Height="55" Width="360">
+                            <StackPanel Orientation="Horizontal" Height="55">
+                                <Image Source="img/zhangpeng.png" Margin="10"></Image>
                                 <TextBlock Text="TCP端口" Foreground="White" VerticalAlignment="Center" Margin="5,0" Width="80" TextAlignment="Right"></TextBlock>
-                                <TextBox Background="Transparent" Foreground="White" VerticalAlignment="Center" Width="260" BorderBrush="Transparent" Margin="5,0"></TextBox>
+                                <TextBox Background="Transparent" Foreground="White" VerticalAlignment="Center" Width="200" BorderBrush="Transparent" Margin="5,0" Text="{Binding Port}"></TextBox>
                             </StackPanel>
                         </Border>
                     </StackPanel>
                     <StackPanel>
-                        <Border Background="White" Padding="5" BorderThickness="2" CornerRadius="10" Margin="0 60">
-                            <Button  Height="50" Background="White" BorderBrush="#00707070" FontSize="20" Click="Button_Click">保存并返回登录页</Button>
-                        </Border>
+                        
+                        <Button  Height="50" BorderBrush="{x:Null}" FontSize="20" Click="Button_Click" Width="290" Margin="0,20" Style="{DynamicResource SquareButtonStyle}" Foreground="White">
+                            <Button.Background>
+                                <ImageBrush ImageSource="img/grey_button.png"/>
+                            </Button.Background>
+                            保存并返回登录页
+                        </Button>
                     </StackPanel>
                 </StackPanel>
 

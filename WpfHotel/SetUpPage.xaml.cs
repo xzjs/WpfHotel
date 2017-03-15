@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,30 +22,35 @@ namespace WpfHotel
     /// </summary>
     public partial class SetUpPage : Page
     {
-        private LoginWindow parentWindow;
+        private Config _config;
         public SetUpPage()
         {
             InitializeComponent();
-        }
-
-        public LoginWindow ParentWindow
-        {
-            get
+            using (var db =new hotelEntities())
             {
-                return parentWindow;
-            }
-
-            set
-            {
-                parentWindow = value;
+                _config = db.Config.FirstOrDefault() ?? new Config();
+                ConfigStackPanel.DataContext = _config;
             }
         }
+
+        public LoginWindow ParentWindow { get; set; }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            LoginPage lp = new LoginPage();
-            lp.ParentWindow = parentWindow;
-            parentWindow.PageFrame.Content = lp;
+            using (var db=new hotelEntities())
+            {
+                if (_config.Id == 0)
+                {
+                    db.Config.Add(_config);
+                }
+                else
+                {
+                    db.Entry(_config).State=EntityState.Modified;
+                }
+                db.SaveChanges();
+            }
+            LoginPage lp = new LoginPage {ParentWindow = ParentWindow};
+            ParentWindow.PageFrame.Content = lp;
         }
     }
 }

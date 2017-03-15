@@ -1,0 +1,165 @@
+﻿<Window x:Class="WpfHotel.CheckInWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfHotel"
+        mc:Ignorable="d"
+        Title="CheckInWindow" Height="600" Width="800" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" MouseLeftButtonDown="Window_MouseLeftButtonDown" Background="{x:Null}">
+    <Grid>
+        <DockPanel>
+            <DockPanel Dock="Top" Margin="0,0,0,20">
+                <DockPanel Dock="Top">
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                        <Button Style="{DynamicResource SquareButtonStyle}" BorderBrush="{x:Null}" Width="100" Height="35" Margin="160,0,0,0" FontSize="16" Foreground="White">
+                            <Button.Background>
+                                <ImageBrush ImageSource="img/menu.png"/>
+                            </Button.Background>
+                            客单
+                        </Button>
+                        <Button Style="{DynamicResource SquareButtonStyle}" BorderBrush="{x:Null}" Width="100" Height="35" FontSize="16" Foreground="White">
+                            <Button.Background>
+                                <ImageBrush ImageSource="img/menu.png"/>
+                            </Button.Background>
+                            账单
+                        </Button>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Right">
+                        <Button Width="55" Height="35" BorderBrush="{x:Null}" Margin="0,0,80,0" Style="{DynamicResource SquareButtonStyle}" Click="Close_Click">
+                            <Button.Background>
+                                <ImageBrush ImageSource="img/close2.png"/>
+                            </Button.Background>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel></StackPanel>
+                </DockPanel>
+                <DockPanel>
+                    <DockPanel Dock="Left">
+                        <Button Width="40" Height="100" BorderBrush="{x:Null}">
+                            <Button.Background>
+                                <ImageBrush ImageSource="img/left_blue_button.png"/>
+                            </Button.Background>
+                            <TextBlock Text="入&#x000A;住&#x000A;信&#x000A;息" FontSize="12" Foreground="White"></TextBlock>
+                        </Button>
+                    </DockPanel>
+                    <DockPanel Height="160">
+                        <StackPanel Margin="0,0,40,0">
+                            <StackPanel.Background>
+                                <ImageBrush ImageSource="img/bg_top.png"/>
+                            </StackPanel.Background>
+                            <StackPanel Orientation="Horizontal" Margin="30,20,30,0">
+                                <TextBlock Text="房间类型" FontSize="20" Margin="10,0"></TextBlock>
+                                <Controls:SplitButton x:Name="TypeList" HorizontalContentAlignment="Left" HorizontalAlignment="Center" VerticalContentAlignment="Center" Width="120" SelectedIndex="0" DisplayMemberPath="Name" VerticalAlignment="Center" Margin="10,0" />
+                                <TextBlock Text="房间号" FontSize="20" Margin="10,0"></TextBlock>
+                                <Controls:SplitButton x:Name="RoomList" HorizontalContentAlignment="Left" HorizontalAlignment="Center" VerticalContentAlignment="Center" Width="120" SelectedIndex="0" DisplayMemberPath="No" VerticalAlignment="Center" Margin="10,0" ItemsSource="{Binding ElementName=TypeList,Path=SelectedItem.Room}"/>
+                                <TextBlock Text="{Binding ElementName=RoomList,Path=SelectedItem.Price,StringFormat='\{0\}元/天'}" FontSize="20"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="30,20,30,0">
+                                <TextBlock Text="入住时间" FontSize="20" Margin="10,0"></TextBlock>
+                                <DatePicker x:Name="Start" Margin="10,0" Width="120"/>
+                                <TextBlock Text="离开时间" FontSize="20" Margin="10,0"></TextBlock>
+                                <DatePicker x:Name="End" Margin="10,0" DisplayDateStart="{Binding SelectedDate, ElementName=Start}" Width="120"></DatePicker>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="30,20,30,30">
+                                <TextBlock Text="备注信息" FontSize="20" Margin="10,0"></TextBlock>
+                                <TextBox Controls:TextBoxHelper.ClearTextButton="True" Width="120" Margin="10,0" />
+                                <TextBlock Text="入住天数" FontSize="20" Margin="10,0"></TextBlock>
+                                <Controls:NumericUpDown Maximum="1000" Minimum="0" HasDecimals="False" Margin="10,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </DockPanel>
+                </DockPanel>
+            </DockPanel>
+            <DockPanel>
+                <DockPanel Dock="Left" Margin="0,0,20,0">
+                    <DockPanel Dock="Left">
+                        <Button Width="40" Height="100" BorderBrush="{x:Null}" Style="{DynamicResource SquareButtonStyle}">
+                            <Button.Background>
+                                <ImageBrush ImageSource="img/left_blue_button.png"/>
+                            </Button.Background>
+                            <TextBlock Text="客&#x000A;人&#x000A;信&#x000A;息" FontSize="12" Foreground="White"></TextBlock>
+                        </Button>
+                    </DockPanel>
+                    <DockPanel>
+                        <DockPanel.Background>
+                            <ImageBrush ImageSource="img/bottom_left.png"/>
+                        </DockPanel.Background>
+                        <StackPanel DockPanel.Dock="Bottom">
+                            <Button BorderBrush="{x:Null}" FontSize="20" Foreground="White" Margin="60,20">
+                                <Button.Background>
+                                    <ImageBrush ImageSource="img/blue_button.png"/>
+                                </Button.Background> 确定</Button>
+                        </StackPanel>
+                        <StackPanel>
+                            
+                            <StackPanel Orientation="Horizontal" Margin="20,40,20,0">
+                                <TextBlock Text="客人姓名" Width="60" TextAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <TextBox Width="120"></TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="20,20,20,0">
+                                <TextBlock Text="性别" Width="60" TextAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <ComboBox SelectedIndex="0">
+                                    <ComboBoxItem Content="男"/>
+                                    <ComboBoxItem Content="女"/>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="20,20,20,0">
+                                <TextBlock Text="证件类型" Width="60" TextAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <ComboBox SelectedIndex="0">
+                                    <ComboBoxItem Content="二代身份证"/>
+                                    <ComboBoxItem Content="驾照"/>
+                                    <ComboBoxItem Content="护照"/>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="20,20,20,0">
+                                <TextBlock Text="证件号码" Width="60" TextAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <TextBox Width="120"></TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="20,20,20,0">
+                                <TextBlock Text="联系方式" Width="60" TextAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <TextBox Width="120"></TextBox>
+                            </StackPanel>
+                        </StackPanel>
+                    </DockPanel>
+                </DockPanel>
+                <DockPanel>
+                    <DockPanel Dock="Right">
+                        <Button Width="40" Height="100" BorderBrush="{x:Null}" Style="{DynamicResource SquareButtonStyle}">
+                            <Button.Background>
+                                <ImageBrush ImageSource="img/blue_right.png"/>
+                            </Button.Background>
+                            <TextBlock Text="完&#x000A;成&#x000A;入&#x000A;住" FontSize="12" Foreground="White"></TextBlock>
+                        </Button>
+                    </DockPanel>
+                    <DockPanel>
+                        <DockPanel.Background>
+                            <ImageBrush ImageSource="img/bottom_right.png"/>
+                        </DockPanel.Background>
+                        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Style="{DynamicResource SquareButtonStyle}" Width="110" Height="40" Margin="20" Foreground="White" BorderBrush="{x:Null}">
+                                <Button.Background>
+                                    <ImageBrush ImageSource="img/blue_button.png"/>
+                                </Button.Background> 删除</Button>
+                            <Button Style="{DynamicResource SquareButtonStyle}" Width="110" Height="40" Margin="20" Foreground="White" BorderBrush="{x:Null}">
+                                <Button.Background>
+                                    <ImageBrush ImageSource="img/blue_button.png"/>
+                                </Button.Background> 添加</Button>
+                        </StackPanel>
+                        <DockPanel>
+                            <DataGrid x:Name="UserDataGrid" Margin="20" Background="Transparent" BorderBrush="{x:Null}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Name}" Width="*"></DataGridTextColumn>
+                                    <DataGridTextColumn Binding="{Binding Sex}" Width="*"></DataGridTextColumn>
+                                    <DataGridTextColumn Binding="{Binding CardType}" Width="*"></DataGridTextColumn>
+                                    <DataGridTextColumn Binding="{Binding Code}" Width="*"></DataGridTextColumn>
+                                    <DataGridTextColumn Binding="{Binding Phone}" Width="*"></DataGridTextColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </DockPanel>
+                    </DockPanel>
+                </DockPanel>
+            </DockPanel>
+        </DockPanel>
+    </Grid>
+</Window>

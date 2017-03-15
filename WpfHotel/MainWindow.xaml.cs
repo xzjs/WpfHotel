@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Threading;
 
 namespace WpfHotel
 {
@@ -21,61 +20,69 @@ namespace WpfHotel
     /// </summary>
     public partial class MainWindow : Window
     {
-        private DispatcherTimer ShowTimer;
-
         public MainWindow()
         {
             InitializeComponent();
 
-            MainPage.Content = new MainPage();
+            var showTimer = new System.Windows.Threading.DispatcherTimer();
+            showTimer.Tick += new EventHandler(ShowCurrentTimer);
+            showTimer.Interval = new TimeSpan(0, 0, 0, 1, 0);
+            showTimer.Start();
 
-            ShowTimer = new System.Windows.Threading.DispatcherTimer();
-            ShowTimer.Tick += new EventHandler(ShowCurrentTimer);
-            ShowTimer.Interval = new TimeSpan(0, 0, 0, 1, 0);
-            ShowTimer.Start();
+            LoadRoomData();
         }
 
         private void ShowCurrentTimer(object sender, EventArgs e)
         {
-            TimeTextBlock.Text = DateTime.Now.ToString();
+            //TimeTextBlock.Text = DateTime.Now.ToString();
         }
 
-        private void TreeViewItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            TreeViewItem tvi = sender as TreeViewItem;
-            switch (tvi.Header.ToString())
+           try
             {
-                case "预约办理":
-                    MainPage.Content = new OrderPage();
-                    break;
-                case "入住办理":
-                    Window w = new CheckWindow();
-                    w.ShowDialog();
-                    break;
-                case "预约/入住办理":
-                case "房态图":
-                    MainPage.Content = new MainPage();
-                    break;
-                case "房态统计":
-                    MainPage.Content = new RoomStatisticsPage();
-                    break;
-                case "订单中心":
-                    MainPage.Content = new BillPage();
-                    break;
-                case "实时房态报表":
-                    MainPage.Content = new RoomStatusNowPage();
-                    break;
-                case "收付报表":
-                    MainPage.Content = new IncomPage();
-                    break;
-                case "在线支付报表":
-                    MainPage.Content = new OnlinePage();
-                    break;
-                default:
-                    break;
+                DragMove();
             }
-            e.Handled = true;
-            
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
+        }
+
+        private void Login_CLick(object sender, RoutedEventArgs e)
+        {
+            LoginWindow lw = new LoginWindow();
+            lw.ShowDialog();
+        }
+
+        /// <summary>
+        /// 加载房间列表
+        /// </summary>
+        public void LoadRoomData()
+        {
+            using (var db=new hotelEntities())
+            {
+                List<Room> rooms = db.Room.ToList();
+                List<RoomItem> roomItems= rooms.Select(room => new RoomItem {Room = room}).ToList();
+                RoomList.ItemsSource = roomItems;
+            }
+        }
+
+        /// <summary>
+        /// 关闭程序
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Close(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void ShowMenu(object sender, MouseButtonEventArgs e)
+        {
+            Button button=sender as Button;
+            RoomItem roomItem=button.Tag as RoomItem;
+            button.ContextMenu = roomItem.ContextMenu;
         }
     }
 }
