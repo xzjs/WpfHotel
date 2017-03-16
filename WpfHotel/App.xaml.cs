@@ -13,5 +13,7 @@ namespace WpfHotel
     /// </summary>
     public partial class App : Application
     {
+        public Config Config;
+        public Information Information;
     }
 }

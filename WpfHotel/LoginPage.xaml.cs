@@ -24,7 +24,7 @@ namespace WpfHotel
     /// </summary>
     public partial class LoginPage : Page
     {
-        private LoginWindow parentWindow;
+        private LoginWindow _parentWindow;
         public LoginPage()
         {
             InitializeComponent();
@@ -34,12 +34,12 @@ namespace WpfHotel
         {
             get
             {
-                return parentWindow;
+                return _parentWindow;
             }
 
             set
             {
-                parentWindow = value;
+                _parentWindow = value;
             }
         }
 
@@ -47,7 +47,7 @@ namespace WpfHotel
         {
             SetUpPage sup = new SetUpPage();
             sup.ParentWindow = ParentWindow;
-            parentWindow.PageFrame.Content = sup;
+           _parentWindow.PageFrame.Content = sup;
         }
 
         /// <summary>

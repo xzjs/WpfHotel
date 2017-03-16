@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfHotel"
         mc:Ignorable="d"
-        Title="720营地运营-营地管理系统" Height="579" Width="1024" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+        Title="720营地运营-营地管理系统" Height="579" Width="1024" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" MouseLeftButtonDown="Window_MouseLeftButtonDown" Activated="Window_Activated">
     <Grid>
         <DockPanel>
             <DockPanel  DockPanel.Dock="Top">
@@ -49,6 +49,12 @@
                 <Canvas Width="350" Height="350" DockPanel.Dock="Bottom">
                     <Image Source="img/canvas_bg.png" Width="300" Height="300" Canvas.Bottom="0" Panel.ZIndex="-1"></Image>
                     <Button Width="70" Canvas.Left="30" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="10">
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="预约办理"/>
+                                <MenuItem Header="入住办理" Click="CheckIn"/>
+                            </ContextMenu>
+                        </Button.ContextMenu>
                         <Image Source="img/yuyue.png"></Image>
                     </Button>
                     <Button Width="70" Canvas.Left="130" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="30">

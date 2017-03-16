@@ -16,7 +16,7 @@ namespace WpfHotel
     {
         public long Id { get; set; }
         public string Name { get; set; }
-        public Nullable<int> Sex { get; set; }
+        public string Sex { get; set; }
         public string Code { get; set; }
         public Nullable<long> Phone { get; set; }
         public Nullable<long> OrderId { get; set; }

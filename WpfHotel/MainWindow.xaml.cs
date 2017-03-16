@@ -84,5 +84,35 @@ namespace WpfHotel
             RoomItem roomItem=button.Tag as RoomItem;
             button.ContextMenu = roomItem.ContextMenu;
         }
+
+        private void CheckIn(object sender, RoutedEventArgs e)
+        {
+            CheckInWindow checkInWindow = new CheckInWindow();
+            checkInWindow.ShowDialog();
+        }
+
+        /// <summary>
+        /// 检查是否设置相关的信息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            using (var db = new hotelEntities())
+            {
+                Config config = db.Config.FirstOrDefault();
+                Information information = db.Information.FirstOrDefault();
+                if (config == null || information == null)
+                {
+                    LoginWindow login = new LoginWindow();
+                    login.ShowDialog();
+                }
+                else
+                {
+                    ((App) Application.Current).Config = config;
+                    ((App) Application.Current).Information = information;
+                }
+            }
+        }
     }
 }
