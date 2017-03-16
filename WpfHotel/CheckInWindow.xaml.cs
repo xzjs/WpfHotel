@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace WpfHotel
         private ObservableCollection<User> _users;
         private User _user;
         private Order _order;
-        public CheckInWindow()
+        public CheckInWindow(Order order=null)
         {
             InitializeComponent();
 
@@ -32,18 +33,39 @@ namespace WpfHotel
             UserDataGrid.ItemsSource = _users;
             using (var db = new hotelEntities())
             {
-                var roomIDs = db.Room.Where(x => x.Status == 1).Select(x => x.TypeId);
-                List<Type> types = db.Type.Include("Room").Where(x => roomIDs.Contains(x.Id)).ToList();
-                TypeList.ItemsSource = types;
-                _order = new Order
+                if (order == null)
                 {
-                    InDate = DateTime.Today,
-                    LeaveDate = DateTime.Today.AddDays(1),
-                    Day = 1,
-                    Finish = 0,
-                    Price = 0,
-                    Status = 2
-                };
+                    var roomIDs = db.Room.Where(x => x.Status == 1).Select(x => x.TypeId);
+                    List<Type> types = db.Type.Include("Room").Where(x => roomIDs.Contains(x.Id)).ToList();
+                    TypeList.ItemsSource = types;
+                    _order = new Order
+                    {
+                        InDate = DateTime.Today,
+                        LeaveDate = DateTime.Today.AddDays(1),
+                        Day = 1,
+                        Finish = 0,
+                        Price = 0,
+                        Status = 2
+                    };
+                }
+                else
+                {
+                    _order = order;
+                    Room room = db.Room.Find(order.RoomId);
+                    Type type = room.Type;
+                    TypeList.ItemsSource=new List<Type> {type};
+                    RoomList.ItemsSource=new List<Room> {room};
+                    TypeList.IsEnabled = false;
+                    RoomList.IsEnabled = false;
+
+                    List<User> users = db.User.Where(x => x.OrderId == order.Id).ToList();
+                    foreach (var user in users)
+                    {
+                        _users.Add(user);
+                    }
+
+                    End.DisplayDateStart = order.LeaveDate;
+                }
                 OrderStackPanel.DataContext = _order;
             }
 
@@ -145,17 +167,28 @@ namespace WpfHotel
             {
                 using (var db=new hotelEntities())
                 {
-                    //保存订单
                     Room room = RoomList.SelectedItem as Room;
-                    _order.RoomId = room.Id;
                     _order.Price = room.Price * _order.Day;
-                    db.Order.Add(_order);
-                    db.SaveChanges();
-                    //保存用户
-                    foreach (var user in _users)
+                    if (_order.Id == 0)
                     {
-                        user.OrderId = _order.Id;
-                        db.User.Add(user);
+                        //保存订单
+                        _order.RoomId = room.Id;
+
+                        db.Order.Add(_order);
+                        db.SaveChanges();
+                        //保存用户
+                        foreach (var user in _users)
+                        {
+                            user.OrderId = _order.Id;
+                            db.User.Add(user);
+                        }
+                    }
+                    else
+                    {
+                        Order order = db.Order.Find(_order.Id);
+                        order.LeaveDate = _order.LeaveDate;
+                        order.Day = _order.Day;
+                        order.Price = _order.Price;
                     }
                     db.SaveChanges();
                     //更改房间状态

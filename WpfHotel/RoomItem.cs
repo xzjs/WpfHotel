@@ -45,17 +45,54 @@ namespace WpfHotel
                         checkInMenuItem.Click += CheeckIn;
                         contextMenu.Items.Add(checkInMenuItem);
                         break;
+                    case 3:
+                        MenuItem renewMenuItem=new MenuItem {Header = "办理续住"};
+                        renewMenuItem.Click += Renew;
+                        contextMenu.Items.Add(renewMenuItem);
+                        MenuItem checkOutMenuItem =new MenuItem {Header = "结账退房"};
+                        checkOutMenuItem.Click += CheckOut;
+                        contextMenu.Items.Add(checkOutMenuItem);
+                        break;
                 }
                 return contextMenu;
             }
         }
 
+        /// <summary>
+        /// 结账退房
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CheckOut(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 办理续住
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Renew(object sender, RoutedEventArgs e)
+        {
+            using (var db=new hotelEntities())
+            {
+                Order order = db.Order.Where(x => x.Finish == 0).FirstOrDefault(x => x.RoomId == Room.Id);
+                CheckInWindow checkIn=new CheckInWindow(order);
+                checkIn.ShowDialog();
+            }
+        }
+
+        /// <summary>
+        /// 办理入住
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CheeckIn(object sender, RoutedEventArgs e)
         {
             CheckInWindow checkInWindow = new CheckInWindow();
             checkInWindow.ShowDialog();
         }
-
         /// <summary>
         /// 更新
         /// </summary>
