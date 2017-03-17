@@ -25,8 +25,10 @@ namespace WpfHotel
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Account> Account { get; set; }
         public virtual DbSet<Config> Config { get; set; }
         public virtual DbSet<Information> Information { get; set; }
+        public virtual DbSet<Invoice> Invoice { get; set; }
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<Room> Room { get; set; }
         public virtual DbSet<Type> Type { get; set; }

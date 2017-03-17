@@ -124,6 +124,8 @@ namespace WpfHotel
                         if ((string)jo["errorFlag"] != "false")
                             MessageBox.Show("设置房间状态失败");
                     }
+                    MainWindow main = Application.Current.MainWindow as MainWindow;
+                    main.LoadRoomData();
                 }
             }
             catch (Exception exception)

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,6 +16,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace WpfHotel
 {
@@ -173,7 +177,62 @@ namespace WpfHotel
                     {
                         //保存订单
                         _order.RoomId = room.Id;
+                        //上传订单
+                        Config config = ((App)Application.Current).Config;
+                        Information information = ((App) Application.Current).Information;
+                        try
+                        {
+                            using (var client = new WebClient())
+                            {
+                                OrderItem orderItem = new OrderItem
+                                {
+                                    hotelId = information.HotelId.Value,
+                                    roomId = room.ServerId.Value,
+                                    inDateStr = _order.InDate.Value.ToShortDateString(),
+                                    leaveDateStr = _order.LeaveDate.Value.ToShortDateString(),
+                                    inDays = _order.Day.Value,
+                                    remark = _order.Remark,
+                                    clStatus = 2,
+                                    users = new List<UserItem>()
+                                };
+                                foreach (var user in _users)
+                                {
+                                    UserItem userItem = new UserItem
+                                    {
+                                        name = user.Name,
+                                        sex = user.Sex == "男" ? "male" : "female",
+                                        cardCode = user.Code,
+                                        mobile = user.Phone.Value.ToString()
+                                    };
+                                    orderItem.users.Add(userItem);
+                                }
+                                string json = JsonConvert.SerializeObject(orderItem);
+                                var values = new NameValueCollection
+                                {
+                                    ["details"] = json
 
+                                };
+
+                                var response = client.UploadValues("http://" + config.Http + "/hotelClient/buildOrder.nd", values);
+
+                                var responseString = Encoding.Default.GetString(response);
+                                var jo = JObject.Parse(responseString);
+                                if ((string)jo["errorFlag"] != "false")
+                                {
+                                    MessageBox.Show("上传订单失败");
+                                }
+                                else
+                                {
+                                    _order.ServerId = (long)jo["orderId"];
+                                }
+                            }
+                        }
+                        catch (Exception exception)
+                        {
+                            MessageBox.Show(exception.Message);
+                            
+                        }
+                        
                         db.Order.Add(_order);
                         db.SaveChanges();
                         //保存用户
@@ -185,6 +244,7 @@ namespace WpfHotel
                     }
                     else
                     {
+                        //续住
                         Order order = db.Order.Find(_order.Id);
                         order.LeaveDate = _order.LeaveDate;
                         order.Day = _order.Day;
@@ -194,8 +254,7 @@ namespace WpfHotel
                     //更改房间状态
                     RoomItem roomItem=new RoomItem {Room = room};
                     roomItem.SetRoomStatus(3);
-                    MainWindow main = Application.Current.MainWindow as MainWindow;
-                    main.LoadRoomData();
+             
                     Close();
                 }
             }
@@ -203,6 +262,18 @@ namespace WpfHotel
             {
                 MessageBox.Show(exception.Message);
             }
+        }
+
+        private void ShowBillWindow(object sender, RoutedEventArgs e)
+        {
+            if (_order.Id == 0)
+            {
+                MessageBox.Show("还未生成账单");
+                return;
+            }
+            BillWindow bill=new BillWindow(_order);
+            bill.Show();
+            Close();
         }
     }
 }

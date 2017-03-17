@@ -11,14 +11,14 @@ namespace WpfHotel
 {
     using System;
     using System.Collections.Generic;
-    using PropertyChanged;
     
-    [ImplementPropertyChanged]
     public partial class Order
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Order()
         {
+            this.Account = new HashSet<Account>();
+            this.Invoice = new HashSet<Invoice>();
             this.User = new HashSet<User>();
         }
     
@@ -31,7 +31,12 @@ namespace WpfHotel
         public Nullable<int> Status { get; set; }
         public string Remark { get; set; }
         public Nullable<int> Finish { get; set; }
+        public Nullable<long> ServerId { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Account> Account { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Invoice> Invoice { get; set; }
         public virtual Room Room { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> User { get; set; }
