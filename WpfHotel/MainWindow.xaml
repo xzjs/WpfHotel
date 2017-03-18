@@ -57,7 +57,7 @@
                         </Button.ContextMenu>
                         <Image Source="img/yuyue.png"></Image>
                     </Button>
-                    <Button Width="70" Canvas.Left="130" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="30">
+                    <Button Width="70" Canvas.Left="130" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="30" Click="ShowRoomStatusWindow">
                         <Image Source="img/fangtai.png"></Image>
                     </Button>
                     <Button Width="70" Canvas.Left="210" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="90" Click="ShowOrderWindow">
@@ -67,6 +67,13 @@
                         <Image Source="img/fangwu.png"></Image>
                     </Button>
                     <Button Width="70" Canvas.Left="270" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="270">
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="实时房态报表" Click="ShowRoomStatusWindow"/>
+                                <MenuItem Header="收付报表" Click="CheckIn"/>
+                                <MenuItem Header="在线支付报表" Click="CheckIn"/>
+                            </ContextMenu>
+                        </Button.ContextMenu>
                         <Image Source="img/baobiao.png"></Image>
                     </Button>
                     <StackPanel Canvas.Left="10" Canvas.Bottom="60">

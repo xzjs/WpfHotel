@@ -95,6 +95,7 @@ namespace WpfHotel
 
                     }
                     Order order = db.Order.Find(_order.Id);
+                    order.Status = 3;
                     order.Finish = 1;
                     db.SaveChanges();
                     RoomItem roomItem=new RoomItem {Room = order.Room};

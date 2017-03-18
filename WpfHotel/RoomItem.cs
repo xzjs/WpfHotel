@@ -59,6 +59,54 @@ namespace WpfHotel
         }
 
         /// <summary>
+        /// 房态
+        /// </summary>
+        public string Status
+        {
+            get
+            {
+                string[] status = {"", "空房", "预抵房", "在住房", "脏房", "维修房", "停用房", "预离房"};
+                return status[Room.Status.Value];
+            }
+        }
+
+        /// <summary>
+        /// 是否有人
+        /// </summary>
+        public int HasPeople
+        {
+            get
+            {
+                //在住或者预离算有人
+                if (Room.Status == 2 || Room.Status == 7)
+                {
+                    return 1;
+                }
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// 客人姓名
+        /// </summary>
+        public string UserName
+        {
+            get
+            {
+                using (var db =new hotelEntities())
+                {
+                    Order order = db.Order.Include("User").First(o => o.Status == 2);
+                    return order.User.First().Name;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 是否预离
+        /// </summary>
+        public int IsReadyLeave => Room.Status.Value == 7 ? 1 : 0;
+
+        /// <summary>
         /// 结账退房
         /// </summary>
         /// <param name="sender"></param>
@@ -93,6 +141,7 @@ namespace WpfHotel
             CheckInWindow checkInWindow = new CheckInWindow();
             checkInWindow.ShowDialog();
         }
+
         /// <summary>
         /// 更新
         /// </summary>

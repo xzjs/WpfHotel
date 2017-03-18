@@ -136,5 +136,16 @@ namespace WpfHotel
             OrderWindow orderWindow=new OrderWindow();
             orderWindow.ShowDialog();
         }
+
+        /// <summary>
+        /// 显示实时房态报表
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowRoomStatusWindow(object sender, RoutedEventArgs e)
+        {
+            RoomStatusWindow roomStatusWindow=new RoomStatusWindow();
+            roomStatusWindow.ShowDialog();
+        }
     }
 }
