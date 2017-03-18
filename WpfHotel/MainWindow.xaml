@@ -60,7 +60,7 @@
                     <Button Width="70" Canvas.Left="130" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="30">
                         <Image Source="img/fangtai.png"></Image>
                     </Button>
-                    <Button Width="70" Canvas.Left="210" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="90">
+                    <Button Width="70" Canvas.Left="210" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="90" Click="ShowOrderWindow">
                         <Image Source="img/dingdan.png"></Image>
                     </Button>
                     <Button Width="70" Canvas.Left="260" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="170">

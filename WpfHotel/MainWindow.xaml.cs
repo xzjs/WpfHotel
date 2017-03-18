@@ -125,5 +125,16 @@ namespace WpfHotel
             AppointmentWindow appointmentWindow=new AppointmentWindow();
             appointmentWindow.ShowDialog();
         }
+
+        /// <summary>
+        /// 显示订单中心
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowOrderWindow(object sender, RoutedEventArgs e)
+        {
+            OrderWindow orderWindow=new OrderWindow();
+            orderWindow.ShowDialog();
+        }
     }
 }
