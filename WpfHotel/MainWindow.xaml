@@ -51,7 +51,7 @@
                     <Button Width="70" Canvas.Left="30" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="10">
                         <Button.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="预约办理"/>
+                                <MenuItem Header="预约办理" Click="Appointment"/>
                                 <MenuItem Header="入住办理" Click="CheckIn"/>
                             </ContextMenu>
                         </Button.ContextMenu>

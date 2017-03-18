@@ -114,5 +114,16 @@ namespace WpfHotel
                 }
             }
         }
+
+        /// <summary>
+        /// 预约
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Appointment(object sender, RoutedEventArgs e)
+        {
+            AppointmentWindow appointmentWindow=new AppointmentWindow();
+            appointmentWindow.ShowDialog();
+        }
     }
 }

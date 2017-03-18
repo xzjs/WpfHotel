@@ -1,0 +1,98 @@
+﻿<Window x:Class="WpfHotel.AppointmentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfHotel"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="AppointmentWindow" Height="600" Width="800" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" MouseLeftButtonDown="Window_MouseLeftButtonDown" Background="{x:Null}">
+    <Grid>
+        <DockPanel x:Name="DockPanel">
+            <DockPanel DockPanel.Dock="Top" Margin="0,0,0,20">
+                <DockPanel DockPanel.Dock="Top">
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                        <Button Style="{DynamicResource SquareButtonStyle}" BorderBrush="{x:Null}" Width="100" Height="35" Margin="160,0,0,0" FontSize="16" Foreground="White" Content="预约信息">
+                            <Button.Background>
+                                <ImageBrush ImageSource="img/menu_click.png"/>
+                            </Button.Background>
+                        </Button>
+                   
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Right">
+                        <Button Width="55" Height="35" BorderBrush="{x:Null}" Margin="0,0,80,0" Style="{DynamicResource SquareButtonStyle}" Click="Close_Click" >
+                            <Button.Background>
+                                <ImageBrush ImageSource="img/close2.png"/>
+                            </Button.Background>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel/>
+                </DockPanel>
+                <DockPanel>
+                    <DockPanel Height="160">
+                        <StackPanel x:Name="OrderStackPanel" Margin="40,0,0,0">
+                            <StackPanel.Background>
+                                <ImageBrush ImageSource="img/yuyue_bg.png"/>
+                            </StackPanel.Background>
+                            
+                            <StackPanel Orientation="Horizontal" Margin="30,20,30,0">
+                                <TextBlock Text="入住时间" FontSize="20" Margin="10,0"/>
+                                <DatePicker x:Name="Start" Margin="10,0" Width="120" SelectedDate="{Binding InDate}" DisplayDateEnd="{Binding SelectedDate,ElementName=End}" SelectedDateChanged="Start_SelectedDateChanged"/>
+                                <TextBlock Text="离开时间" FontSize="20" Margin="10,0"/>
+                                <DatePicker x:Name="End" Margin="10,0" DisplayDateStart="{Binding SelectedDate, ElementName=Start}" Width="120"  SelectedDate="{Binding LeaveDate}" SelectedDateChanged="Start_SelectedDateChanged"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="30,20,30,0">
+                                <TextBlock Text="房间类型" FontSize="20" Margin="10,0"/>
+                                <Controls:SplitButton x:Name="TypeList" HorizontalContentAlignment="Left" HorizontalAlignment="Center" VerticalContentAlignment="Center" Width="120" SelectedIndex="0" DisplayMemberPath="Name" VerticalAlignment="Center" Margin="10,0" SelectionChanged="TypeList_SelectionChanged" />
+                                <TextBlock Text="房间号   " FontSize="20" Margin="10,0"/>
+                                <ComboBox x:Name="RoomList" Margin="10,0" ItemsSource="{Binding SelectedItem.Room,ElementName=TypeList}" DisplayMemberPath="No" SelectedIndex="0">
+
+                                </ComboBox>
+                                <TextBlock Text="{Binding SelectedItem.Price, ElementName=RoomList, StringFormat=\{0\}元/天}" FontSize="20"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="30,20,30,30">
+                                <TextBlock Text="备注信息" FontSize="20" Margin="10,0"/>
+                                <TextBox Controls:TextBoxHelper.ClearTextButton="True" Width="120" Margin="10,0" Text="{Binding Remark}"/>
+                                <TextBlock Text="入住天数" FontSize="20" Margin="10,0"/>
+                                <TextBlock Text="{Binding Day, StringFormat=\{0\}天}" FontSize="20" Margin="10,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </DockPanel>
+                </DockPanel>
+            </DockPanel>
+            <DockPanel>
+                <DockPanel DockPanel.Dock="Left" Margin="0,0,20,0">
+                    <DockPanel DockPanel.Dock="Left">
+                        <Button Width="40" Height="100" BorderBrush="{x:Null}" Style="{DynamicResource SquareButtonStyle}">
+                            <Button.Background>
+                                <ImageBrush ImageSource="img/left_blue_button.png"/>
+                            </Button.Background>
+                            <TextBlock Text="入&#xA;住&#xA;人&#xA;信&#xA;息" FontSize="12" Foreground="White"/>
+                        </Button>
+                    </DockPanel>
+                    <DockPanel x:Name="UserInformation">
+                        <DockPanel.Background>
+                            <ImageBrush ImageSource="img/ruzhuren.png"/>
+                        </DockPanel.Background>
+                        <StackPanel DockPanel.Dock="Bottom">
+                            <Button BorderBrush="{x:Null}" Foreground="White" Margin="20" Width="110" Height="40" FontSize="12"  Style="{DynamicResource SquareButtonStyle}" Content="确认" Click="MakeAppointment">
+                                <Button.Background>
+                                    <ImageBrush ImageSource="img/blue_button.png"/>
+                                </Button.Background>
+                            </Button>
+                        </StackPanel>
+                        <DockPanel>
+                            <DataGrid x:Name="UserDataGrid" Margin="20" Background="Transparent" BorderBrush="{x:Null}" AutoGenerateColumns="False" ItemsSource="{Binding User}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Name}" Width="*" Header="客人姓名"/>
+                                    <DataGridTextColumn Binding="{Binding Phone}" Width="*" Header="手机号码"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </DockPanel>
+                    </DockPanel>
+                </DockPanel>
+            </DockPanel>
+        </DockPanel>
+    </Grid>
+</Window>
