@@ -7,38 +7,43 @@
         xmlns:local="clr-namespace:WpfHotel"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="RoomStatusWindow" Height="600" Width="800" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" MouseLeftButtonDown="Window_MouseLeftButtonDown" Background="{x:Null}">
+        Title="RoomStatusWindow" Height="600" Width="800" ResizeMode="NoResize" AllowsTransparency="True"
+        WindowStyle="None" MouseLeftButtonDown="Window_MouseLeftButtonDown" Background="{x:Null}">
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Top" Margin="0,0,0,20">
                 <DockPanel DockPanel.Dock="Top">
                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                        <Button Style="{DynamicResource SquareButtonStyle}" BorderBrush="{x:Null}" Height="35" Margin="160,0,0,0" FontSize="16" Foreground="White" Content="房态统计">
+                        <Button Style="{DynamicResource SquareButtonStyle}" BorderBrush="{x:Null}" Height="35"
+                                Margin="160,0,0,0" FontSize="16" Foreground="White" Content="房态统计">
                             <Button.Background>
-                                <ImageBrush ImageSource="img/menu_click.png"/>
+                                <ImageBrush ImageSource="img/menu_click.png" />
                             </Button.Background>
                         </Button>
                     </StackPanel>
                     <StackPanel DockPanel.Dock="Right">
-                        <Button Width="55" Height="35" BorderBrush="{x:Null}" Margin="0,0,80,0" Style="{DynamicResource SquareButtonStyle}" Click="Close_Click">
+                        <Button Width="55" Height="35" BorderBrush="{x:Null}" Margin="0,0,80,0"
+                                Style="{DynamicResource SquareButtonStyle}" Click="Close_Click">
                             <Button.Background>
-                                <ImageBrush ImageSource="img/close2.png"/>
+                                <ImageBrush ImageSource="img/close2.png" />
                             </Button.Background>
                         </Button>
                     </StackPanel>
-                    <StackPanel/>
+                    <StackPanel />
                 </DockPanel>
                 <DockPanel>
                     <DockPanel.Background>
-                        <ImageBrush ImageSource="img/order_bg.png"/>
+                        <ImageBrush ImageSource="img/order_bg.png" />
                     </DockPanel.Background>
                     <DockPanel Dock="Top">
-                        <DatePicker x:Name="DatePicker" Width="200" Margin="0,20,0,0" SelectedDateChanged="DatePicker_SelectedDateChanged" />
+                        <DatePicker x:Name="DatePicker" Width="200" Margin="0,20,0,0"
+                                    SelectedDateChanged="DatePicker_SelectedDateChanged" />
                     </DockPanel>
                     <DockPanel Dock="Bottom">
-                        <Button FontSize="20" Width="150" Foreground="White" Margin="0,0,0,20" Style="{DynamicResource SquareButtonStyle}" Click="Export">
+                        <Button FontSize="20" Width="150" Foreground="White" Margin="0,0,0,20"
+                                Style="{DynamicResource SquareButtonStyle}" Click="Export">
                             <Button.Background>
-                                <ImageBrush ImageSource="img/blue_button.png"/>
+                                <ImageBrush ImageSource="img/blue_button.png" />
                             </Button.Background>
                             导出EXCEL
                         </Button>
@@ -46,20 +51,21 @@
                     <DockPanel Dock="Bottom">
                         <StackPanel Margin="20,0" Orientation="Horizontal" HorizontalAlignment="Center">
                             <TextBlock Width="150" Text="小计" FontSize="20" TextAlignment="Center" />
-                            <TextBlock Width="150" x:Name="TextBlock1" FontSize="20" TextAlignment="Center"></TextBlock>
-                            <TextBlock Width="150" x:Name="TextBlock2" FontSize="20" TextAlignment="Center"></TextBlock>
-                            <TextBlock Width="150" x:Name="TextBlock3" FontSize="20" TextAlignment="Center"></TextBlock>
-                            <TextBlock Width="150" x:Name="TextBlock4" FontSize="20" TextAlignment="Center"></TextBlock>
+                            <TextBlock Width="150" x:Name="TextBlock1" FontSize="20" TextAlignment="Center" />
+                            <TextBlock Width="150" x:Name="TextBlock2" FontSize="20" TextAlignment="Center" />
+                            <TextBlock Width="150" x:Name="TextBlock3" FontSize="20" TextAlignment="Center" />
+                            <TextBlock Width="150" x:Name="TextBlock4" FontSize="20" TextAlignment="Center" />
                         </StackPanel>
                     </DockPanel>
                     <DockPanel>
-                        <DataGrid x:Name="DataGrid" Margin="20" Background="Transparent" BorderBrush="{x:Null}" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid x:Name="DataGrid" Margin="20" Background="Transparent" BorderBrush="{x:Null}"
+                                  AutoGenerateColumns="False" IsReadOnly="True">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Type.Name}" Width="*" Header="主题类型"/>
-                                <DataGridTextColumn Binding="{Binding TotalRoomNum}" Width="*" Header="总房数"/>
-                                <DataGridTextColumn Binding="{Binding CanUseRoom}" Width="*" Header="可售房数"/>
-                                <DataGridTextColumn Binding="{Binding UnUseRoom}" Width="*" Header="不可用房数"/>
-                                <DataGridTextColumn Binding="{Binding OrderRoomNum}" Width="*" Header="已经预订"/>
+                                <DataGridTextColumn Binding="{Binding Type.Name}" Width="*" Header="主题类型" />
+                                <DataGridTextColumn Binding="{Binding TotalRoomNum}" Width="*" Header="总房数" />
+                                <DataGridTextColumn Binding="{Binding CanUseRoom}" Width="*" Header="可售房数" />
+                                <DataGridTextColumn Binding="{Binding UnUseRoom}" Width="*" Header="不可用房数" />
+                                <DataGridTextColumn Binding="{Binding OrderRoomNum}" Width="*" Header="已经预订" />
                             </DataGrid.Columns>
                         </DataGrid>
                     </DockPanel>

@@ -1,10 +1,10 @@
 ﻿<Page x:Class="WpfHotel.OnlinePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:WpfHotel"
-      mc:Ignorable="d" 
+      mc:Ignorable="d"
       d:DesignHeight="300" d:DesignWidth="300"
       Title="OnlinePage">
 
@@ -12,9 +12,9 @@
         <StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center">开始时间</TextBlock>
-                <DatePicker></DatePicker>
+                <DatePicker />
                 <TextBlock VerticalAlignment="Center">结束时间</TextBlock>
-                <DatePicker></DatePicker>
+                <DatePicker />
                 <Button Background="#FF1492E3">导出EXCEL</Button>
             </StackPanel>
             <StackPanel>
@@ -27,13 +27,13 @@
                 <TextBlock>2017-1-3</TextBlock>
             </StackPanel>
             <StackPanel>
-                <DataGrid AutoGenerateColumns="False" IsReadOnly="True" >
+                <DataGrid AutoGenerateColumns="False" IsReadOnly="True">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="房号"  Width="*"/>
-                        <DataGridTextColumn Header="姓名" Width="*"/>
-                        <DataGridTextColumn Header="金额"  Width="*"/>
-                        <DataGridTextColumn Header="结账时间"  Width="*"/>
-                        <DataGridTextColumn Header="备注" Width="*"/>
+                        <DataGridTextColumn Header="房号" Width="*" />
+                        <DataGridTextColumn Header="姓名" Width="*" />
+                        <DataGridTextColumn Header="金额" Width="*" />
+                        <DataGridTextColumn Header="结账时间" Width="*" />
+                        <DataGridTextColumn Header="备注" Width="*" />
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>

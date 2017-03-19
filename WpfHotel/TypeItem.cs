@@ -9,7 +9,7 @@ namespace WpfHotel
         public DateTime Date { get; set; }
 
         /// <summary>
-        /// 总房数
+        ///     总房数
         /// </summary>
         public int TotalRoomNum
         {
@@ -23,7 +23,7 @@ namespace WpfHotel
         }
 
         /// <summary>
-        /// 已经预订
+        ///     已经预订
         /// </summary>
         public int OrderRoomNum
         {
@@ -31,7 +31,8 @@ namespace WpfHotel
             {
                 using (var db = new hotelEntities())
                 {
-                    var orders = db.Order.Where(o => o.InDate <= Date).Where(o => o.LeaveDate >= Date).Where(o => o.Status == 1);
+                    var orders =
+                        db.Order.Where(o => o.InDate <= Date).Where(o => o.LeaveDate >= Date).Where(o => o.Status == 1);
                     var roomIDs = orders.Select(o => o.RoomId);
                     return db.Room.Where(r => r.TypeId == Type.Id).Count(r => roomIDs.Contains(r.Id));
                 }
@@ -39,7 +40,7 @@ namespace WpfHotel
         }
 
         /// <summary>
-        /// 不可用房数
+        ///     不可用房数
         /// </summary>
         public int UnUseRoom
         {
@@ -57,7 +58,7 @@ namespace WpfHotel
         }
 
         /// <summary>
-        /// 可用房数
+        ///     可用房数
         /// </summary>
         public int CanUseRoom => TotalRoomNum - OrderRoomNum - UnUseRoom;
     }

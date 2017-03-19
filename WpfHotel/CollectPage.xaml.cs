@@ -11,11 +11,12 @@ using OfficeOpenXml;
 namespace WpfHotel
 {
     /// <summary>
-    /// CollectPage.xaml 的交互逻辑
+    ///     CollectPage.xaml 的交互逻辑
     /// </summary>
     public partial class CollectPage : Page
     {
         private List<Account> _accounts;
+
         public CollectPage()
         {
             InitializeComponent();
@@ -43,9 +44,9 @@ namespace WpfHotel
         {
             try
             {
-                ExcelPackage package = new ExcelPackage(new MemoryStream());
+                var package = new ExcelPackage(new MemoryStream());
                 var ws1 = package.Workbook.Worksheets.Add("Worksheet1");
-                for (int row = 2; row < _accounts.Count + 2; row++)
+                for (var row = 2; row < _accounts.Count + 2; row++)
                 {
                     ws1.Cells[row, 1].Value = _accounts[row - 2].OrderId;
                     ws1.Cells[row, 2].Value = _accounts[row - 2].Order.Room.No;
@@ -60,18 +61,15 @@ namespace WpfHotel
                 ws1.Cells[1, 4].Value = "结算";
                 ws1.Cells[1, 5].Value = "时间";
                 ws1.Cells[1, 6].Value = "备注";
-                SaveFileDialog saveFileDialog = new SaveFileDialog { Filter = "Excel files (*.xlsx)|*.xlsx" };
+                var saveFileDialog = new SaveFileDialog {Filter = "Excel files (*.xlsx)|*.xlsx"};
                 var dialogResult = saveFileDialog.ShowDialog();
                 if (dialogResult.Value)
-                {
                     package.SaveAs(new FileInfo(saveFileDialog.FileName));
-                }
                 MessageBox.Show("导出成功");
             }
             catch (Exception exception)
             {
                 MessageBox.Show(exception.Message);
-
             }
         }
     }

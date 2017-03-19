@@ -1,8 +1,8 @@
 ﻿<Page x:Class="WpfHotel.SetUpPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:WpfHotel"
       mc:Ignorable="d" d:DesignWidth="400"
       Title="SetUpPage" d:DesignHeight="414">
@@ -10,38 +10,45 @@
     <Grid>
         <DockPanel>
             <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right">
-                <TextBlock Text="填写帮助" Foreground="White" Margin="20"></TextBlock>
+                <TextBlock Text="填写帮助" Foreground="White" Margin="20" />
             </StackPanel>
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel>
                     <StackPanel x:Name="ConfigStackPanel">
                         <Border BorderBrush="White" BorderThickness="2" CornerRadius="10" Margin="0,20,0,5">
                             <StackPanel Orientation="Horizontal" Height="55">
-                                <Image Source="img/zhangpeng.png" Margin="10"></Image>
-                                <TextBlock Text="HTTP接口地址" Foreground="White" VerticalAlignment="Center" Margin="5,0" Width="80" TextAlignment="Right"/>
-                                <TextBox Background="Transparent" Foreground="White" VerticalAlignment="Center" Width="200" BorderBrush="Transparent" Margin="5,0" Text="{Binding Http}"/>
+                                <Image Source="img/zhangpeng.png" Margin="10" />
+                                <TextBlock Text="HTTP接口地址" Foreground="White" VerticalAlignment="Center" Margin="5,0"
+                                           Width="80" TextAlignment="Right" />
+                                <TextBox Background="Transparent" Foreground="White" VerticalAlignment="Center"
+                                         Width="200" BorderBrush="Transparent" Margin="5,0" Text="{Binding Http}" />
                             </StackPanel>
                         </Border>
                         <Border BorderBrush="White" BorderThickness="2" CornerRadius="10" Margin="0,5">
                             <StackPanel Orientation="Horizontal" Height="55">
-                                <Image Source="img/zhangpeng.png" Margin="10"></Image>
-                                <TextBlock Text="TCP IP地址" Foreground="White" VerticalAlignment="Center" Margin="5,0" Width="80" TextAlignment="Right"/>
-                                <TextBox Background="Transparent" Foreground="White" VerticalAlignment="Center" Width="200" BorderBrush="Transparent" Margin="5,0" Text="{Binding Tcp}"></TextBox>
+                                <Image Source="img/zhangpeng.png" Margin="10" />
+                                <TextBlock Text="TCP IP地址" Foreground="White" VerticalAlignment="Center" Margin="5,0"
+                                           Width="80" TextAlignment="Right" />
+                                <TextBox Background="Transparent" Foreground="White" VerticalAlignment="Center"
+                                         Width="200" BorderBrush="Transparent" Margin="5,0" Text="{Binding Tcp}" />
                             </StackPanel>
                         </Border>
                         <Border BorderBrush="White" BorderThickness="2" CornerRadius="10" Margin="0,5">
                             <StackPanel Orientation="Horizontal" Height="55">
-                                <Image Source="img/zhangpeng.png" Margin="10"></Image>
-                                <TextBlock Text="TCP端口" Foreground="White" VerticalAlignment="Center" Margin="5,0" Width="80" TextAlignment="Right"></TextBlock>
-                                <TextBox Background="Transparent" Foreground="White" VerticalAlignment="Center" Width="200" BorderBrush="Transparent" Margin="5,0" Text="{Binding Port}"></TextBox>
+                                <Image Source="img/zhangpeng.png" Margin="10" />
+                                <TextBlock Text="TCP端口" Foreground="White" VerticalAlignment="Center" Margin="5,0"
+                                           Width="80" TextAlignment="Right" />
+                                <TextBox Background="Transparent" Foreground="White" VerticalAlignment="Center"
+                                         Width="200" BorderBrush="Transparent" Margin="5,0" Text="{Binding Port}" />
                             </StackPanel>
                         </Border>
                     </StackPanel>
                     <StackPanel>
-                        
-                        <Button  Height="50" BorderBrush="{x:Null}" FontSize="20" Click="Button_Click" Width="290" Margin="0,20" Style="{DynamicResource SquareButtonStyle}" Foreground="White">
+
+                        <Button Height="50" BorderBrush="{x:Null}" FontSize="20" Click="Button_Click" Width="290"
+                                Margin="0,20" Style="{DynamicResource SquareButtonStyle}" Foreground="White">
                             <Button.Background>
-                                <ImageBrush ImageSource="img/grey_button.png"/>
+                                <ImageBrush ImageSource="img/grey_button.png" />
                             </Button.Background>
                             保存并返回登录页
                         </Button>

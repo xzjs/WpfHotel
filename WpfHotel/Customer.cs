@@ -1,6 +1,6 @@
 ﻿namespace WpfHotel
 {
-    class Customer
+    internal class Customer
     {
         public string name { get; set; }
         public string sex { get; set; }

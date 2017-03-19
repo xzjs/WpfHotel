@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Win32;
 using OfficeOpenXml;
@@ -11,21 +10,20 @@ using OfficeOpenXml;
 namespace WpfHotel
 {
     /// <summary>
-    /// RealTimeWindow.xaml 的交互逻辑
+    ///     RealTimeWindow.xaml 的交互逻辑
     /// </summary>
     public partial class RealTimeWindow : Window
     {
-        private List<RoomItem> _roomItems=new List<RoomItem>();
+        private readonly List<RoomItem> _roomItems = new List<RoomItem>();
+
         public RealTimeWindow()
         {
             InitializeComponent();
-            using (var db=new hotelEntities())
+            using (var db = new hotelEntities())
             {
-                List<Room> rooms = db.Room.Include("Type").ToList();
+                var rooms = db.Room.Include("Type").ToList();
                 foreach (var room in rooms)
-                {
                     _roomItems.Add(new RoomItem {Room = room});
-                }
                 DataGrid.ItemsSource = _roomItems;
             }
         }
@@ -34,12 +32,10 @@ namespace WpfHotel
         {
             try
             {
-
             }
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-               
             }
         }
 
@@ -52,9 +48,9 @@ namespace WpfHotel
         {
             try
             {
-                ExcelPackage package = new ExcelPackage(new MemoryStream());
+                var package = new ExcelPackage(new MemoryStream());
                 var ws1 = package.Workbook.Worksheets.Add("Worksheet1");
-                for (int row = 2; row < _roomItems.Count + 2; row++)
+                for (var row = 2; row < _roomItems.Count + 2; row++)
                 {
                     ws1.Cells[row, 1].Value = _roomItems[row - 2].Room.No;
                     ws1.Cells[row, 2].Value = _roomItems[row - 2].Room.Type.Name;
@@ -69,18 +65,15 @@ namespace WpfHotel
                 ws1.Cells[1, 4].Value = "有无客人(0-无 1-有)";
                 ws1.Cells[1, 5].Value = "客人姓名";
                 ws1.Cells[1, 6].Value = "预离(0-否 1-是)";
-                SaveFileDialog saveFileDialog = new SaveFileDialog { Filter = "Excel files (*.xlsx)|*.xlsx" };
+                var saveFileDialog = new SaveFileDialog {Filter = "Excel files (*.xlsx)|*.xlsx"};
                 var dialogResult = saveFileDialog.ShowDialog();
                 if (dialogResult.Value)
-                {
                     package.SaveAs(new FileInfo(saveFileDialog.FileName));
-                }
                 MessageBox.Show("导出成功");
             }
             catch (Exception exception)
             {
                 MessageBox.Show(exception.Message);
-
             }
         }
     }

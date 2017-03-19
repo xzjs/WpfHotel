@@ -4,19 +4,20 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace WpfHotel
 {
     /// <summary>
-    /// CheckOutWindow.xaml 的交互逻辑
+    ///     CheckOutWindow.xaml 的交互逻辑
     /// </summary>
     public partial class CheckOutWindow : Window
     {
-        private Order _order;
-        private decimal _otherMoney = 0, _collection = 0;
-        private Invoice _invoice;
+        private readonly decimal _collection;
+        private readonly Invoice _invoice;
+        private readonly Order _order;
+        private readonly decimal _otherMoney;
+
         public CheckOutWindow(Order order)
         {
             InitializeComponent();
@@ -31,11 +32,11 @@ namespace WpfHotel
                 _order.Price = _order.Room.Price * _order.Day;
                 OrderStackPanel.DataContext = _order;
 
-                Room room = db.Room.Find(_order.RoomId);
-                RoomList.ItemsSource = new List<Room> { room };
-                Type type = db.Type.Find(room.TypeId);
-                TypeList.ItemsSource = new List<Type> { type };
-                List<Account> accounts = db.Account.Where(x => x.OrderId == order.Id).ToList();
+                var room = db.Room.Find(_order.RoomId);
+                RoomList.ItemsSource = new List<Room> {room};
+                var type = db.Type.Find(room.TypeId);
+                TypeList.ItemsSource = new List<Type> {type};
+                var accounts = db.Account.Where(x => x.OrderId == order.Id).ToList();
                 foreach (var account in accounts)
                 {
                     _otherMoney += account.Consume.Value;
@@ -76,7 +77,7 @@ namespace WpfHotel
         }
 
         /// <summary>
-        /// 结账
+        ///     结账
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -89,18 +90,15 @@ namespace WpfHotel
                     if (checkBox.IsChecked.Value)
                     {
                         if (string.IsNullOrEmpty(_invoice.Title))
-                        {
                             throw new Exception("请填写发票抬头");
-                        }
                         db.Invoice.Add(_invoice);
-
                     }
-                    db.Entry(_order).State=EntityState.Modified;
-                    
+                    db.Entry(_order).State = EntityState.Modified;
+
                     _order.Status = 3;
                     _order.Finish = 1;
                     db.SaveChanges();
-                    RoomItem roomItem = new RoomItem { Room = _order.Room };
+                    var roomItem = new RoomItem {Room = _order.Room};
                     roomItem.SetRoomStatus(4);
                     Close();
                 }

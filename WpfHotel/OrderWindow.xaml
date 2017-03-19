@@ -7,58 +7,69 @@
         xmlns:local="clr-namespace:WpfHotel"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="OrderWindow" Height="600" Width="800" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" MouseLeftButtonDown="Window_MouseLeftButtonDown" Background="{x:Null}">
+        Title="OrderWindow" Height="600" Width="800" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown" Background="{x:Null}">
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Top" Margin="0,0,0,20">
                 <DockPanel DockPanel.Dock="Top">
                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                        <Button x:Name="Button1" Style="{DynamicResource SquareButtonStyle}" BorderBrush="{x:Null}" Width="100" Height="35" Margin="160,0,0,0" FontSize="16" Foreground="White" Content="预订单" Click="Show_Order">
+                        <Button x:Name="Button1" Style="{DynamicResource SquareButtonStyle}" BorderBrush="{x:Null}"
+                                Width="100" Height="35" Margin="160,0,0,0" FontSize="16" Foreground="White"
+                                Content="预订单" Click="Show_Order">
                             <Button.Background>
-                                <ImageBrush ImageSource="img/menu_click.png"/>
+                                <ImageBrush ImageSource="img/menu_click.png" />
                             </Button.Background>
                         </Button>
-                        <Button x:Name="Button2" Style="{DynamicResource SquareButtonStyle}" BorderBrush="{x:Null}" Width="100" Height="35" FontSize="16" Foreground="White" Content="历史订单" Click="Show_Order">
+                        <Button x:Name="Button2" Style="{DynamicResource SquareButtonStyle}" BorderBrush="{x:Null}"
+                                Width="100" Height="35" FontSize="16" Foreground="White" Content="历史订单"
+                                Click="Show_Order">
                             <Button.Background>
-                                <ImageBrush ImageSource="img/menu.png"/>
+                                <ImageBrush ImageSource="img/menu.png" />
                             </Button.Background>
                         </Button>
-                        <Button x:Name="Button3" Style="{DynamicResource SquareButtonStyle}" BorderBrush="{x:Null}" Height="35" FontSize="16" Foreground="White" Content="正在入住订单" Click="Show_Order"  Width="120">
+                        <Button x:Name="Button3" Style="{DynamicResource SquareButtonStyle}" BorderBrush="{x:Null}"
+                                Height="35" FontSize="16" Foreground="White" Content="正在入住订单" Click="Show_Order"
+                                Width="120">
                             <Button.Background>
-                                <ImageBrush ImageSource="img/menu.png"/>
+                                <ImageBrush ImageSource="img/menu.png" />
                             </Button.Background>
                         </Button>
                     </StackPanel>
                     <StackPanel DockPanel.Dock="Right">
-                        <Button Width="55" Height="35" BorderBrush="{x:Null}" Margin="0,0,80,0" Style="{DynamicResource SquareButtonStyle}" Click="Close_Click">
+                        <Button Width="55" Height="35" BorderBrush="{x:Null}" Margin="0,0,80,0"
+                                Style="{DynamicResource SquareButtonStyle}" Click="Close_Click">
                             <Button.Background>
-                                <ImageBrush ImageSource="img/close2.png"/>
+                                <ImageBrush ImageSource="img/close2.png" />
                             </Button.Background>
                         </Button>
                     </StackPanel>
-                    <StackPanel/>
+                    <StackPanel />
                 </DockPanel>
                 <DockPanel>
                     <DockPanel DockPanel.Dock="Left">
                         <Button Width="40" Height="100" BorderBrush="{x:Null}">
                             <Button.Background>
-                                <ImageBrush ImageSource="img/left_blue_button.png"/>
+                                <ImageBrush ImageSource="img/left_blue_button.png" />
                             </Button.Background>
-                            <TextBlock Text="订&#xA;单&#xA;中&#xA;心" FontSize="12" Foreground="White"/>
+                            <TextBlock Text="订&#xA;单&#xA;中&#xA;心" FontSize="12" Foreground="White" />
                         </Button>
                     </DockPanel>
                     <DockPanel>
                         <DockPanel.Background>
-                            <ImageBrush ImageSource="img/order_bg.png"/>
+                            <ImageBrush ImageSource="img/order_bg.png" />
                         </DockPanel.Background>
-                        <DataGrid x:Name="DataGrid" Margin="20" Background="Transparent" BorderBrush="{x:Null}" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid x:Name="DataGrid" Margin="20" Background="Transparent" BorderBrush="{x:Null}"
+                                  AutoGenerateColumns="False" IsReadOnly="True">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Id}" Width="*" Header="序号"/>
-                                <DataGridTextColumn Binding="{Binding Room.No}" Width="*" Header="房间号"/>
-                                <DataGridTextColumn Binding="{Binding InDate,StringFormat='\{0:d\}'}" Width="*" Header="入住日期"/>
-                                <DataGridTextColumn Binding="{Binding LeaveDate,StringFormat='\{0:d\}'}" Width="*" Header="离店日期"/>
-                                <DataGridTextColumn Binding="{Binding Price}" Width="*" Header="总价"/>
-                                <DataGridTextColumn Binding="{Binding Remark}" Width="*" Header="备注"/>
+                                <DataGridTextColumn Binding="{Binding Id}" Width="*" Header="序号" />
+                                <DataGridTextColumn Binding="{Binding Room.No}" Width="*" Header="房间号" />
+                                <DataGridTextColumn Binding="{Binding InDate,StringFormat='\{0:d\}'}" Width="*"
+                                                    Header="入住日期" />
+                                <DataGridTextColumn Binding="{Binding LeaveDate,StringFormat='\{0:d\}'}" Width="*"
+                                                    Header="离店日期" />
+                                <DataGridTextColumn Binding="{Binding Price}" Width="*" Header="总价" />
+                                <DataGridTextColumn Binding="{Binding Remark}" Width="*" Header="备注" />
                             </DataGrid.Columns>
                         </DataGrid>
 

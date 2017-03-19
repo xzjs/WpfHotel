@@ -9,12 +9,13 @@ using System.Windows.Input;
 namespace WpfHotel
 {
     /// <summary>
-    /// AppointmentWindow.xaml 的交互逻辑
+    ///     AppointmentWindow.xaml 的交互逻辑
     /// </summary>
     public partial class AppointmentWindow : Window
     {
-        private Order _order;
+        private readonly Order _order;
         private List<long?> roomIdList;
+
         public AppointmentWindow()
         {
             InitializeComponent();
@@ -24,10 +25,10 @@ namespace WpfHotel
                 InDate = DateTime.Today,
                 LeaveDate = DateTime.Today.AddDays(1),
                 Day = 1,
-                Status = 1,//已预定
+                Status = 1, //已预定
                 Finish = 0
             };
-            _order.User= new ObservableCollection<User>();
+            _order.User = new ObservableCollection<User>();
             DockPanel.DataContext = _order;
         }
 
@@ -40,12 +41,11 @@ namespace WpfHotel
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-
             }
         }
 
         /// <summary>
-        /// 日期变更
+        ///     日期变更
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -65,7 +65,7 @@ namespace WpfHotel
         }
 
         /// <summary>
-        /// 房间类别更换
+        ///     房间类别更换
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -73,10 +73,10 @@ namespace WpfHotel
         {
             using (var db = new hotelEntities())
             {
-                Type type = TypeList.SelectedItem as Type;
+                var type = TypeList.SelectedItem as Type;
                 if (type != null)
                 {
-                    List<Room> rooms =
+                    var rooms =
                         db.Room.Where(r => r.TypeId == type.Id).Where(r => !roomIdList.Contains(r.Id)).ToList();
                     RoomList.ItemsSource = rooms;
                     RoomList.SelectedIndex = 0;
@@ -85,7 +85,7 @@ namespace WpfHotel
         }
 
         /// <summary>
-        /// 预定
+        ///     预定
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -93,11 +93,9 @@ namespace WpfHotel
         {
             try
             {
-                Room room =RoomList.SelectedItem as Room;
+                var room = RoomList.SelectedItem as Room;
                 if (room == null)
-                {
                     throw new Exception("指定日期内没有合适的房间");
-                }
                 using (var db = new hotelEntities())
                 {
                     _order.RoomId = room.Id;
@@ -105,7 +103,7 @@ namespace WpfHotel
                     //TODO 上传预定订单
                     db.Order.Add(_order);
                     db.SaveChanges();
-                    MainWindow mainWindow=Application.Current.MainWindow as MainWindow;
+                    var mainWindow = Application.Current.MainWindow as MainWindow;
                     mainWindow.LoadRoomData();
                     Close();
                 }
@@ -117,7 +115,7 @@ namespace WpfHotel
         }
 
         /// <summary>
-        /// 关闭窗口
+        ///     关闭窗口
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

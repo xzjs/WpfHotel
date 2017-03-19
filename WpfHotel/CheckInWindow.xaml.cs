@@ -14,14 +14,15 @@ using Newtonsoft.Json.Linq;
 namespace WpfHotel
 {
     /// <summary>
-    /// CheckInWindow.xaml 的交互逻辑
+    ///     CheckInWindow.xaml 的交互逻辑
     /// </summary>
     public partial class CheckInWindow : Window
     {
-        private ObservableCollection<User> _users;
+        private readonly Order _order;
+        private readonly ObservableCollection<User> _users;
         private User _user;
-        private Order _order;
-        public CheckInWindow(Order order=null)
+
+        public CheckInWindow(Order order = null)
         {
             InitializeComponent();
 
@@ -29,11 +30,23 @@ namespace WpfHotel
             UserDataGrid.ItemsSource = _users;
             using (var db = new hotelEntities())
             {
-                if (order == null)
+                if (order == null || order.Id == 0)
                 {
                     var roomIDs = db.Room.Where(x => x.Status == 1).Select(x => x.TypeId);
-                    List<Type> types = db.Type.Include("Room").Where(x => roomIDs.Contains(x.Id)).ToList();
+                    var types = db.Type.Include("Room").Where(x => roomIDs.Contains(x.Id)).ToList();
                     TypeList.ItemsSource = types;
+                    if (order != null)
+                    {
+                        foreach (var type in types)
+                        {
+                            foreach (var room in type.Room)
+                            {
+                                if (room.Id != order.RoomId.Value) continue;
+                                RoomList.SelectedItem = room;
+                                TypeList.SelectedItem = type;
+                            }
+                        }
+                    }
                     _order = new Order
                     {
                         InDate = DateTime.Today,
@@ -47,20 +60,19 @@ namespace WpfHotel
                 else
                 {
                     _order = order;
-                    Room room = db.Room.Find(order.RoomId);
-                    Type type = room.Type;
-                    TypeList.ItemsSource=new List<Type> {type};
-                    RoomList.ItemsSource=new List<Room> {room};
+                    var room = db.Room.Find(order.RoomId);
+                    var type = room.Type;
+                    TypeList.ItemsSource = new List<Type> { type };
+                    RoomList.ItemsSource = new List<Room> { room };
+
                     TypeList.IsEnabled = false;
                     RoomList.IsEnabled = false;
-
-                    List<User> users = db.User.Where(x => x.OrderId == order.Id).ToList();
+                    var users = db.User.Where(x => x.OrderId == order.Id).ToList();
                     foreach (var user in users)
-                    {
                         _users.Add(user);
-                    }
 
                     End.DisplayDateStart = order.LeaveDate;
+
                 }
                 OrderStackPanel.DataContext = _order;
             }
@@ -82,7 +94,7 @@ namespace WpfHotel
         }
 
         /// <summary>
-        /// 关闭当前窗口
+        ///     关闭当前窗口
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -92,7 +104,7 @@ namespace WpfHotel
         }
 
         /// <summary>
-        /// 添加用户
+        ///     添加用户
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -113,7 +125,7 @@ namespace WpfHotel
         }
 
         /// <summary>
-        /// 创建用户
+        ///     创建用户
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -131,7 +143,7 @@ namespace WpfHotel
         }
 
         /// <summary>
-        /// 删除用户
+        ///     删除用户
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -143,7 +155,7 @@ namespace WpfHotel
         }
 
         /// <summary>
-        /// 计算住宿日期及金额
+        ///     计算住宿日期及金额
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -153,7 +165,7 @@ namespace WpfHotel
         }
 
         /// <summary>
-        /// 完成入住
+        ///     完成入住
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -161,22 +173,22 @@ namespace WpfHotel
         {
             try
             {
-                using (var db=new hotelEntities())
+                using (var db = new hotelEntities())
                 {
-                    Room room = RoomList.SelectedItem as Room;
+                    var room = RoomList.SelectedItem as Room;
                     _order.Price = room.Price * _order.Day;
                     if (_order.Id == 0)
                     {
                         //保存订单
                         _order.RoomId = room.Id;
                         //上传订单
-                        Config config = ((App)Application.Current).Config;
-                        Information information = ((App) Application.Current).Information;
+                        var config = ((App)Application.Current).Config;
+                        var information = ((App)Application.Current).Information;
                         try
                         {
                             using (var client = new WebClient())
                             {
-                                OrderItem orderItem = new OrderItem
+                                var orderItem = new OrderItem
                                 {
                                     hotelId = information.HotelId.Value,
                                     roomId = room.ServerId.Value,
@@ -189,7 +201,7 @@ namespace WpfHotel
                                 };
                                 foreach (var user in _users)
                                 {
-                                    UserItem userItem = new UserItem
+                                    var userItem = new UserItem
                                     {
                                         name = user.Name,
                                         sex = user.Sex == "男" ? "male" : "female",
@@ -198,33 +210,28 @@ namespace WpfHotel
                                     };
                                     orderItem.users.Add(userItem);
                                 }
-                                string json = JsonConvert.SerializeObject(orderItem);
+                                var json = JsonConvert.SerializeObject(orderItem);
                                 var values = new NameValueCollection
                                 {
                                     ["details"] = json
-
                                 };
 
-                                var response = client.UploadValues("http://" + config.Http + "/hotelClient/buildOrder.nd", values);
+                                var response =
+                                    client.UploadValues("http://" + config.Http + "/hotelClient/buildOrder.nd", values);
 
                                 var responseString = Encoding.Default.GetString(response);
                                 var jo = JObject.Parse(responseString);
                                 if ((string)jo["errorFlag"] != "false")
-                                {
                                     MessageBox.Show("上传订单失败");
-                                }
                                 else
-                                {
                                     _order.ServerId = (long)jo["orderId"];
-                                }
                             }
                         }
                         catch (Exception exception)
                         {
                             MessageBox.Show(exception.Message);
-                            
                         }
-                        
+
                         db.Order.Add(_order);
                         db.SaveChanges();
                         //保存用户
@@ -237,16 +244,16 @@ namespace WpfHotel
                     else
                     {
                         //续住
-                        Order order = db.Order.Find(_order.Id);
+                        var order = db.Order.Find(_order.Id);
                         order.LeaveDate = _order.LeaveDate;
                         order.Day = _order.Day;
                         order.Price = _order.Price;
                     }
                     db.SaveChanges();
                     //更改房间状态
-                    RoomItem roomItem=new RoomItem {Room = room};
+                    var roomItem = new RoomItem { Room = room };
                     roomItem.SetRoomStatus(3);
-             
+
                     Close();
                 }
             }
@@ -263,7 +270,7 @@ namespace WpfHotel
                 MessageBox.Show("还未生成账单");
                 return;
             }
-            BillWindow bill=new BillWindow(_order);
+            var bill = new BillWindow(_order);
             bill.Show();
             Close();
         }

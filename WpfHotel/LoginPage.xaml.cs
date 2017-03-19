@@ -12,38 +12,26 @@ using Newtonsoft.Json.Linq;
 namespace WpfHotel
 {
     /// <summary>
-    /// LoginPage.xaml 的交互逻辑
+    ///     LoginPage.xaml 的交互逻辑
     /// </summary>
     public partial class LoginPage : Page
     {
-        private LoginWindow _parentWindow;
         public LoginPage()
         {
             InitializeComponent();
         }
 
-        public LoginWindow ParentWindow
-        {
-            get
-            {
-                return _parentWindow;
-            }
-
-            set
-            {
-                _parentWindow = value;
-            }
-        }
+        public LoginWindow ParentWindow { get; set; }
 
         private void TextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            SetUpPage sup = new SetUpPage();
+            var sup = new SetUpPage();
             sup.ParentWindow = ParentWindow;
-           _parentWindow.PageFrame.Content = sup;
+            ParentWindow.PageFrame.Content = sup;
         }
 
         /// <summary>
-        /// 登录
+        ///     登录
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -55,9 +43,7 @@ namespace WpfHotel
                 {
                     var config = db.Config.FirstOrDefault();
                     if (config == null)
-                    {
                         throw new Exception("请先配置相关参数");
-                    }
                     var name = NameTextbox.Text.Trim();
                     var p = Marshal.SecureStringToBSTR(PwdBox.SecurePassword);
                     var password = Marshal.PtrToStringBSTR(p);
@@ -77,16 +63,16 @@ namespace WpfHotel
                         if (jo["id"] != null)
                         {
                             var i = db.Information.FirstOrDefault() ?? new Information();
-                            i.HotelId = (int)jo["id"];
+                            i.HotelId = (int) jo["id"];
                             if (i.Id == 0)
-                            {
                                 db.Information.Add(i);
-                            }
                             db.SaveChanges();
                             MessageBox.Show("登陆成功");
                         }
                         else
+                        {
                             MessageBox.Show("登录失败");
+                        }
                     }
                 }
             }
@@ -97,7 +83,7 @@ namespace WpfHotel
         }
 
         /// <summary>
-        /// 更新数据
+        ///     更新数据
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -107,26 +93,19 @@ namespace WpfHotel
             {
                 using (var db = new hotelEntities())
                 {
-                    Config config = db.Config.FirstOrDefault();
+                    var config = db.Config.FirstOrDefault();
                     if (config == null)
-                    {
                         throw new Exception("请填写配置信息");
-                    }
-                    Information information = db.Information.FirstOrDefault();
+                    var information = db.Information.FirstOrDefault();
                     if (information == null)
-                    {
                         throw new Exception("请先登录");
-                    }
 
-                    int count = db.Order.Count(x => x.Finish == 0);
+                    var count = db.Order.Count(x => x.Finish == 0);
                     if (count > 0)
-                    {
                         throw new Exception("有未完成的订单,无法更新数据");
-                    }
-                    MessageBoxResult messageBoxResult = MessageBox.Show("更新数据将会清空订单和历史数据，是否更新", "是否更新数据",
+                    var messageBoxResult = MessageBox.Show("更新数据将会清空订单和历史数据，是否更新", "是否更新数据",
                         MessageBoxButton.OKCancel);
                     if (messageBoxResult == MessageBoxResult.OK)
-                    {
                         using (var client = new WebClient())
                         {
                             client.Encoding = Encoding.UTF8;
@@ -136,13 +115,19 @@ namespace WpfHotel
                             var jo = JObject.Parse(responseString);
                             if (jo["themeRoomList"] != null)
                             {
+                                db.Database.ExecuteSqlCommand("DELETE FROM [Account]");
+                                db.Database.ExecuteSqlCommand("DELETE FROM [Invoice]");
+                                db.Database.ExecuteSqlCommand("DELETE FROM [User]");
+                                db.Database.ExecuteSqlCommand("DELETE FROM [Order]");
+                                db.Database.ExecuteSqlCommand("DELETE FROM Room");
                                 db.Database.ExecuteSqlCommand("DELETE FROM [Type]");
+
                                 foreach (var item in jo["themeRoomList"])
                                 {
-                                    var type = new Type()
+                                    var type = new Type
                                     {
-                                        ServerId = (long)item["id"],
-                                        Name = (string)item["name"]
+                                        ServerId = (long) item["id"],
+                                        Name = (string) item["name"]
                                     };
                                     db.Type.Add(type);
                                 }
@@ -153,35 +138,29 @@ namespace WpfHotel
                                                       information.HotelId);
                             jo = JObject.Parse(responseString);
                             if (jo["roomList"] != null)
-                            {
-                                db.Database.ExecuteSqlCommand("DELETE FROM Room");
-                                db.Database.ExecuteSqlCommand("DELETE FROM [Order]");
-                                db.Database.ExecuteSqlCommand("DELETE FROM [Account]");
-                                db.Database.ExecuteSqlCommand("DELETE FROM [Invoice]");
-                                db.Database.ExecuteSqlCommand("DELETE FROM [User]");
                                 foreach (var item in jo["roomList"])
                                 {
-                                    var room = new Room()
+                                    var room = new Room
                                     {
-                                        No = (int)item["roomNum"],
-                                        ServerId = (long)item["id"],
-                                        Status = (int)item["roomStatus"],
-                                        Price = (decimal)item["price"],
-                                        Limit = (int)item["numberLimit"],
-                                        Details = (string)item["roomDetails"],
-                                        Square = (double)item["roomSquare"],
+                                        No = (int) item["roomNum"],
+                                        ServerId = (long) item["id"],
+                                        Status = 1,
+                                        Price = (decimal) item["price"],
+                                        Limit = (int) item["numberLimit"],
+                                        Details = (string) item["roomDetails"],
+                                        Square = (double) item["roomSquare"]
                                     };
-                                    long typeId = (long)item["roomThemeId"];
+                                    var typeId = (long) item["roomThemeId"];
                                     var type = db.Type.FirstOrDefault(x => x.ServerId == typeId);
                                     if (type != null)
                                         room.TypeId = type.Id;
                                     db.Room.Add(room);
                                 }
-                            }
                             db.SaveChanges();
-                            MessageBox.Show("更新数据成功后");
+                            MessageBox.Show("更新数据成功");
+                            MainWindow mainWindow=Application.Current.MainWindow as MainWindow;
+                            mainWindow.LoadRoomData();
                         }
-                    }
                 }
             }
             catch (Exception exception)

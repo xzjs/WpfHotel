@@ -8,15 +8,15 @@ using System.Windows.Input;
 using Microsoft.Win32;
 using OfficeOpenXml;
 
-
 namespace WpfHotel
 {
     /// <summary>
-    /// RoomStatusWindow.xaml 的交互逻辑
+    ///     RoomStatusWindow.xaml 的交互逻辑
     /// </summary>
     public partial class RoomStatusWindow : Window
     {
         private List<TypeItem> _typeItems;
+
         public RoomStatusWindow()
         {
             InitializeComponent();
@@ -38,7 +38,6 @@ namespace WpfHotel
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-
             }
         }
 
@@ -46,8 +45,8 @@ namespace WpfHotel
         {
             using (var db = new hotelEntities())
             {
-                List<Type> types = db.Type.ToList();
-                _typeItems = types.Select(t => new TypeItem { Type = t, Date = DatePicker.SelectedDate.Value }).ToList();
+                var types = db.Type.ToList();
+                _typeItems = types.Select(t => new TypeItem {Type = t, Date = DatePicker.SelectedDate.Value}).ToList();
                 DataGrid.ItemsSource = _typeItems;
                 int total1 = 0, total2 = 0, total3 = 0, total4 = 0;
                 foreach (var typeItem in _typeItems)
@@ -68,9 +67,9 @@ namespace WpfHotel
         {
             try
             {
-                  ExcelPackage package = new ExcelPackage(new MemoryStream());
+                var package = new ExcelPackage(new MemoryStream());
                 var ws1 = package.Workbook.Worksheets.Add("Worksheet1");
-                for (int row = 2; row < _typeItems.Count + 2; row++)
+                for (var row = 2; row < _typeItems.Count + 2; row++)
                 {
                     ws1.Cells[row, 1].Value = _typeItems[row - 2].Type.Name;
                     ws1.Cells[row, 2].Value = _typeItems[row - 2].TotalRoomNum;
@@ -88,20 +87,16 @@ namespace WpfHotel
                 ws1.Cells[_typeItems.Count + 2, 3].Value = TextBlock2.Text;
                 ws1.Cells[_typeItems.Count + 2, 4].Value = TextBlock3.Text;
                 ws1.Cells[_typeItems.Count + 2, 5].Value = TextBlock4.Text;
-                SaveFileDialog saveFileDialog = new SaveFileDialog {Filter = "Excel files (*.xlsx)|*.xlsx"};
+                var saveFileDialog = new SaveFileDialog {Filter = "Excel files (*.xlsx)|*.xlsx"};
                 var dialogResult = saveFileDialog.ShowDialog();
                 if (dialogResult.Value)
-                {
                     package.SaveAs(new FileInfo(saveFileDialog.FileName));
-                }
                 MessageBox.Show("导出成功");
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message);     
-                
+                MessageBox.Show(exception.Message);
             }
-            
         }
     }
 }

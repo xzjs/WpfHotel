@@ -6,49 +6,54 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfHotel"
         mc:Ignorable="d"
-        Title="RealTimeWindow" Height="600" Width="800" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" MouseLeftButtonDown="Window_MouseLeftButtonDown" Background="{x:Null}">
+        Title="RealTimeWindow" Height="600" Width="800" ResizeMode="NoResize" AllowsTransparency="True"
+        WindowStyle="None" MouseLeftButtonDown="Window_MouseLeftButtonDown" Background="{x:Null}">
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Top" Margin="0,0,0,20">
                 <DockPanel DockPanel.Dock="Top">
                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                        <Button Style="{DynamicResource SquareButtonStyle}" BorderBrush="{x:Null}" Height="35" Margin="160,0,0,0" FontSize="16" Foreground="White" Content="实时房态报表">
+                        <Button Style="{DynamicResource SquareButtonStyle}" BorderBrush="{x:Null}" Height="35"
+                                Margin="160,0,0,0" FontSize="16" Foreground="White" Content="实时房态报表">
                             <Button.Background>
-                                <ImageBrush ImageSource="img/menu_click.png"/>
+                                <ImageBrush ImageSource="img/menu_click.png" />
                             </Button.Background>
                         </Button>
                     </StackPanel>
                     <StackPanel DockPanel.Dock="Right">
-                        <Button Width="55" Height="35" BorderBrush="{x:Null}" Margin="0,0,80,0" Style="{DynamicResource SquareButtonStyle}" Click="Close_Click">
+                        <Button Width="55" Height="35" BorderBrush="{x:Null}" Margin="0,0,80,0"
+                                Style="{DynamicResource SquareButtonStyle}" Click="Close_Click">
                             <Button.Background>
-                                <ImageBrush ImageSource="img/close2.png"/>
+                                <ImageBrush ImageSource="img/close2.png" />
                             </Button.Background>
                         </Button>
                     </StackPanel>
-                    <StackPanel/>
+                    <StackPanel />
                 </DockPanel>
                 <DockPanel>
                     <DockPanel.Background>
-                        <ImageBrush ImageSource="img/order_bg.png"/>
+                        <ImageBrush ImageSource="img/order_bg.png" />
                     </DockPanel.Background>
 
                     <DockPanel Dock="Bottom">
-                        <Button FontSize="20" Width="150" Foreground="White" Margin="0,0,0,20" Style="{DynamicResource SquareButtonStyle}" Click="Export">
+                        <Button FontSize="20" Width="150" Foreground="White" Margin="0,0,0,20"
+                                Style="{DynamicResource SquareButtonStyle}" Click="Export">
                             <Button.Background>
-                                <ImageBrush ImageSource="img/blue_button.png"/>
+                                <ImageBrush ImageSource="img/blue_button.png" />
                             </Button.Background>
                             导出EXCEL
                         </Button>
                     </DockPanel>
                     <DockPanel>
-                        <DataGrid x:Name="DataGrid" Margin="20" Background="Transparent" BorderBrush="{x:Null}" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid x:Name="DataGrid" Margin="20" Background="Transparent" BorderBrush="{x:Null}"
+                                  AutoGenerateColumns="False" IsReadOnly="True">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Room.No }" Width="*" Header="房间号"/>
-                                <DataGridTextColumn Binding="{Binding Room.Type.Name}" Width="*" Header="主题"/>
-                                <DataGridTextColumn Binding="{Binding Status}" Width="*" Header="房态"/>
-                                <DataGridTextColumn Binding="{Binding HasPeople}" Width="2*" Header="有无客人(0-无 1-有)"/>
-                                <DataGridTextColumn Binding="{Binding UserName}" Width="*" Header="客人姓名"/>
-                                <DataGridTextColumn Binding="{Binding IsReadyLeave}" Width="*" Header="预离(0-否 1-是)"/>
+                                <DataGridTextColumn Binding="{Binding Room.No }" Width="*" Header="房间号" />
+                                <DataGridTextColumn Binding="{Binding Room.Type.Name}" Width="*" Header="主题" />
+                                <DataGridTextColumn Binding="{Binding Status}" Width="*" Header="房态" />
+                                <DataGridTextColumn Binding="{Binding HasPeople}" Width="2*" Header="有无客人(0-无 1-有)" />
+                                <DataGridTextColumn Binding="{Binding UserName}" Width="*" Header="客人姓名" />
+                                <DataGridTextColumn Binding="{Binding IsReadyLeave}" Width="*" Header="预离(0-否 1-是)" />
                             </DataGrid.Columns>
                         </DataGrid>
                     </DockPanel>

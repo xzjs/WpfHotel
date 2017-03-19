@@ -5,107 +5,111 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfHotel"
         mc:Ignorable="d"
-        Title="720营地运营-营地管理系统" Height="579" Width="1024" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" MouseLeftButtonDown="Window_MouseLeftButtonDown" Activated="Window_Activated">
+        Title="720营地运营-营地管理系统" Height="579" Width="1024" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        AllowsTransparency="True" WindowStyle="None" MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        Activated="Window_Activated">
     <Grid>
         <DockPanel>
-            <DockPanel  DockPanel.Dock="Top">
+            <DockPanel DockPanel.Dock="Top">
                 <DockPanel.Background>
-                    <ImageBrush ImageSource="img/title.png"/>
+                    <ImageBrush ImageSource="img/title.png" />
                 </DockPanel.Background>
                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                     <Button Height="40" Margin="50,0" Background="{x:Null}" BorderBrush="{x:Null}" Click="Login_CLick">
-                        <Image Source="img/login.png"></Image>
+                        <Image Source="img/login.png" />
                     </Button>
                     <Button Height="40" Margin="50,0" Background="{x:Null}" BorderBrush="{x:Null}" Click="Close">
-                        <Image Source="img/close.png"></Image>
+                        <Image Source="img/close.png" />
                     </Button>
                 </StackPanel>
-                <StackPanel></StackPanel>
+                <StackPanel />
             </DockPanel>
             <DockPanel DockPanel.Dock="Left">
                 <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left">
                     <StackPanel Width="90" Height="30" Orientation="Horizontal">
                         <StackPanel.Background>
-                            <ImageBrush ImageSource="img/num_bg.png"/>
+                            <ImageBrush ImageSource="img/num_bg.png" />
                         </StackPanel.Background>
-                        <TextBlock Width="50" VerticalAlignment="Center" TextAlignment="Center" FontSize="14" Foreground="White">总房数</TextBlock>
-                        <TextBlock Width="40" VerticalAlignment="Center" TextAlignment="Center" Foreground="White">100</TextBlock>
+                        <TextBlock Width="50" VerticalAlignment="Center" TextAlignment="Center" FontSize="14"
+                                   Foreground="White">
+                            总房数
+                        </TextBlock>
+                        <TextBlock x:Name="TotalTextBlock" Width="40" VerticalAlignment="Center" TextAlignment="Center" Foreground="White">0</TextBlock>
                     </StackPanel>
                     <StackPanel Width="90" Height="30" Orientation="Horizontal">
                         <StackPanel.Background>
-                            <ImageBrush ImageSource="img/num_bg.png"/>
+                            <ImageBrush ImageSource="img/num_bg.png" />
                         </StackPanel.Background>
                         <TextBlock Width="50" VerticalAlignment="Center" TextAlignment="Center" Foreground="White">在住房数</TextBlock>
-                        <TextBlock Width="40" VerticalAlignment="Center" TextAlignment="Center" Foreground="White">100</TextBlock>
+                        <TextBlock x:Name="CheckInTextBlock" Width="40" VerticalAlignment="Center" TextAlignment="Center" Foreground="White">0</TextBlock>
                     </StackPanel>
-                    <StackPanel Width="90" Height="30" Orientation="Horizontal">
-                        <StackPanel.Background>
-                            <ImageBrush ImageSource="img/num_bg.png"/>
-                        </StackPanel.Background>
-                        <TextBlock Width="50" VerticalAlignment="Center" TextAlignment="Center" Foreground="White">全部主题</TextBlock>
-                        <TextBlock Width="40" VerticalAlignment="Center" TextAlignment="Center" Foreground="White"></TextBlock>
-                    </StackPanel>
+                    
                 </StackPanel>
                 <Canvas Width="350" Height="350" DockPanel.Dock="Bottom">
-                    <Image Source="img/canvas_bg.png" Width="300" Height="300" Canvas.Bottom="0" Panel.ZIndex="-1"></Image>
+                    <Image Source="img/canvas_bg.png" Width="300" Height="300" Canvas.Bottom="0" Panel.ZIndex="-1" />
                     <Button Width="70" Canvas.Left="30" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="10">
                         <Button.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="预约办理" Click="Appointment"/>
-                                <MenuItem Header="入住办理" Click="CheckIn"/>
+                                <MenuItem Header="预约办理" Click="Appointment" />
+                                <MenuItem Header="入住办理" Click="CheckIn" />
                             </ContextMenu>
                         </Button.ContextMenu>
-                        <Image Source="img/yuyue.png"></Image>
+                        <Image Source="img/yuyue.png" />
                     </Button>
-                    <Button Width="70" Canvas.Left="130" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="30" Click="ShowRoomStatusWindow">
-                        <Image Source="img/fangtai.png"></Image>
+                    <Button Width="70" Canvas.Left="130" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="30"
+                            Click="ShowRoomStatusWindow">
+                        <Image Source="img/fangtai.png" />
                     </Button>
-                    <Button Width="70" Canvas.Left="210" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="90" Click="ShowOrderWindow">
-                        <Image Source="img/dingdan.png"></Image>
+                    <Button Width="70" Canvas.Left="210" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="90"
+                            Click="ShowOrderWindow">
+                        <Image Source="img/dingdan.png" />
                     </Button>
                     <Button Width="70" Canvas.Left="260" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="170">
-                        <Image Source="img/fangwu.png"></Image>
+                        <Image Source="img/fangwu.png" />
                     </Button>
                     <Button Width="70" Canvas.Left="270" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="270">
                         <Button.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="实时房态报表" Click="ShowRealTimeWindow"/>
-                                <MenuItem Header="收付报表" Click="ShowMoneyWindow"/>
+                                <MenuItem Header="实时房态报表" Click="ShowRealTimeWindow" />
+                                <MenuItem Header="收付报表" Click="ShowMoneyWindow" />
                             </ContextMenu>
                         </Button.ContextMenu>
-                        <Image Source="img/baobiao.png"></Image>
+                        <Image Source="img/baobiao.png" />
                     </Button>
                     <StackPanel Canvas.Left="10" Canvas.Bottom="60">
-                        <TextBlock x:Name="TimeTextBlock" Text="23:03:57" FontSize="40" TextAlignment="Center"></TextBlock>
-                        <TextBlock x:Name="DateTextBlock" Text="2017-3-13" FontSize="40"></TextBlock>
+                        <TextBlock x:Name="TimeTextBlock" Text="23:03:57" FontSize="40" TextAlignment="Center" />
+                        <TextBlock x:Name="DateTextBlock" Text="2017-3-13" FontSize="40" />
                     </StackPanel>
                 </Canvas>
-                <StackPanel></StackPanel>
+                <StackPanel />
             </DockPanel>
             <DockPanel>
                 <DockPanel.Background>
-                    <ImageBrush ImageSource="img/main_bg.png"/>
+                    <ImageBrush ImageSource="img/main_bg.png" />
                 </DockPanel.Background>
                 <DockPanel Dock="Left">
                     <DockPanel Dock="Top">
-                        <Image Source="img/tushi.png" Width="130" Margin="30"></Image>
+                        <Image Source="img/tushi.png" Width="130" Margin="30" />
                     </DockPanel>
-                    <StackPanel></StackPanel>
+                    <StackPanel />
                 </DockPanel>
                 <DockPanel>
                     <ItemsControl x:Name="RoomList">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <WrapPanel></WrapPanel>
+                                <WrapPanel />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button BorderBrush="{x:Null}" Margin="1,20,0,0" Style="{DynamicResource SquareButtonStyle}" Height="50" MouseRightButtonDown="ShowMenu" Tag="{Binding}" MouseDoubleClick="Button_MouseDoubleClick">
+                                <Button BorderBrush="{x:Null}" Margin="1,20,0,0"
+                                        Style="{DynamicResource SquareButtonStyle}" Height="50"
+                                        MouseRightButtonDown="ShowMenu" Tag="{Binding}"
+                                        MouseDoubleClick="Button_MouseDoubleClick">
                                     <Button.Background>
-                                        <ImageBrush ImageSource="{Binding Path=Image}"/>
+                                        <ImageBrush ImageSource="{Binding Path=Image}" />
                                     </Button.Background>
-                                    <TextBlock Text="{Binding Room.No}" Width="80" FontSize="20" Foreground="White"></TextBlock>
+                                    <TextBlock Text="{Binding Room.No}" Width="80" FontSize="20" Foreground="White" />
                                 </Button>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

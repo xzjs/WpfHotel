@@ -3,7 +3,7 @@
 namespace WpfHotel
 {
     /// <summary>
-    /// LoginWindow.xaml 的交互逻辑
+    ///     LoginWindow.xaml 的交互逻辑
     /// </summary>
     public partial class LoginWindow : MetroWindow
     {
@@ -11,7 +11,7 @@ namespace WpfHotel
         {
             InitializeComponent();
 
-            LoginPage lg = new LoginPage();
+            var lg = new LoginPage();
             lg.ParentWindow = this;
             PageFrame.Content = lg;
         }

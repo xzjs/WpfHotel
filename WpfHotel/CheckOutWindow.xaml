@@ -7,65 +7,77 @@
         xmlns:local="clr-namespace:WpfHotel"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="CheckOutWindow" Height="600" Width="800" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None"  Background="{x:Null}" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+        Title="CheckOutWindow" Height="600" Width="800" ResizeMode="NoResize" AllowsTransparency="True"
+        WindowStyle="None" Background="{x:Null}" MouseLeftButtonDown="Window_MouseLeftButtonDown">
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Top" Margin="0,0,0,20">
                 <DockPanel DockPanel.Dock="Top">
                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                        <Button Style="{DynamicResource SquareButtonStyle}" BorderBrush="{x:Null}" Width="100" Height="35" Margin="160,0,0,0" FontSize="16" Foreground="White" Content="结账">
+                        <Button Style="{DynamicResource SquareButtonStyle}" BorderBrush="{x:Null}" Width="100"
+                                Height="35" Margin="160,0,0,0" FontSize="16" Foreground="White" Content="结账">
                             <Button.Background>
-                                <ImageBrush ImageSource="img/menu.png"/>
+                                <ImageBrush ImageSource="img/menu.png" />
                             </Button.Background>
                         </Button>
                     </StackPanel>
                     <StackPanel DockPanel.Dock="Right">
-                        <Button Width="55" Height="35" BorderBrush="{x:Null}" Margin="0,0,80,0" Style="{DynamicResource SquareButtonStyle}" Click="Close_Click">
+                        <Button Width="55" Height="35" BorderBrush="{x:Null}" Margin="0,0,80,0"
+                                Style="{DynamicResource SquareButtonStyle}" Click="Close_Click">
                             <Button.Background>
-                                <ImageBrush ImageSource="img/close2.png"/>
+                                <ImageBrush ImageSource="img/close2.png" />
                             </Button.Background>
                         </Button>
                     </StackPanel>
-                    <StackPanel/>
+                    <StackPanel />
                 </DockPanel>
                 <DockPanel>
                     <DockPanel DockPanel.Dock="Left">
                         <Button Width="40" Height="100" BorderBrush="{x:Null}">
                             <Button.Background>
-                                <ImageBrush ImageSource="img/left_blue_button.png"/>
+                                <ImageBrush ImageSource="img/left_blue_button.png" />
                             </Button.Background>
-                            <TextBlock Text="帐&#xA;单&#xA;信&#xA;息" FontSize="12" Foreground="White"/>
+                            <TextBlock Text="帐&#xA;单&#xA;信&#xA;息" FontSize="12" Foreground="White" />
                         </Button>
                     </DockPanel>
                     <DockPanel Height="160">
                         <StackPanel x:Name="OrderStackPanel" Margin="0,0,40,0">
                             <StackPanel.Background>
-                                <ImageBrush ImageSource="img/bg_top.png"/>
+                                <ImageBrush ImageSource="img/bg_top.png" />
                             </StackPanel.Background>
                             <StackPanel Orientation="Horizontal" Margin="30,10,30,0">
-                                <TextBlock Text="房间类型" FontSize="20" Margin="10,0"/>
-                                <Controls:SplitButton x:Name="TypeList" HorizontalContentAlignment="Left" HorizontalAlignment="Center" VerticalContentAlignment="Center" Width="120" SelectedIndex="0" DisplayMemberPath="Name" VerticalAlignment="Center" Margin="10,0" IsEnabled="False" />
-                                <TextBlock Text="房间号" FontSize="20" Margin="10,0"/>
-                                <ComboBox x:Name="RoomList" Margin="10,0" DisplayMemberPath="No" SelectedIndex="0" IsEnabled="False"/>
-                                <TextBlock Text="{Binding SelectedItem.Price, ElementName=RoomList, StringFormat=\{0\}元/天}" FontSize="20"/>
+                                <TextBlock Text="房间类型" FontSize="20" Margin="10,0" />
+                                <Controls:SplitButton x:Name="TypeList" HorizontalContentAlignment="Left"
+                                                      HorizontalAlignment="Center" VerticalContentAlignment="Center"
+                                                      Width="120" SelectedIndex="0" DisplayMemberPath="Name"
+                                                      VerticalAlignment="Center" Margin="10,0" IsEnabled="False" />
+                                <TextBlock Text="房间号" FontSize="20" Margin="10,0" />
+                                <ComboBox x:Name="RoomList" Margin="10,0" DisplayMemberPath="No" SelectedIndex="0"
+                                          IsEnabled="False" />
+                                <TextBlock
+                                    Text="{Binding SelectedItem.Price, ElementName=RoomList, StringFormat=\{0\}元/天}"
+                                    FontSize="20" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="30,10,30,0">
-                                <TextBlock Text="入住时间" FontSize="20" Margin="10,0"/>
-                                <DatePicker x:Name="Start" Margin="10,0" Width="120" SelectedDate="{Binding InDate}" IsEnabled="False"/>
-                                <TextBlock Text="离开时间" FontSize="20" Margin="10,0"/>
-                                <DatePicker x:Name="End" Margin="10,0" Width="120" SelectedDate="{Binding LeaveDate}" IsEnabled="False"/>
+                                <TextBlock Text="入住时间" FontSize="20" Margin="10,0" />
+                                <DatePicker x:Name="Start" Margin="10,0" Width="120" SelectedDate="{Binding InDate}"
+                                            IsEnabled="False" />
+                                <TextBlock Text="离开时间" FontSize="20" Margin="10,0" />
+                                <DatePicker x:Name="End" Margin="10,0" Width="120" SelectedDate="{Binding LeaveDate}"
+                                            IsEnabled="False" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="30,10,30,0">
-                                <TextBlock Text="房费总计" FontSize="20" Margin="10,0"></TextBlock>
-                                <TextBlock Text="{Binding Price,StringFormat='\{0\}元'}" FontSize="20" Margin="10,0"></TextBlock>
-                                <TextBlock Text="其他费用" FontSize="20" Margin="10,0"></TextBlock>
-                                <TextBlock x:Name="MoneyTextBlock" Text="111元" FontSize="20" Margin="10,0"></TextBlock>
-                                <TextBlock Text="入住天数" FontSize="20" Margin="10,0"/>
-                                <TextBlock Text="{Binding Day,StringFormat='\{0\}天'}" FontSize="20" Margin="10,0"></TextBlock>
+                                <TextBlock Text="房费总计" FontSize="20" Margin="10,0" />
+                                <TextBlock Text="{Binding Price,StringFormat='\{0\}元'}" FontSize="20" Margin="10,0" />
+                                <TextBlock Text="其他费用" FontSize="20" Margin="10,0" />
+                                <TextBlock x:Name="MoneyTextBlock" Text="111元" FontSize="20" Margin="10,0" />
+                                <TextBlock Text="入住天数" FontSize="20" Margin="10,0" />
+                                <TextBlock Text="{Binding Day,StringFormat='\{0\}天'}" FontSize="20" Margin="10,0" />
                             </StackPanel>
                             <StackPanel Margin="30,10,30,0" Orientation="Horizontal">
-                                <TextBlock Text="备注信息" FontSize="20" Margin="10,0"/>
-                                <TextBox Controls:TextBoxHelper.ClearTextButton="True" Width="240" Margin="10,0" Text="{Binding Remark}" IsReadOnly="True"/>
+                                <TextBlock Text="备注信息" FontSize="20" Margin="10,0" />
+                                <TextBox Controls:TextBoxHelper.ClearTextButton="True" Width="240" Margin="10,0"
+                                         Text="{Binding Remark}" IsReadOnly="True" />
                             </StackPanel>
                         </StackPanel>
                     </DockPanel>
@@ -74,57 +86,64 @@
             <DockPanel x:Name="DockPanel">
                 <DockPanel DockPanel.Dock="Left" Margin="0,0,20,0">
                     <DockPanel DockPanel.Dock="Left">
-                        <Button Width="40" Height="100" BorderBrush="{x:Null}" Style="{DynamicResource SquareButtonStyle}">
+                        <Button Width="40" Height="100" BorderBrush="{x:Null}"
+                                Style="{DynamicResource SquareButtonStyle}">
                             <Button.Background>
-                                <ImageBrush ImageSource="img/left_blue_button.png"/>
+                                <ImageBrush ImageSource="img/left_blue_button.png" />
                             </Button.Background>
-                            <TextBlock Text="费&#xA;用&#xA;信&#xA;息" FontSize="12" Foreground="White"/>
+                            <TextBlock Text="费&#xA;用&#xA;信&#xA;息" FontSize="12" Foreground="White" />
                         </Button>
                     </DockPanel>
                     <StackPanel x:Name="UserInformation" Width="210" Height="270">
                         <StackPanel.Background>
-                            <ImageBrush ImageSource="img/bottom_left.png"/>
+                            <ImageBrush ImageSource="img/bottom_left.png" />
                         </StackPanel.Background>
-                        <TextBlock Text="{Binding Money,StringFormat='共消费：￥\{0\}'}" FontSize="20" Margin="20,45,20,0" Height="45"/>
-                        <TextBlock x:Name="CollectTextBlock"  FontSize="20" Margin="20,45,20,0" Height="45"/>
-                        <TextBlock x:Name="RemainTextBlock" FontSize="20" Margin="20,45,20,0" Height="45" Foreground="#FFE75F32"/>
+                        <TextBlock Text="{Binding Money,StringFormat='共消费：￥\{0\}'}" FontSize="20" Margin="20,45,20,0"
+                                   Height="45" />
+                        <TextBlock x:Name="CollectTextBlock" FontSize="20" Margin="20,45,20,0" Height="45" />
+                        <TextBlock x:Name="RemainTextBlock" FontSize="20" Margin="20,45,20,0" Height="45"
+                                   Foreground="#FFE75F32" />
                     </StackPanel>
                 </DockPanel>
                 <DockPanel>
-                    <DockPanel DockPanel.Dock="Right"/>
+                    <DockPanel DockPanel.Dock="Right" />
                     <DockPanel Height="260">
                         <DockPanel.Background>
-                            <ImageBrush ImageSource="img/bottom_right.png"/>
+                            <ImageBrush ImageSource="img/bottom_right.png" />
                         </DockPanel.Background>
                         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Button BorderBrush="{x:Null}" Foreground="White" Margin="20" Width="110" Height="40" FontSize="12"  Style="{DynamicResource SquareButtonStyle}"  Content="确定" Click="CheckOut" >
+                            <Button BorderBrush="{x:Null}" Foreground="White" Margin="20" Width="110" Height="40"
+                                    FontSize="12" Style="{DynamicResource SquareButtonStyle}" Content="确定"
+                                    Click="CheckOut">
                                 <Button.Background>
-                                    <ImageBrush ImageSource="img/blue_button.png"/>
+                                    <ImageBrush ImageSource="img/blue_button.png" />
                                 </Button.Background>
                             </Button>
-                            <Button BorderBrush="{x:Null}" Foreground="White" Margin="20" Width="110" Height="40" FontSize="12" Style="{DynamicResource SquareButtonStyle}" Content="取消" Click="Cancel">
+                            <Button BorderBrush="{x:Null}" Foreground="White" Margin="20" Width="110" Height="40"
+                                    FontSize="12" Style="{DynamicResource SquareButtonStyle}" Content="取消"
+                                    Click="Cancel">
                                 <Button.Background>
-                                    <ImageBrush ImageSource="img/blue_button.png"/>
+                                    <ImageBrush ImageSource="img/blue_button.png" />
                                 </Button.Background>
                             </Button>
                         </StackPanel>
                         <StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="20,20,20,0">
                                 <TextBlock FontSize="20" Margin="10,0">发票设置</TextBlock>
-                                <CheckBox x:Name="checkBox" Content="开具发票" Margin="10,0" FontSize="20"/>
+                                <CheckBox x:Name="checkBox" Content="开具发票" Margin="10,0" FontSize="20" />
 
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="20,20,20,0">
-                                <TextBlock Text="发票抬头" FontSize="20" Margin="10,0"></TextBlock>
-                                <TextBox Text="{Binding Title}" Width="240" Margin="10,0"></TextBox>
+                                <TextBlock Text="发票抬头" FontSize="20" Margin="10,0" />
+                                <TextBox Text="{Binding Title}" Width="240" Margin="10,0" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="20,20,20,0">
-                                <TextBlock Text="发票金额" FontSize="20" Margin="10,0"></TextBlock>
-                                <TextBlock Text="{Binding Money,StringFormat='￥\{0\}'}" Margin="10,0" FontSize="20"></TextBlock>
+                                <TextBlock Text="发票金额" FontSize="20" Margin="10,0" />
+                                <TextBlock Text="{Binding Money,StringFormat='￥\{0\}'}" Margin="10,0" FontSize="20" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="20,20,20,0">
-                                <TextBlock Text="  备   注  " FontSize="20" Margin="10,0"></TextBlock>
-                                <TextBox Text="{Binding Remark}" Width="240" Margin="10,0"></TextBox>
+                                <TextBlock Text="  备   注  " FontSize="20" Margin="10,0" />
+                                <TextBox Text="{Binding Remark}" Width="240" Margin="10,0" />
                             </StackPanel>
                         </StackPanel>
                     </DockPanel>

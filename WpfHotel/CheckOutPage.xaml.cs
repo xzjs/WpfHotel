@@ -11,11 +11,12 @@ using OfficeOpenXml;
 namespace WpfHotel
 {
     /// <summary>
-    /// CheckOutPage.xaml 的交互逻辑
+    ///     CheckOutPage.xaml 的交互逻辑
     /// </summary>
     public partial class CheckOutPage : Page
     {
         private List<CheckOutItem> _checkOutItems;
+
         public CheckOutPage()
         {
             InitializeComponent();
@@ -29,7 +30,7 @@ namespace WpfHotel
                 return;
             using (var db = new hotelEntities())
             {
-                List<Order> orders =
+                var orders =
                     db.Order.Include(o => o.Room)
                         .Include(o => o.User)
                         .Include(o => o.Account)
@@ -38,9 +39,7 @@ namespace WpfHotel
                         .ToList();
                 _checkOutItems = new List<CheckOutItem>();
                 foreach (var order in orders)
-                {
-                    _checkOutItems.Add(new CheckOutItem { Order = order });
-                }
+                    _checkOutItems.Add(new CheckOutItem {Order = order});
                 DataGrid.ItemsSource = _checkOutItems;
             }
         }
@@ -49,9 +48,9 @@ namespace WpfHotel
         {
             try
             {
-                ExcelPackage package = new ExcelPackage(new MemoryStream());
+                var package = new ExcelPackage(new MemoryStream());
                 var ws1 = package.Workbook.Worksheets.Add("Worksheet1");
-                for (int row = 2; row < _checkOutItems.Count + 2; row++)
+                for (var row = 2; row < _checkOutItems.Count + 2; row++)
                 {
                     ws1.Cells[row, 1].Value = _checkOutItems[row - 2].Order.Room.No;
                     ws1.Cells[row, 2].Value = _checkOutItems[row - 2].Order.Room.Price;
@@ -68,18 +67,15 @@ namespace WpfHotel
                 ws1.Cells[1, 5].Value = "房费";
                 ws1.Cells[1, 6].Value = "其他";
                 ws1.Cells[1, 7].Value = "押金";
-                SaveFileDialog saveFileDialog = new SaveFileDialog { Filter = "Excel files (*.xlsx)|*.xlsx" };
+                var saveFileDialog = new SaveFileDialog {Filter = "Excel files (*.xlsx)|*.xlsx"};
                 var dialogResult = saveFileDialog.ShowDialog();
                 if (dialogResult.Value)
-                {
                     package.SaveAs(new FileInfo(saveFileDialog.FileName));
-                }
                 MessageBox.Show("导出成功");
             }
             catch (Exception exception)
             {
                 MessageBox.Show(exception.Message);
-
             }
         }
     }

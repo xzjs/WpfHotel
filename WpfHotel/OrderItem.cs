@@ -2,15 +2,15 @@
 
 namespace WpfHotel
 {
-    class OrderItem
+    internal class OrderItem
     {
-        public long hotelId;
-        public long roomId;
-        public string inDateStr;
-        public string leaveDateStr;
-        public int inDays;
         public int clStatus;
+        public long hotelId;
+        public string inDateStr;
+        public int inDays;
+        public string leaveDateStr;
         public string remark;
+        public long roomId;
         public List<UserItem> users;
     }
 }

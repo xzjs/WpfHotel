@@ -1,10 +1,10 @@
 ﻿namespace WpfHotel
 {
-    class UserItem
+    internal class UserItem
     {
-        public string name;
-        public string sex;
         public string cardCode;
         public string mobile;
+        public string name;
+        public string sex;
     }
 }

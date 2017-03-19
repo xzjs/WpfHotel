@@ -9,12 +9,13 @@ using System.Windows.Input;
 namespace WpfHotel
 {
     /// <summary>
-    /// BillWindow.xaml 的交互逻辑
+    ///     BillWindow.xaml 的交互逻辑
     /// </summary>
     public partial class BillWindow : Window
     {
-        private Order _order;
-        private ObservableCollection<Account> _accounts;
+        private readonly ObservableCollection<Account> _accounts;
+        private readonly Order _order;
+
         public BillWindow(Order order)
         {
             _order = order;
@@ -37,30 +38,29 @@ namespace WpfHotel
             catch (Exception exception)
             {
                 MessageBox.Show(exception.Message);
-
             }
         }
 
         /// <summary>
-        /// 入账函数
+        ///     入账函数
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Account(object sender, RoutedEventArgs e)
         {
-            Button button = sender as Button;
-            AccountWindow accountWindow = new AccountWindow(_accounts, _order.Id, button.Content.ToString());
+            var button = sender as Button;
+            var accountWindow = new AccountWindow(_accounts, _order.Id, button.Content.ToString());
             accountWindow.ShowDialog();
         }
 
         /// <summary>
-        /// 结账
+        ///     结账
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void CheckOut(object sender, RoutedEventArgs e)
         {
-            CheckOutWindow checkOutWindow=new CheckOutWindow(_order);
+            var checkOutWindow = new CheckOutWindow(_order);
             checkOutWindow.Show();
             Close();
         }

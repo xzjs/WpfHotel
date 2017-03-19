@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace WpfHotel
 {
     /// <summary>
-    /// MainWindow.xaml 的交互逻辑
+    ///     MainWindow.xaml 的交互逻辑
     /// </summary>
     public partial class MainWindow : Window
     {
@@ -17,7 +17,7 @@ namespace WpfHotel
         {
             InitializeComponent();
 
-            var showTimer = new System.Windows.Threading.DispatcherTimer();
+            var showTimer = new DispatcherTimer();
             showTimer.Tick += ShowCurrentTimer;
             showTimer.Interval = new TimeSpan(0, 0, 0, 1, 0);
             showTimer.Start();
@@ -45,32 +45,34 @@ namespace WpfHotel
 
         private void Login_CLick(object sender, RoutedEventArgs e)
         {
-            LoginWindow lw = new LoginWindow();
+            var lw = new LoginWindow();
             lw.ShowDialog();
         }
 
         /// <summary>
-        /// 加载房间列表
+        ///     加载房间列表
         /// </summary>
         public void LoadRoomData()
         {
             using (var db = new hotelEntities())
             {
-                List<Room> rooms = db.Room.Include(r => r.Order).ToList();
-                List<RoomItem> roomItems = rooms.Select(room => new RoomItem { Room = room }).ToList();
+                var rooms = db.Room.Include(r => r.Order).ToList();
+                TotalTextBlock.Text = rooms.Count().ToString();
+                CheckInTextBlock.Text = db.Room.Count(r => r.Status == 3 || r.Status == 7).ToString();
+                var roomItems = rooms.Select(room => new RoomItem {Room = room}).ToList();
                 foreach (var roomItem in roomItems)
                 {
                     //判断预抵
-                    Order order = roomItem.Room.Order.FirstOrDefault(o => o.Finish == 0);
+                    var order = roomItem.Room.Order.Where(o=>o.Finish==0).FirstOrDefault(o => o.Status==1);
                     if (order == null) continue;
-                    DateTime inDateTime = order.InDate.Value.Date;
+                    var inDateTime = order.InDate.Value.Date;
                     if (inDateTime == DateTime.Today && roomItem.Room.Status != 2)
                     {
                         roomItem.SetRoomStatus(2);
                         roomItem.Room = db.Room.Find(roomItem.Room.Id);
                     }
                     //判断预离
-                    DateTime leaveDateTime = order.LeaveDate.Value.Date;
+                    var leaveDateTime = order.LeaveDate.Value.Date;
                     if (leaveDateTime == DateTime.Today && roomItem.Room.Status != 7)
                     {
                         roomItem.SetRoomStatus(7);
@@ -82,7 +84,7 @@ namespace WpfHotel
         }
 
         /// <summary>
-        /// 关闭程序
+        ///     关闭程序
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -93,19 +95,19 @@ namespace WpfHotel
 
         private void ShowMenu(object sender, MouseButtonEventArgs e)
         {
-            Button button = sender as Button;
-            RoomItem roomItem = button.Tag as RoomItem;
+            var button = sender as Button;
+            var roomItem = button.Tag as RoomItem;
             button.ContextMenu = roomItem.ContextMenu;
         }
 
         private void CheckIn(object sender, RoutedEventArgs e)
         {
-            CheckInWindow checkInWindow = new CheckInWindow();
+            var checkInWindow = new CheckInWindow();
             checkInWindow.ShowDialog();
         }
 
         /// <summary>
-        /// 检查是否设置相关的信息
+        ///     检查是否设置相关的信息
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -113,70 +115,70 @@ namespace WpfHotel
         {
             using (var db = new hotelEntities())
             {
-                Config config = db.Config.FirstOrDefault();
-                Information information = db.Information.FirstOrDefault();
+                var config = db.Config.FirstOrDefault();
+                var information = db.Information.FirstOrDefault();
                 if (config == null || information == null)
                 {
-                    LoginWindow login = new LoginWindow();
+                    var login = new LoginWindow();
                     login.ShowDialog();
                 }
                 else
                 {
-                    ((App)Application.Current).Config = config;
-                    ((App)Application.Current).Information = information;
+                    ((App) Application.Current).Config = config;
+                    ((App) Application.Current).Information = information;
                 }
             }
         }
 
         /// <summary>
-        /// 预约
+        ///     预约
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Appointment(object sender, RoutedEventArgs e)
         {
-            AppointmentWindow appointmentWindow = new AppointmentWindow();
+            var appointmentWindow = new AppointmentWindow();
             appointmentWindow.ShowDialog();
         }
 
         /// <summary>
-        /// 显示订单中心
+        ///     显示订单中心
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ShowOrderWindow(object sender, RoutedEventArgs e)
         {
-            OrderWindow orderWindow = new OrderWindow();
+            var orderWindow = new OrderWindow();
             orderWindow.ShowDialog();
         }
 
         /// <summary>
-        /// 显示实时房态报表
+        ///     显示实时房态报表
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ShowRoomStatusWindow(object sender, RoutedEventArgs e)
         {
-            RoomStatusWindow roomStatusWindow = new RoomStatusWindow();
+            var roomStatusWindow = new RoomStatusWindow();
             roomStatusWindow.ShowDialog();
         }
 
         private void ShowRealTimeWindow(object sender, RoutedEventArgs e)
         {
-            RealTimeWindow realTimeWindow = new RealTimeWindow();
+            var realTimeWindow = new RealTimeWindow();
             realTimeWindow.ShowDialog();
         }
 
         private void ShowMoneyWindow(object sender, RoutedEventArgs e)
         {
-            MoneyReportWindow moneyReportWindow = new MoneyReportWindow();
+            var moneyReportWindow = new MoneyReportWindow();
             moneyReportWindow.ShowDialog();
         }
 
         private void Button_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Button button=sender as Button;
-            RoomItem roomItem=button.Tag as RoomItem;
+            var button = sender as Button;
+            var roomItem = button.Tag as RoomItem;
             roomItem.DoubleClick();
         }
     }
