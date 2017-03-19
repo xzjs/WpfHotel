@@ -40,7 +40,7 @@ namespace WpfHotel
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-           try
+            try
             {
                 DragMove();
             }
@@ -61,10 +61,29 @@ namespace WpfHotel
         /// </summary>
         public void LoadRoomData()
         {
-            using (var db=new hotelEntities())
+            using (var db = new hotelEntities())
             {
-                List<Room> rooms = db.Room.Include(r=>r.Order).ToList();
-                List<RoomItem> roomItems= rooms.Select(room => new RoomItem {Room = room}).ToList();
+                List<Room> rooms = db.Room.Include(r => r.Order).ToList();
+                List<RoomItem> roomItems = rooms.Select(room => new RoomItem { Room = room }).ToList();
+                foreach (var roomItem in roomItems)
+                {
+                    //判断预抵
+                    Order order = roomItem.Room.Order.FirstOrDefault(o => o.Finish == 0);
+                    if (order == null) continue;
+                    DateTime inDateTime = order.InDate.Value.Date;
+                    if (inDateTime == DateTime.Today && roomItem.Room.Status != 2)
+                    {
+                        roomItem.SetRoomStatus(2);
+                        roomItem.Room = db.Room.Find(roomItem.Room.Id);
+                    }
+                    //判断预离
+                    DateTime leaveDateTime = order.LeaveDate.Value.Date;
+                    if (leaveDateTime == DateTime.Today && roomItem.Room.Status != 7)
+                    {
+                        roomItem.SetRoomStatus(7);
+                        roomItem.Room = db.Room.Find(roomItem.Room.Id);
+                    }
+                }
                 RoomList.ItemsSource = roomItems;
             }
         }
@@ -81,8 +100,8 @@ namespace WpfHotel
 
         private void ShowMenu(object sender, MouseButtonEventArgs e)
         {
-            Button button=sender as Button;
-            RoomItem roomItem=button.Tag as RoomItem;
+            Button button = sender as Button;
+            RoomItem roomItem = button.Tag as RoomItem;
             button.ContextMenu = roomItem.ContextMenu;
         }
 
@@ -110,8 +129,8 @@ namespace WpfHotel
                 }
                 else
                 {
-                    ((App) Application.Current).Config = config;
-                    ((App) Application.Current).Information = information;
+                    ((App)Application.Current).Config = config;
+                    ((App)Application.Current).Information = information;
                 }
             }
         }
@@ -123,7 +142,7 @@ namespace WpfHotel
         /// <param name="e"></param>
         private void Appointment(object sender, RoutedEventArgs e)
         {
-            AppointmentWindow appointmentWindow=new AppointmentWindow();
+            AppointmentWindow appointmentWindow = new AppointmentWindow();
             appointmentWindow.ShowDialog();
         }
 
@@ -134,7 +153,7 @@ namespace WpfHotel
         /// <param name="e"></param>
         private void ShowOrderWindow(object sender, RoutedEventArgs e)
         {
-            OrderWindow orderWindow=new OrderWindow();
+            OrderWindow orderWindow = new OrderWindow();
             orderWindow.ShowDialog();
         }
 
@@ -145,20 +164,27 @@ namespace WpfHotel
         /// <param name="e"></param>
         private void ShowRoomStatusWindow(object sender, RoutedEventArgs e)
         {
-            RoomStatusWindow roomStatusWindow=new RoomStatusWindow();
+            RoomStatusWindow roomStatusWindow = new RoomStatusWindow();
             roomStatusWindow.ShowDialog();
         }
 
         private void ShowRealTimeWindow(object sender, RoutedEventArgs e)
         {
-            RealTimeWindow realTimeWindow=new RealTimeWindow();
+            RealTimeWindow realTimeWindow = new RealTimeWindow();
             realTimeWindow.ShowDialog();
         }
 
         private void ShowMoneyWindow(object sender, RoutedEventArgs e)
         {
-            MoneyReportWindow moneyReportWindow=new MoneyReportWindow();
-             moneyReportWindow.ShowDialog();
+            MoneyReportWindow moneyReportWindow = new MoneyReportWindow();
+            moneyReportWindow.ShowDialog();
+        }
+
+        private void Button_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Button button=sender as Button;
+            RoomItem roomItem=button.Tag as RoomItem;
+            roomItem.DoubleClick();
         }
     }
 }

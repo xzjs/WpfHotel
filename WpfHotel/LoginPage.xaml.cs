@@ -164,6 +164,9 @@ namespace WpfHotel
                             {
                                 db.Database.ExecuteSqlCommand("DELETE FROM Room");
                                 db.Database.ExecuteSqlCommand("DELETE FROM [Order]");
+                                db.Database.ExecuteSqlCommand("DELETE FROM [Account]");
+                                db.Database.ExecuteSqlCommand("DELETE FROM [Invoice]");
+                                db.Database.ExecuteSqlCommand("DELETE FROM [User]");
                                 foreach (var item in jo["roomList"])
                                 {
                                     var room = new Room()

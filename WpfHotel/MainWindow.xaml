@@ -71,7 +71,6 @@
                             <ContextMenu>
                                 <MenuItem Header="实时房态报表" Click="ShowRealTimeWindow"/>
                                 <MenuItem Header="收付报表" Click="ShowMoneyWindow"/>
-                                <MenuItem Header="在线支付报表" Click="CheckIn"/>
                             </ContextMenu>
                         </Button.ContextMenu>
                         <Image Source="img/baobiao.png"></Image>
@@ -102,7 +101,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button BorderBrush="{x:Null}" Margin="1,20,0,0" Style="{DynamicResource SquareButtonStyle}" Height="50" MouseRightButtonDown="ShowMenu" Tag="{Binding}">
+                                <Button BorderBrush="{x:Null}" Margin="1,20,0,0" Style="{DynamicResource SquareButtonStyle}" Height="50" MouseRightButtonDown="ShowMenu" Tag="{Binding}" MouseDoubleClick="Button_MouseDoubleClick">
                                     <Button.Background>
                                         <ImageBrush ImageSource="{Binding Path=Image}"/>
                                     </Button.Background>

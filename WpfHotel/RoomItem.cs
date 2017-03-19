@@ -25,7 +25,7 @@ namespace WpfHotel
         {
             get
             {
-                string[] images = { "", "kong.png", "di.png", "zhu.png", "zang.png", "xiu.png", "ting,png", "li.png" };
+                string[] images = { "", "kong.png", "di.png", "zhu.png", "zang.png", "xiu.png", "ting.png", "li.png" };
                 return new BitmapImage(new Uri("pack://application:,,,/WpfHotel;component/img/" + images[Room.Status.Value]));
             }
         }
@@ -38,24 +38,74 @@ namespace WpfHotel
             get
             {
                 ContextMenu contextMenu = new ContextMenu();
+                MenuItem menuItem1 = new MenuItem
+                {
+                    Header = "转干净房",
+                    Tag = 1
+                };
+                menuItem1.Click += ChangeRoomStatus;
+                MenuItem menuItem4 = new MenuItem
+                {
+                    Header = "转为脏房",
+                    Tag = 4
+                };
+                menuItem4.Click += ChangeRoomStatus;
+                MenuItem menuItem5 = new MenuItem
+                {
+                    Header = "转维修房",
+                    Tag = 5
+                };
+                menuItem5.Click += ChangeRoomStatus;
+    
+                MenuItem menuItem6 = new MenuItem
+                {
+                    Header = "转停用房",
+                    Tag = 6
+                };
+                menuItem6.Click += ChangeRoomStatus;
+         
                 switch (Room.Status)
                 {
                     case 1:
                         MenuItem checkInMenuItem = new MenuItem { Header = "办理入住" };
                         checkInMenuItem.Click += CheeckIn;
                         contextMenu.Items.Add(checkInMenuItem);
+                        contextMenu.Items.Add(menuItem4);
+                        contextMenu.Items.Add(menuItem5);
+                        contextMenu.Items.Add(menuItem6);
                         break;
                     case 3:
-                        MenuItem renewMenuItem=new MenuItem {Header = "办理续住"};
+                        MenuItem renewMenuItem = new MenuItem { Header = "办理续住" };
                         renewMenuItem.Click += Renew;
                         contextMenu.Items.Add(renewMenuItem);
-                        MenuItem checkOutMenuItem =new MenuItem {Header = "结账退房"};
+                        MenuItem checkOutMenuItem = new MenuItem { Header = "结账退房" };
                         checkOutMenuItem.Click += CheckOut;
                         contextMenu.Items.Add(checkOutMenuItem);
+                        break;
+                    case 4:
+                        contextMenu.ItemsSource=new List<MenuItem> {menuItem1,menuItem5,menuItem6};
+                        break;
+                    case 5:
+                        contextMenu.ItemsSource = new List<MenuItem> { menuItem1, menuItem4, menuItem6 };
+                        break;
+                    case 6:
+                        contextMenu.ItemsSource = new List<MenuItem> { menuItem1, menuItem4, menuItem5 };
                         break;
                 }
                 return contextMenu;
             }
+        }
+
+        /// <summary>
+        /// 更改房间状态
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ChangeRoomStatus(object sender, RoutedEventArgs e)
+        {
+            MenuItem menuItem = sender as MenuItem;
+            int status = Convert.ToInt32(menuItem.Tag);
+            SetRoomStatus(status);
         }
 
         /// <summary>
@@ -65,7 +115,7 @@ namespace WpfHotel
         {
             get
             {
-                string[] status = {"", "空房", "预抵房", "在住房", "脏房", "维修房", "停用房", "预离房"};
+                string[] status = { "", "空房", "预抵房", "在住房", "脏房", "维修房", "停用房", "预离房" };
                 return status[Room.Status.Value];
             }
         }
@@ -95,7 +145,7 @@ namespace WpfHotel
             {
                 if (Room.Status != 3)
                     return "";
-                using (var db =new hotelEntities())
+                using (var db = new hotelEntities())
                 {
                     Order order = db.Order.Include("User").First(o => o.Status == 2);
                     return order.User.First().Name;
@@ -115,7 +165,7 @@ namespace WpfHotel
         /// <param name="e"></param>
         private void CheckOut(object sender, RoutedEventArgs e)
         {
-            CheckOutWindow checkOutWindow=new CheckOutWindow(Room.Order.First(o => o.Finish==0));
+            CheckOutWindow checkOutWindow = new CheckOutWindow(Room.Order.First(o => o.Finish == 0));
             checkOutWindow.ShowDialog();
         }
 
@@ -126,10 +176,10 @@ namespace WpfHotel
         /// <param name="e"></param>
         private void Renew(object sender, RoutedEventArgs e)
         {
-            using (var db=new hotelEntities())
+            using (var db = new hotelEntities())
             {
                 Order order = db.Order.Where(x => x.Finish == 0).FirstOrDefault(x => x.RoomId == Room.Id);
-                CheckInWindow checkIn=new CheckInWindow(order);
+                CheckInWindow checkIn = new CheckInWindow(order);
                 checkIn.ShowDialog();
             }
         }
@@ -183,6 +233,24 @@ namespace WpfHotel
             catch (Exception exception)
             {
                 MessageBox.Show(exception.Message);
+            }
+        }
+
+        public void DoubleClick()
+        {
+            CheckInWindow checkInWindow = new CheckInWindow();
+            switch (Room.Status)
+            {
+                case 1:
+
+                    checkInWindow.ShowDialog();
+                    break;
+                case 7:
+                case 3:
+                case 2:
+                    checkInWindow = new CheckInWindow(Room.Order.FirstOrDefault(o => o.Finish == 0));
+                    checkInWindow.ShowDialog();
+                    break;
             }
         }
     }

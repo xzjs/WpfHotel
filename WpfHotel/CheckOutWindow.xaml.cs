@@ -108,7 +108,7 @@ namespace WpfHotel
                     _order.Finish = 1;
                     db.SaveChanges();
                     RoomItem roomItem = new RoomItem { Room = _order.Room };
-                    roomItem.SetRoomStatus(1);
+                    roomItem.SetRoomStatus(4);
                     Close();
                 }
             }
