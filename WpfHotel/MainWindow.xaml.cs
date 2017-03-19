@@ -147,5 +147,11 @@ namespace WpfHotel
             RoomStatusWindow roomStatusWindow=new RoomStatusWindow();
             roomStatusWindow.ShowDialog();
         }
+
+        private void ShowRealTimeWindow(object sender, RoutedEventArgs e)
+        {
+            RealTimeWindow realTimeWindow=new RealTimeWindow();
+            realTimeWindow.ShowDialog();
+        }
     }
 }

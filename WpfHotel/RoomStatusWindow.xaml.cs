@@ -75,7 +75,7 @@ namespace WpfHotel
         {
             try
             {
-                ExcelPackage package = new ExcelPackage(new MemoryStream());
+                  ExcelPackage package = new ExcelPackage(new MemoryStream());
                 var ws1 = package.Workbook.Worksheets.Add("Worksheet1");
                 for (int row = 2; row < _typeItems.Count + 2; row++)
                 {
@@ -95,8 +95,7 @@ namespace WpfHotel
                 ws1.Cells[_typeItems.Count + 2, 3].Value = TextBlock2.Text;
                 ws1.Cells[_typeItems.Count + 2, 4].Value = TextBlock3.Text;
                 ws1.Cells[_typeItems.Count + 2, 5].Value = TextBlock4.Text;
-                SaveFileDialog saveFileDialog = new SaveFileDialog();
-                saveFileDialog.Filter = "Excel files (*.xlsx)|*.xlsx";
+                SaveFileDialog saveFileDialog = new SaveFileDialog {Filter = "Excel files (*.xlsx)|*.xlsx"};
                 var dialogResult = saveFileDialog.ShowDialog();
                 if (dialogResult.Value)
                 {

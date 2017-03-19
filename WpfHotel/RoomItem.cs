@@ -78,7 +78,7 @@ namespace WpfHotel
             get
             {
                 //在住或者预离算有人
-                if (Room.Status == 2 || Room.Status == 7)
+                if (Room.Status == 3 || Room.Status == 7)
                 {
                     return 1;
                 }
@@ -93,6 +93,8 @@ namespace WpfHotel
         {
             get
             {
+                if (Room.Status != 3)
+                    return "";
                 using (var db =new hotelEntities())
                 {
                     Order order = db.Order.Include("User").First(o => o.Status == 2);

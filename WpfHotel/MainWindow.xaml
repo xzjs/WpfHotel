@@ -69,7 +69,7 @@
                     <Button Width="70" Canvas.Left="270" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="270">
                         <Button.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="实时房态报表" Click="ShowRoomStatusWindow"/>
+                                <MenuItem Header="实时房态报表" Click="ShowRealTimeWindow"/>
                                 <MenuItem Header="收付报表" Click="CheckIn"/>
                                 <MenuItem Header="在线支付报表" Click="CheckIn"/>
                             </ContextMenu>
