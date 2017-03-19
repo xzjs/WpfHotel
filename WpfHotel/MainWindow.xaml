@@ -70,7 +70,7 @@
                         <Button.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="实时房态报表" Click="ShowRealTimeWindow"/>
-                                <MenuItem Header="收付报表" Click="CheckIn"/>
+                                <MenuItem Header="收付报表" Click="ShowMoneyWindow"/>
                                 <MenuItem Header="在线支付报表" Click="CheckIn"/>
                             </ContextMenu>
                         </Button.ContextMenu>

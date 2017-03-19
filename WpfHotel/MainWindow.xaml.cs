@@ -153,5 +153,11 @@ namespace WpfHotel
             RealTimeWindow realTimeWindow=new RealTimeWindow();
             realTimeWindow.ShowDialog();
         }
+
+        private void ShowMoneyWindow(object sender, RoutedEventArgs e)
+        {
+            MoneyReportWindow moneyReportWindow=new MoneyReportWindow();
+            moneyReportWindow.ShowDialog();
+        }
     }
 }
