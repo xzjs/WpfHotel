@@ -76,8 +76,8 @@
                         <Image Source="img/baobiao.png"></Image>
                     </Button>
                     <StackPanel Canvas.Left="10" Canvas.Bottom="60">
-                        <TextBlock Text="23:03:57" FontSize="40" TextAlignment="Center"></TextBlock>
-                        <TextBlock Text="2017-3-13" FontSize="40"></TextBlock>
+                        <TextBlock x:Name="TimeTextBlock" Text="23:03:57" FontSize="40" TextAlignment="Center"></TextBlock>
+                        <TextBlock x:Name="DateTextBlock" Text="2017-3-13" FontSize="40"></TextBlock>
                     </StackPanel>
                 </Canvas>
                 <StackPanel></StackPanel>

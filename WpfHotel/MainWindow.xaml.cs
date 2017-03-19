@@ -2,17 +2,9 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WpfHotel
 {
@@ -26,7 +18,7 @@ namespace WpfHotel
             InitializeComponent();
 
             var showTimer = new System.Windows.Threading.DispatcherTimer();
-            showTimer.Tick += new EventHandler(ShowCurrentTimer);
+            showTimer.Tick += ShowCurrentTimer;
             showTimer.Interval = new TimeSpan(0, 0, 0, 1, 0);
             showTimer.Start();
 
@@ -35,7 +27,8 @@ namespace WpfHotel
 
         private void ShowCurrentTimer(object sender, EventArgs e)
         {
-            //TimeTextBlock.Text = DateTime.Now.ToString();
+            TimeTextBlock.Text = DateTime.Today.ToShortDateString();
+            DateTextBlock.Text = DateTime.Now.ToShortTimeString();
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

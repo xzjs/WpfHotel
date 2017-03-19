@@ -10,8 +10,7 @@
 namespace WpfHotel
 {
     using System;
-    using System.Collections.Generic;
-    
+
     public partial class Invoice
     {
         public long Id { get; set; }
