@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,7 +63,7 @@ namespace WpfHotel
         {
             using (var db=new hotelEntities())
             {
-                List<Room> rooms = db.Room.ToList();
+                List<Room> rooms = db.Room.Include(r=>r.Order).ToList();
                 List<RoomItem> roomItems= rooms.Select(room => new RoomItem {Room = room}).ToList();
                 RoomList.ItemsSource = roomItems;
             }
@@ -157,7 +158,7 @@ namespace WpfHotel
         private void ShowMoneyWindow(object sender, RoutedEventArgs e)
         {
             MoneyReportWindow moneyReportWindow=new MoneyReportWindow();
-            moneyReportWindow.ShowDialog();
+             moneyReportWindow.ShowDialog();
         }
     }
 }

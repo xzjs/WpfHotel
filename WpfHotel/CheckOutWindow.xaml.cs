@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -26,10 +27,17 @@ namespace WpfHotel
         public CheckOutWindow(Order order)
         {
             InitializeComponent();
-            _order = order;
-            OrderStackPanel.DataContext = _order;
+
+
             using (var db = new hotelEntities())
             {
+                _order = db.Order.Find(order.Id);
+                //设置离开日期为当日日期
+                _order.LeaveDate = DateTime.Today;
+                _order.Day = _order.LeaveDate.Value.Subtract(_order.InDate.Value).Days;
+                _order.Price = _order.Room.Price * _order.Day;
+                OrderStackPanel.DataContext = _order;
+
                 Room room = db.Room.Find(_order.RoomId);
                 RoomList.ItemsSource = new List<Room> { room };
                 Type type = db.Type.Find(room.TypeId);
@@ -44,8 +52,8 @@ namespace WpfHotel
                 MoneyTextBlock.Text = _otherMoney.ToString(CultureInfo.InvariantCulture);
                 _invoice = new Invoice
                 {
-                    Money = order.Price.Value + _otherMoney,
-                    Orderid = order.Id
+                    Money = _order.Price.Value + _otherMoney,
+                    Orderid = _order.Id
                 };
                 //绑定总消费数据
                 DockPanel.DataContext = _invoice;
@@ -94,11 +102,12 @@ namespace WpfHotel
                         db.Invoice.Add(_invoice);
 
                     }
-                    Order order = db.Order.Find(_order.Id);
-                    order.Status = 3;
-                    order.Finish = 1;
+                    db.Entry(_order).State=EntityState.Modified;
+                    
+                    _order.Status = 3;
+                    _order.Finish = 1;
                     db.SaveChanges();
-                    RoomItem roomItem=new RoomItem {Room = order.Room};
+                    RoomItem roomItem = new RoomItem { Room = _order.Room };
                     roomItem.SetRoomStatus(1);
                     Close();
                 }

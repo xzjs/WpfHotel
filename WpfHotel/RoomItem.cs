@@ -115,7 +115,8 @@ namespace WpfHotel
         /// <param name="e"></param>
         private void CheckOut(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            CheckOutWindow checkOutWindow=new CheckOutWindow(Room.Order.First(o => o.Finish==0));
+            checkOutWindow.ShowDialog();
         }
 
         /// <summary>

@@ -147,6 +147,10 @@
     <Compile Include="CheckInWindow.xaml.cs">
       <DependentUpon>CheckInWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CheckOutItem.cs" />
+    <Compile Include="CheckOutPage.xaml.cs">
+      <DependentUpon>CheckOutPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CheckOutWindow.xaml.cs">
       <DependentUpon>CheckOutWindow.xaml</DependentUpon>
     </Compile>
@@ -227,6 +231,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CheckInWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CheckOutPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
