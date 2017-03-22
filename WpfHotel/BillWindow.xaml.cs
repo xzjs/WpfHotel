@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
@@ -20,8 +21,12 @@ namespace WpfHotel
         {
             _order = order;
             InitializeComponent();
-            _accounts = new ObservableCollection<Account>(_order.Account.ToList());
-            AccountDataGrid.ItemsSource = _accounts;
+            using (var db= new hotelEntities())
+            {
+                List<Account> accounts = db.Account.Where(a => a.OrderId == order.Id).ToList();
+                _accounts = new ObservableCollection<Account>(accounts);
+                AccountDataGrid.ItemsSource = _accounts;
+            }
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)

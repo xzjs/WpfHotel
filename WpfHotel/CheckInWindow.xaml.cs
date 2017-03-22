@@ -192,8 +192,8 @@ namespace WpfHotel
                                 {
                                     hotelId = information.HotelId.Value,
                                     roomId = room.ServerId.Value,
-                                    inDateStr = _order.InDate.Value.ToShortDateString(),
-                                    leaveDateStr = _order.LeaveDate.Value.ToShortDateString(),
+                                    inDateStr = _order.InDate.Value.Date.ToString("yyyy-MM-dd"),
+                                    leaveDateStr = _order.LeaveDate.Value.Date.ToString("yyyy-MM-dd"),
                                     inDays = _order.Day.Value,
                                     remark = _order.Remark,
                                     clStatus = 2,
@@ -219,7 +219,7 @@ namespace WpfHotel
                                 var response =
                                     client.UploadValues("http://" + config.Http + "/hotelClient/buildOrder.nd", values);
 
-                                var responseString = Encoding.Default.GetString(response);
+                                var responseString = Encoding.UTF8.GetString(response);
                                 var jo = JObject.Parse(responseString);
                                 if ((string)jo["errorFlag"] != "false")
                                     MessageBox.Show("上传订单失败");
