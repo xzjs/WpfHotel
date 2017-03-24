@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
+using Newtonsoft.Json.Linq;
 
 namespace WpfHotel
 {
@@ -96,6 +100,23 @@ namespace WpfHotel
                     db.Entry(_order).State = EntityState.Modified;
 
                     _order.Status = 3;
+                    using (var client = new WebClient())
+                    {
+                        var values = new NameValueCollection
+                        {
+                            ["orderId"] = _order.ServerId.ToString(),
+                            ["status"] = "2"
+                        };
+                        var config = db.Config.First();
+                        var response =
+                            client.UploadValues("http://" + config.Http + "/hotelClient/setOrderStatus.nd", values);
+
+                        var responseString = Encoding.UTF8.GetString(response);
+                        var jo = JObject.Parse(responseString);
+                        if ((string)jo["errorFlag"] != "false")
+                            MessageBox.Show("上传订单失败");
+
+                    }
                     _order.Finish = 1;
                     db.SaveChanges();
                     var roomItem = new RoomItem {Room = _order.Room};

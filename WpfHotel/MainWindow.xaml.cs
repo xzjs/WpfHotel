@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Windows;
@@ -21,6 +22,13 @@ namespace WpfHotel
             showTimer.Tick += ShowCurrentTimer;
             showTimer.Interval = new TimeSpan(0, 0, 0, 1, 0);
             showTimer.Start();
+
+            using (var db=new hotelEntities())
+            {
+                List<Type> types = db.Type.ToList();
+                types.Insert(0,new Type {Id = 0,Name = "全部"});
+                ComboBox.ItemsSource = types;
+            }
 
             LoadRoomData();
         }
@@ -56,7 +64,16 @@ namespace WpfHotel
         {
             using (var db = new hotelEntities())
             {
-                var rooms = db.Room.Include(r => r.Order).ToList();
+                List<Room> rooms;
+                if (ComboBox.SelectedIndex == 0)
+                {
+                    rooms = db.Room.Include(r => r.Order).ToList();
+                }
+                else
+                {
+                    var type = ComboBox.SelectedItem as Type;
+                    rooms = db.Room.Include(r => r.Order).Where(r => r.TypeId == type.Id).ToList();
+                }
                 TotalTextBlock.Text = rooms.Count().ToString();
                 CheckInTextBlock.Text = db.Room.Count(r => r.Status == 3 || r.Status == 7).ToString();
                 var roomItems = rooms.Select(room => new RoomItem {Room = room}).ToList();
@@ -180,6 +197,11 @@ namespace WpfHotel
             var button = sender as Button;
             var roomItem = button.Tag as RoomItem;
             roomItem.DoubleClick();
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadRoomData();
         }
     }
 }

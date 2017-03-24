@@ -43,7 +43,13 @@
                         <TextBlock Width="50" VerticalAlignment="Center" TextAlignment="Center" Foreground="White">在住房数</TextBlock>
                         <TextBlock x:Name="CheckInTextBlock" Width="40" VerticalAlignment="Center" TextAlignment="Center" Foreground="White">0</TextBlock>
                     </StackPanel>
-                    
+                    <StackPanel>
+                        <ComboBox x:Name="ComboBox" DisplayMemberPath="Name" Foreground="White" SelectedIndex="0" Margin="0,5" SelectionChanged="ComboBox_SelectionChanged">
+                            <ComboBox.Background>
+                                <ImageBrush ImageSource="img/餐厅图标_63.png" Stretch="None"/>
+                            </ComboBox.Background>
+                        </ComboBox>
+                    </StackPanel>
                 </StackPanel>
                 <Canvas Width="350" Height="350" DockPanel.Dock="Bottom">
                     <Image Source="img/canvas_bg.png" Width="300" Height="300" Canvas.Bottom="0" Panel.ZIndex="-1" />
@@ -81,7 +87,7 @@
                         <TextBlock x:Name="DateTextBlock" Text="2017-3-13" FontSize="40" />
                     </StackPanel>
                 </Canvas>
-                <StackPanel />
+                <StackPanel></StackPanel>
             </DockPanel>
             <DockPanel>
                 <DockPanel.Background>

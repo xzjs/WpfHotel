@@ -248,6 +248,27 @@ namespace WpfHotel
                         order.LeaveDate = _order.LeaveDate;
                         order.Day = _order.Day;
                         order.Price = _order.Price;
+                        if (order.Status.Value == 1)
+                        {
+                            using (var client = new WebClient())
+                            {
+                                var values = new NameValueCollection
+                                {
+                                    ["orderId"] = order.ServerId.ToString(),
+                                    ["status"] = "1"
+                                };
+                                var config = db.Config.First();
+                                var response =
+                                    client.UploadValues("http://" + config.Http + "/hotelClient/setOrderStatus.nd", values);
+
+                                var responseString = Encoding.UTF8.GetString(response);
+                                var jo = JObject.Parse(responseString);
+                                if ((string)jo["errorFlag"] != "false")
+                                    MessageBox.Show("上传订单失败");
+                               
+                            }
+                        }
+                        
                     }
                     db.SaveChanges();
                     //更改房间状态

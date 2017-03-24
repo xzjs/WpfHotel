@@ -457,6 +457,7 @@
     <Resource Include="img\yuyue_bg.png" />
     <Resource Include="img\ruzhuren.png" />
     <Resource Include="img\order_bg.png" />
+    <Resource Include="img\餐厅图标_63.png" />
     <Content Include="Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>
