@@ -6,6 +6,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Apache.NMS;
+using Apache.NMS.ActiveMQ;
+using Apache.NMS.ActiveMQ.Commands;
 
 namespace WpfHotel
 {
@@ -202,6 +205,33 @@ namespace WpfHotel
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             LoadRoomData();
+        }
+
+        /// <summary>
+        ///     通过tcp获取数据
+        /// </summary>
+        private void ListenOrderTcp()
+        {
+            try
+            {
+                IConnectionFactory factory = new ConnectionFactory("tcp://" + ((App)Application.Current).Config.Tcp + ":" + ((App)Application.Current).Config.Port);
+                var connection = factory.CreateConnection();
+                connection.ClientId = ((App)Application.Current).Information.HotelId.ToString();
+                connection.Start();
+
+                var session1 = connection.CreateSession();
+                var consumer1 = session1.CreateConsumer(new ActiveMQQueue("hotelOrder" + ((App)Application.Current).Information.HotelId));
+                consumer1.Listener += consumer_Listener;
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
+        }
+
+        private void consumer_Listener(IMessage message)
+        {
+            throw new NotImplementedException();
         }
     }
 }
