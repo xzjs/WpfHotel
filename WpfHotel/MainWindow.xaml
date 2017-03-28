@@ -54,6 +54,9 @@
                 <Canvas Width="350" Height="350" DockPanel.Dock="Bottom">
                     <Image Source="img/canvas_bg.png" Width="300" Height="300" Canvas.Bottom="0" Panel.ZIndex="-1" />
                     <Button Width="70" Canvas.Left="30" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="10">
+                        <Button.ToolTip>
+                            预约/入住办理
+                        </Button.ToolTip>
                         <Button.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="预约办理" Click="Appointment" />
@@ -64,16 +67,28 @@
                     </Button>
                     <Button Width="70" Canvas.Left="130" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="30"
                             Click="ShowRoomStatusWindow">
+                        <Button.ToolTip>
+                            房态中心
+                        </Button.ToolTip>
                         <Image Source="img/fangtai.png" />
                     </Button>
                     <Button Width="70" Canvas.Left="210" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="90"
                             Click="ShowOrderWindow">
+                        <Button.ToolTip>
+                            订单中心
+                        </Button.ToolTip>
                         <Image Source="img/dingdan.png" />
                     </Button>
                     <Button Width="70" Canvas.Left="260" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="170">
+                        <Button.ToolTip>
+                            房务中心
+                        </Button.ToolTip>
                         <Image Source="img/fangwu.png" />
                     </Button>
                     <Button Width="70" Canvas.Left="270" Background="{x:Null}" BorderBrush="{x:Null}" Canvas.Top="270">
+                        <Button.ToolTip>
+                            报表中心
+                        </Button.ToolTip>
                         <Button.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="实时房态报表" Click="ShowRealTimeWindow" />
