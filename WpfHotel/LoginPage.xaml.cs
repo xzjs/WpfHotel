@@ -140,26 +140,36 @@ namespace WpfHotel
                             if (jo["roomList"] != null)
                                 foreach (var item in jo["roomList"])
                                 {
-                                    var room = new Room
+                                    try
                                     {
-                                        No = (int) item["roomNum"],
-                                        ServerId = (long) item["id"],
-                                        Status = 1,
-                                        Price = (decimal) item["price"],
-                                        Limit = (int) item["numberLimit"],
-                                        Details = (string) item["roomDetails"],
-                                        Square = (double) item["roomSquare"]
-                                    };
-                                    var typeId = (long) item["roomThemeId"];
-                                    var type = db.Type.FirstOrDefault(x => x.ServerId == typeId);
-                                    if (type != null)
-                                        room.TypeId = type.Id;
-                                    db.Room.Add(room);
+                                        var room = new Room
+                                        {
+                                            No = (int)item["roomNum"],
+                                            ServerId = (long)item["id"],
+                                            Status = 1,
+                                            Price = (decimal)item["price"],
+                                            Limit = (int)item["numberLimit"],
+                                            Details = (string)item["roomDetails"],
+                                            Square = (double)item["roomSquare"]
+                                        };
+                                        var typeId = (long)item["roomThemeId"];
+                                        var type = db.Type.FirstOrDefault(x => x.ServerId == typeId);
+                                        if (type != null)
+                                            room.TypeId = type.Id;
+                                        db.Room.Add(room);
+                                    }
+                                    catch (Exception exception)
+                                    {
+                                        MessageBox.Show("房间"+ (string)item["roomNum"]+"数据有误,"+exception.Message);
+                                    }
+                                    
                                 }
                             db.SaveChanges();
                             MessageBox.Show("更新数据成功");
-                            MainWindow mainWindow=Application.Current.MainWindow as MainWindow;
+                            var mainWindow=Application.Current.MainWindow as MainWindow;
+                            mainWindow.LoadThemeData();
                             mainWindow.LoadRoomData();
+                            
                         }
                 }
             }

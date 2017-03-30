@@ -44,7 +44,7 @@
                         <TextBlock x:Name="CheckInTextBlock" Width="40" VerticalAlignment="Center" TextAlignment="Center" Foreground="White">0</TextBlock>
                     </StackPanel>
                     <StackPanel>
-                        <ComboBox x:Name="ComboBox" DisplayMemberPath="Name" Foreground="White" SelectedIndex="0" Margin="0,5" SelectionChanged="ComboBox_SelectionChanged">
+                        <ComboBox x:Name="ThemeComboBox" DisplayMemberPath="Name" Foreground="White" Margin="0,5" SelectionChanged="ComboBox_SelectionChanged">
                             <ComboBox.Background>
                                 <ImageBrush ImageSource="img/餐厅图标_63.png" Stretch="None"/>
                             </ComboBox.Background>

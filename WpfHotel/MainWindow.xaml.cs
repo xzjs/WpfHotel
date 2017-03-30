@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Windows;
@@ -17,6 +18,7 @@ namespace WpfHotel
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ObservableCollection<Type> _types;
         public MainWindow()
         {
             InitializeComponent();
@@ -26,14 +28,40 @@ namespace WpfHotel
             showTimer.Interval = new TimeSpan(0, 0, 0, 1, 0);
             showTimer.Start();
 
-            using (var db=new hotelEntities())
-            {
-                List<Type> types = db.Type.ToList();
-                types.Insert(0,new Type {Id = 0,Name = "全部"});
-                ComboBox.ItemsSource = types;
-            }
+            _types=new ObservableCollection<Type>();
+            LoadThemeData();
+            ThemeComboBox.ItemsSource = _types;
 
             LoadRoomData();
+        }
+
+        /// <summary>
+        /// 加载主题
+        /// </summary>
+        public void LoadThemeData()
+        {
+            try
+            {
+
+                using (var db = new hotelEntities())
+                {
+                    List<Type> types = db.Type.ToList();
+                    types.Insert(0, new Type { Id = 0, Name = "全部" });
+                    ThemeComboBox.SelectedIndex = -1;
+                    _types.Clear();
+                    foreach (var type in types)
+                    {
+                        _types.Add(type);
+                    }
+                    ThemeComboBox.SelectedIndex = 0;
+                }
+
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
+
         }
 
         private void ShowCurrentTimer(object sender, EventArgs e)
@@ -68,22 +96,25 @@ namespace WpfHotel
             using (var db = new hotelEntities())
             {
                 List<Room> rooms;
-                if (ComboBox.SelectedIndex == 0)
+                switch (ThemeComboBox.SelectedIndex)
                 {
-                    rooms = db.Room.Include(r => r.Order).ToList();
-                }
-                else
-                {
-                    var type = ComboBox.SelectedItem as Type;
-                    rooms = db.Room.Include(r => r.Order).Where(r => r.TypeId == type.Id).ToList();
+                    case -1:
+                        return;
+                    case 0:
+                        rooms = db.Room.Include(r => r.Order).ToList();
+                        break;
+                    default:
+                        var type = ThemeComboBox.SelectedItem as Type;
+                        rooms = db.Room.Include(r => r.Order).Where(r => r.TypeId == type.Id).ToList();
+                        break;
                 }
                 TotalTextBlock.Text = rooms.Count().ToString();
                 CheckInTextBlock.Text = db.Room.Count(r => r.Status == 3 || r.Status == 7).ToString();
-                var roomItems = rooms.Select(room => new RoomItem {Room = room}).ToList();
+                var roomItems = rooms.Select(room => new RoomItem { Room = room }).ToList();
                 foreach (var roomItem in roomItems)
                 {
                     //判断预抵
-                    var order = roomItem.Room.Order.Where(o=>o.Finish==0).FirstOrDefault(o => o.Status==1);
+                    var order = roomItem.Room.Order.Where(o => o.Finish == 0).FirstOrDefault(o => o.Status == 1);
                     if (order == null) continue;
                     var inDateTime = order.InDate.Value.Date;
                     if (inDateTime == DateTime.Today && roomItem.Room.Status != 2)
@@ -144,8 +175,8 @@ namespace WpfHotel
                 }
                 else
                 {
-                    ((App) Application.Current).Config = config;
-                    ((App) Application.Current).Information = information;
+                    ((App)Application.Current).Config = config;
+                    ((App)Application.Current).Information = information;
                 }
             }
         }
