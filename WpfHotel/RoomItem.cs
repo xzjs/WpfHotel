@@ -229,14 +229,14 @@ namespace WpfHotel
                     var main = Application.Current.MainWindow as MainWindow;
                     main.LoadRoomData();
                 }
-                catch (WebException webException)
+                catch (WebException)
                 {
                     string parameter = JsonConvert.SerializeObject(new Dictionary<string,string>
                     {
                         ["roomId"] = Room.ServerId.ToString(),
                         ["status"] = status.ToString()
                     }, Formatting.Indented);
-                    Queue queue = new Queue()
+                    Queue queue = new Queue
                     {
                         Url = "http://" + config.Http + "/hotelClient/setRoomStatus.nd",
                         Type = "POST",
