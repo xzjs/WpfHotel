@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace WpfHotel
@@ -198,40 +199,59 @@ namespace WpfHotel
         /// <param name="status"></param>
         public void SetRoomStatus(int status)
         {
-            try
+
+            using (var db = new hotelEntities())
             {
-                using (var db = new hotelEntities())
+                var values = new NameValueCollection
+                {
+                    ["roomId"] = Room.ServerId.ToString(),
+                    ["status"] = status.ToString()
+                };
+                var config = ((App)Application.Current).Config;
+                try
                 {
                     //更新数据库
                     var room = db.Room.Find(Room.Id);
                     room.Status = status;
                     db.SaveChanges();
                     //更新服务器
-                    var config = ((App)Application.Current).Config;
+                    
                     using (var client = new WebClient())
                     {
-                        var values = new NameValueCollection
-                        {
-                            ["roomId"] = Room.ServerId.ToString(),
-                            ["status"] = status.ToString()
-                        };
-
                         var response = client.UploadValues("http://" + config.Http + "/hotelClient/setRoomStatus.nd",
                             values);
 
                         var responseString = Encoding.Default.GetString(response);
                         var jo = JObject.Parse(responseString);
-                        if ((string)jo["errorFlag"] != "false")
+                        if ((string) jo["errorFlag"] != "false")
                             MessageBox.Show("设置房间状态失败");
                     }
                     var main = Application.Current.MainWindow as MainWindow;
                     main.LoadRoomData();
                 }
+                catch (WebException webException)
+                {
+                    string parameter = JsonConvert.SerializeObject(new Dictionary<string,string>
+                    {
+                        ["roomId"] = Room.ServerId.ToString(),
+                        ["status"] = status.ToString()
+                    }, Formatting.Indented);
+                    Queue queue = new Queue()
+                    {
+                        Url = "http://" + config.Http + "/hotelClient/setRoomStatus.nd",
+                        Type = "POST",
+                        Time = DateTime.Now,
+                        Parameter = parameter
+                    };
+                    db.Queue.Add(queue);
+                    db.SaveChanges();
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(exception.Message);
+                }
             }
-            catch (Exception exception)
-            {
-                MessageBox.Show(exception.Message);
-            }
+
         }
 
         public void DoubleClick()
@@ -244,5 +264,7 @@ namespace WpfHotel
             var checkInWindow = new CheckInWindow(order);
             checkInWindow.ShowDialog();
         }
+
+        
     }
 }

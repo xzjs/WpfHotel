@@ -12,16 +12,12 @@ namespace WpfHotel
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class Queue
     {
         public long Id { get; set; }
-        public string Name { get; set; }
-        public string Sex { get; set; }
-        public string Code { get; set; }
-        public Nullable<long> Phone { get; set; }
-        public Nullable<long> OrderId { get; set; }
-        public string CardType { get; set; }
-    
-        public virtual Order Order { get; set; }
+        public string Url { get; set; }
+        public string Type { get; set; }
+        public Nullable<System.DateTime> Time { get; set; }
+        public string Parameter { get; set; }
     }
 }

@@ -9,9 +9,10 @@
 
 namespace WpfHotel
 {
+    using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-
+    
     public partial class hotelEntities : DbContext
     {
         public hotelEntities()
@@ -29,6 +30,7 @@ namespace WpfHotel
         public virtual DbSet<Information> Information { get; set; }
         public virtual DbSet<Invoice> Invoice { get; set; }
         public virtual DbSet<Order> Order { get; set; }
+        public virtual DbSet<Queue> Queue { get; set; }
         public virtual DbSet<Room> Room { get; set; }
         public virtual DbSet<Type> Type { get; set; }
         public virtual DbSet<User> User { get; set; }

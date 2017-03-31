@@ -215,16 +215,35 @@ namespace WpfHotel
                                 {
                                     ["details"] = json
                                 };
-
-                                var response =
+                                try
+                                {
+                                    var response =
                                     client.UploadValues("http://" + config.Http + "/hotelClient/buildOrder.nd", values);
 
-                                var responseString = Encoding.UTF8.GetString(response);
-                                var jo = JObject.Parse(responseString);
-                                if ((string)jo["errorFlag"] != "false")
-                                    MessageBox.Show("上传订单失败");
-                                else
-                                    _order.ServerId = (long)jo["orderId"];
+                                    var responseString = Encoding.UTF8.GetString(response);
+                                    var jo = JObject.Parse(responseString);
+                                    if ((string)jo["errorFlag"] != "false")
+                                        MessageBox.Show("上传订单失败");
+                                    else
+                                        _order.ServerId = (long)jo["orderId"];
+                                }
+                                catch (WebException webException)
+                                {
+                                    string parameter = JsonConvert.SerializeObject(new Dictionary<string, string>
+                                    {
+                                        ["details"] = json
+                                    }, Formatting.Indented);
+                                    Queue queue = new Queue()
+                                    {
+                                        Url = "http://" + config.Http + "/hotelClient/buildOrder.nd",
+                                        Type = "POST",
+                                        Time = DateTime.Now,
+                                        Parameter = parameter
+                                    };
+                                    db.Queue.Add(queue);
+                                    db.SaveChanges();
+                                }
+                                
                             }
                         }
                         catch (Exception exception)

@@ -1,15 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
   <!-- EF Runtime content -->
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="hotelModel.Store" Provider="System.Data.SQLite.EF6"
-              ProviderManifestToken="data source=&quot;C:\Users\childe\Documents\Visual Studio 2015\Projects\WpfHotel\WpfHotel\hotel.db&quot;"
-              Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator"
-              xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation"
-              xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="hotelModel.Store" Provider="System.Data.SQLite.EF6" ProviderManifestToken="data source=F:\code\WpfHotel\WpfHotel\hotel.db" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Account">
           <Key>
             <PropertyRef Name="Id" />
@@ -62,6 +57,16 @@
           <Property Name="Remark" Type="nvarchar" MaxLength="2147483647" />
           <Property Name="Finish" Type="int" />
           <Property Name="ServerId" Type="integer" />
+        </EntityType>
+        <EntityType Name="Queue">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="integer" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Url" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="Type" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="Time" Type="datetime" />
+          <Property Name="Parameter" Type="nvarchar" MaxLength="2147483647" />
         </EntityType>
         <EntityType Name="Room">
           <Key>
@@ -163,6 +168,7 @@
           <EntitySet Name="Information" EntityType="Self.Information" store:Type="Tables" />
           <EntitySet Name="Invoice" EntityType="Self.Invoice" store:Type="Tables" />
           <EntitySet Name="Order" EntityType="Self.Order" store:Type="Tables" />
+          <EntitySet Name="Queue" EntityType="Self.Queue" store:Type="Tables" />
           <EntitySet Name="Room" EntityType="Self.Room" store:Type="Tables" />
           <EntitySet Name="Type" EntityType="Self.Type" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" store:Type="Tables" />
@@ -191,10 +197,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="hotelModel" Alias="Self" annotation:UseStrongSpatialTypes="false"
-              xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation"
-              xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation"
-              xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="hotelModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Account">
           <Key>
             <PropertyRef Name="Id" />
@@ -253,6 +256,16 @@
           <NavigationProperty Name="Invoice" Relationship="Self.FK_Invoice_0_0" FromRole="Order" ToRole="Invoice" />
           <NavigationProperty Name="Room" Relationship="Self.FK_Order_0_0" FromRole="Order" ToRole="Room" />
           <NavigationProperty Name="User" Relationship="Self.FK_User_0_0" FromRole="Order" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Queue">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Url" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="Time" Type="DateTime" />
+          <Property Name="Parameter" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Room">
           <Key>
@@ -358,6 +371,7 @@
           <EntitySet Name="Information" EntityType="Self.Information" />
           <EntitySet Name="Invoice" EntityType="Self.Invoice" />
           <EntitySet Name="Order" EntityType="Self.Order" />
+          <EntitySet Name="Queue" EntityType="Self.Queue" />
           <EntitySet Name="Room" EntityType="Self.Room" />
           <EntitySet Name="Type" EntityType="Self.Type" />
           <EntitySet Name="User" EntityType="Self.User" />
@@ -443,6 +457,17 @@
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="Finish" ColumnName="Finish" />
                 <ScalarProperty Name="ServerId" ColumnName="ServerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Queue">
+            <EntityTypeMapping TypeName="hotelModel.Queue">
+              <MappingFragment StoreEntitySet="Queue">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Parameter" ColumnName="Parameter" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -8,6 +8,7 @@ using System.Net;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace WpfHotel
@@ -108,13 +109,35 @@ namespace WpfHotel
                             ["status"] = "2"
                         };
                         var config = db.Config.First();
-                        var response =
+                        try
+                        {
+                            var response =
                             client.UploadValues("http://" + config.Http + "/hotelClient/setOrderStatus.nd", values);
 
-                        var responseString = Encoding.UTF8.GetString(response);
-                        var jo = JObject.Parse(responseString);
-                        if ((string)jo["errorFlag"] != "false")
-                            MessageBox.Show("上传订单失败");
+                            var responseString = Encoding.UTF8.GetString(response);
+                            var jo = JObject.Parse(responseString);
+                            if ((string)jo["errorFlag"] != "false")
+                                MessageBox.Show("上传订单失败");
+                        }
+                        catch (WebException webException)
+                        {
+                            string parameter = JsonConvert.SerializeObject(new Dictionary<string, string>
+                            {
+                                ["orderId"] = values["orderId"],
+                                ["status"] = "2"
+                            }, Formatting.Indented);
+                            Queue queue = new Queue()
+                            {
+                                Url = "http://" + config.Http + "/hotelClient/setOrderStatus.nd",
+                                Type = "POST",
+                                Time = DateTime.Now,
+                                Parameter = parameter
+                            };
+                            db.Queue.Add(queue);
+                            db.SaveChanges();
+                        }
+                        
+                        
 
                     }
                     _order.Finish = 1;
