@@ -214,6 +214,7 @@ namespace WpfHotel
                     var room = db.Room.Find(Room.Id);
                     room.Status = status;
                     db.SaveChanges();
+                    
                     //更新服务器
                     
                     using (var client = new WebClient())
@@ -226,8 +227,6 @@ namespace WpfHotel
                         if ((string) jo["errorFlag"] != "false")
                             MessageBox.Show("设置房间状态失败");
                     }
-                    var main = Application.Current.MainWindow as MainWindow;
-                    main.LoadRoomData();
                 }
                 catch (WebException)
                 {

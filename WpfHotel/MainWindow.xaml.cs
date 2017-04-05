@@ -147,16 +147,17 @@ namespace WpfHotel
                     if (inDateTime == DateTime.Today && roomItem.Room.Status != 2)
                     {
                         roomItem.SetRoomStatus(2);
-                        roomItem.Room = db.Room.Find(roomItem.Room.Id);
+                        roomItem.Room.Status = 2;
                     }
                     //判断预离
                     var leaveDateTime = order.LeaveDate.Value.Date;
                     if (leaveDateTime == DateTime.Today && roomItem.Room.Status != 7)
                     {
                         roomItem.SetRoomStatus(7);
-                        roomItem.Room = db.Room.Find(roomItem.Room.Id);
+                        roomItem.Room.Status = 7;
                     }
                 }
+                //roomItems = rooms.Select(room => new RoomItem { Room = room }).ToList();
                 RoomList.ItemsSource = roomItems;
             }
         }
@@ -440,6 +441,7 @@ namespace WpfHotel
                             db.User.Add(user);
                         }
                         db.SaveChanges();
+                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(LoadRoomData));
                     }
                 }
             }
