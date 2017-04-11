@@ -199,7 +199,6 @@ namespace WpfHotel
         /// <param name="status"></param>
         public void SetRoomStatus(int status)
         {
-
             using (var db = new hotelEntities())
             {
                 var values = new NameValueCollection
@@ -227,6 +226,8 @@ namespace WpfHotel
                         if ((string) jo["errorFlag"] != "false")
                             MessageBox.Show("设置房间状态失败");
                     }
+                    MainWindow mainWindow=Application.Current.MainWindow as MainWindow;
+                    mainWindow.LoadRoomData();
                 }
                 catch (WebException)
                 {

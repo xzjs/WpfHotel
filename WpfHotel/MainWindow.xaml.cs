@@ -69,7 +69,6 @@ namespace WpfHotel
         {
             try
             {
-
                 using (var db = new hotelEntities())
                 {
                     List<Type> types = db.Type.ToList();
