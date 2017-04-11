@@ -176,6 +176,11 @@ namespace WpfHotel
                 using (var db = new hotelEntities())
                 {
                     var room = RoomList.SelectedItem as Room;
+                    List<Order> orders = db.Order.Where(o => o.RoomId == room.Id).Where(o => o.Finish == 0).ToList();
+                    if (orders.Any(order => order.InDate < _order.LeaveDate))
+                    {
+                        throw new Exception("该房间在指定日期里有预定，请重新选择房间或日期");
+                    }
                     _order.Price = room.Price * _order.Day;
                     if (_order.Id == 0)
                     {
