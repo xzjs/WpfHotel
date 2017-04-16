@@ -26,6 +26,7 @@ namespace WpfHotel
         public Config Config;
         public Information Information;
         private ObservableCollection<Type> _types;
+        private string str = "";
         public MainWindow()
         {
             InitializeComponent();
@@ -46,18 +47,12 @@ namespace WpfHotel
             LoadThemeData();
             ThemeComboBox.ItemsSource = _types;
 
-            LoadRoomData();
+            //LoadRoomData();
 
             using (var db=new hotelEntities())
             {
                 Config = db.Config.FirstOrDefault();
                 Information = db.Information.FirstOrDefault();
-                if (Config == null || Information == null)
-                {
-                    LoginWindow loginWindow=new LoginWindow();
-                    loginWindow.ShowDialog();
-                    return;
-                }
             }
             ListenOrderTcp();
         }
@@ -185,30 +180,6 @@ namespace WpfHotel
         }
 
         /// <summary>
-        ///     检查是否设置相关的信息
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Window_Activated(object sender, EventArgs e)
-        {
-            using (var db = new hotelEntities())
-            {
-                var config = db.Config.FirstOrDefault();
-                var information = db.Information.FirstOrDefault();
-                if (config == null || information == null)
-                {
-                    var login = new LoginWindow();
-                    login.ShowDialog();
-                }
-                else
-                {
-                    ((App)Application.Current).Config = config;
-                    ((App)Application.Current).Information = information;
-                }
-            }
-        }
-
-        /// <summary>
         ///     预约
         /// </summary>
         /// <param name="sender"></param>
@@ -272,12 +243,6 @@ namespace WpfHotel
         {
             try
             {
-                if (Config == null || Information == null)
-                {
-                    LoginWindow loginWindow=new LoginWindow();
-                    loginWindow.ShowDialog();
-                    return;
-                }
                 IConnectionFactory factory = new ConnectionFactory("tcp://" + Config.Tcp + ":" + Config.Port);
                 var connection = factory.CreateConnection();
                 connection.ClientId = Information.HotelId.ToString();
@@ -404,7 +369,7 @@ namespace WpfHotel
         {
             try
             {
-                var msg = (ITextMessage)message;
+                var msg = (ITextMessage) message;
                 Console.WriteLine(msg.Text);
                 using (var db = new hotelEntities())
                 {
@@ -413,14 +378,14 @@ namespace WpfHotel
                     {
                         Order order = new Order
                         {
-                            InDate = Convert.ToDateTime((string)item["inDateStr"]),
-                            Day = (int)item["inDays"],
-                            LeaveDate = Convert.ToDateTime((string)item["leaveDateStr"]),
-                            Price = (decimal)item["price"],
-                            Remark = (string)item["remark"],
+                            InDate = Convert.ToDateTime((string) item["inDateStr"]),
+                            Day = (int) item["inDays"],
+                            LeaveDate = Convert.ToDateTime((string) item["leaveDateStr"]),
+                            Price = (decimal) item["price"],
+                            Remark = (string) item["remark"],
                             Finish = 0,
-                            Status = 1,//已预订
-                            ServerId = (long)item["orderId"]
+                            Status = 1, //已预订
+                            ServerId = (long) item["orderId"]
                         };
                         long roomId = (long) item["roomId"];
                         Room room = db.Room.First(r => r.ServerId == roomId);
@@ -431,8 +396,8 @@ namespace WpfHotel
                         {
                             User user = new User
                             {
-                                Code = (string)_user["cardCode"],
-                                Name = (string)_user["name"],
+                                Code = (string) _user["cardCode"],
+                                Name = (string) _user["name"],
                                 OrderId = order.Id,
                                 Phone = 0,
                                 Sex = "男"
@@ -441,14 +406,29 @@ namespace WpfHotel
                         }
                         db.SaveChanges();
                         Dispatcher.Invoke(DispatcherPriority.Normal, new Action(LoadRoomData));
+                        str = "收到新订单";
                     }
                 }
             }
             catch (Exception exception)
             {
-                MessageBox.Show("预订订单数据错误"+exception.Message);
-
+                //MessageBox.Show("预订订单数据错误" + exception.Message);
+                str = "接收订单失败，" + exception.Message;
             }
+            finally
+            {
+                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(ShowMessageWindow));
+            }
+        }
+
+        private void ShowMessageWindow()
+        {
+            MessageWindow messageWindow = new MessageWindow(str)
+            {
+                Left = SystemParameters.PrimaryScreenWidth - 300,
+                Top = SystemParameters.WorkArea.Height - 300
+            };
+            messageWindow.Show();
         }
 
         private void UploadQueue(object sender, EventArgs e)

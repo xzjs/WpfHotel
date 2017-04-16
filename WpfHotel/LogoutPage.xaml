@@ -1,0 +1,44 @@
+﻿<Page x:Class="WpfHotel.LogoutPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfHotel"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+      Title="LogoutPage">
+
+    <Grid>
+        <DockPanel>
+            <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+                <TextBlock Text="系统设置" Foreground="White" Margin="20" MouseLeftButtonUp="TextBlock_MouseLeftButtonUp" />
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel>
+                    <StackPanel>
+                        <TextBlock x:Name="TextBlock" Width="370" FontSize="20" TextAlignment="Center" Foreground="White"></TextBlock>
+                    </StackPanel>
+                    <StackPanel>
+
+                        <Button Height="50" BorderBrush="{x:Null}" FontSize="20"
+                                    Click="Button_Click" Style="{DynamicResource SquareButtonStyle}" FontFamily="Microsoft YaHei" Margin="0,50,0,0" Foreground="White">
+                            <Button.Background>
+                                <ImageBrush ImageSource="img/保存并返回登录界面.png"/>
+                            </Button.Background>
+                            注销
+                        </Button>
+                        <Button Height="50" BorderBrush="{x:Null}" FontSize="20"
+                                    Click="Enter"  Style="{DynamicResource SquareButtonStyle}" FontFamily="Microsoft YaHei" Margin="0,10,0,0" Foreground="White">
+                            <Button.Background>
+                                <ImageBrush ImageSource="img/保存并返回登录界面.png"/>
+                            </Button.Background>
+                            进入
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+
+            </StackPanel>
+
+        </DockPanel>
+    </Grid>
+</Page>

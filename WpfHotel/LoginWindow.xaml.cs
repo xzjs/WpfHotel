@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using System.Linq;
+using MahApps.Metro.Controls;
 
 namespace WpfHotel
 {
@@ -7,13 +8,23 @@ namespace WpfHotel
     /// </summary>
     public partial class LoginWindow : MetroWindow
     {
+        public Information Information;
         public LoginWindow()
         {
             InitializeComponent();
 
-            var lg = new LoginPage();
-            lg.ParentWindow = this;
-            PageFrame.Content = lg;
+            using (var db = new hotelEntities())
+            {
+                Information = db.Information.FirstOrDefault();
+                if (Information != null)
+                {
+                    PageFrame.Content = new LogoutPage(this);
+                }
+                else
+                {
+                    PageFrame.Content = new LoginPage(this);
+                }
+            }
         }
     }
 }

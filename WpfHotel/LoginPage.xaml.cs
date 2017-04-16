@@ -16,18 +16,22 @@ namespace WpfHotel
     /// </summary>
     public partial class LoginPage : Page
     {
-        public LoginPage()
+        private readonly LoginWindow _loginWindow;
+        private Config _config;
+        public LoginPage(LoginWindow loginWindow)
         {
             InitializeComponent();
+            _loginWindow = loginWindow;
+            using (var db = new hotelEntities())
+            {
+                _config = db.Config.First();
+            }
         }
-
-        public LoginWindow ParentWindow { get; set; }
 
         private void TextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            var sup = new SetUpPage();
-            sup.ParentWindow = ParentWindow;
-            ParentWindow.PageFrame.Content = sup;
+            var sup = new SetUpPage(_loginWindow);
+            _loginWindow.PageFrame.Content = sup;
         }
 
         /// <summary>
@@ -41,38 +45,43 @@ namespace WpfHotel
             {
                 using (var db = new hotelEntities())
                 {
-                    var config = db.Config.FirstOrDefault();
-                    if (config == null)
-                        throw new Exception("请先配置相关参数");
+                    _config = db.Config.First();
                     var name = NameTextbox.Text.Trim();
                     var p = Marshal.SecureStringToBSTR(PwdBox.SecurePassword);
                     var password = Marshal.PtrToStringBSTR(p);
 
                     using (var client = new WebClient())
                     {
+
                         var values = new NameValueCollection
                         {
                             ["account"] = name,
                             ["password"] = password
                         };
 
-                        var response = client.UploadValues("http://" + config.Http + "/hotelLogin/login.nd", values);
+                        var response = client.UploadValues("http://" + _config.Http + "/hotelLogin/login.nd", values);
 
-                        var responseString = Encoding.Default.GetString(response);
+                        var responseString = Encoding.UTF8.GetString(response);
                         var jo = JObject.Parse(responseString);
                         if (jo["id"] != null)
                         {
-                            var i = db.Information.FirstOrDefault() ?? new Information();
-                            i.HotelId = (int) jo["id"];
-                            if (i.Id == 0)
-                                db.Information.Add(i);
+                            var i = new Information()
+                            {
+                                HotelId = (int)jo["id"]
+                            };
+
+                            db.Information.Add(i);
+
                             db.SaveChanges();
-                            MessageBox.Show("登陆成功");
+                            Button.Content = "登录成功，正在初始化数据";
+                            ProgressRing.IsActive = true;
+                            Init();
+                            MainWindow mainWindow = new MainWindow();
+                            mainWindow.Show();
+                            _loginWindow.Close();
                         }
                         else
-                        {
                             MessageBox.Show("登录失败");
-                        }
                     }
                 }
             }
@@ -83,99 +92,74 @@ namespace WpfHotel
         }
 
         /// <summary>
-        ///     更新数据
+        /// 初始化数据
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void UpdateData(object sender, RoutedEventArgs e)
+        private void Init()
         {
             try
             {
                 using (var db = new hotelEntities())
                 {
-                    var config = db.Config.FirstOrDefault();
-                    if (config == null)
-                        throw new Exception("请填写配置信息");
-                    var information = db.Information.FirstOrDefault();
-                    if (information == null)
-                        throw new Exception("请先登录");
-
-                    var count = db.Order.Count(x => x.Finish == 0);
-                    if (count > 0)
-                        throw new Exception("有未完成的订单,无法更新数据");
-                    var messageBoxResult = MessageBox.Show("更新数据将会清空订单和历史数据，是否更新", "是否更新数据",
-                        MessageBoxButton.OKCancel);
-                    if (messageBoxResult == MessageBoxResult.OK)
-                        using (var client = new WebClient())
+                    using (var client = new WebClient())
+                    {
+                        client.Encoding = Encoding.UTF8;
+                        Information information = db.Information.First();
+                        var responseString =
+                                client.DownloadString("http://" + _config.Http + "/hotelClient/getThemeList.nd?hotelId=" +
+                                                      information.HotelId);
+                        var jo = JObject.Parse(responseString);
+                        if (jo["themeRoomList"] != null)
                         {
-                            client.Encoding = Encoding.UTF8;
-                            var responseString =
-                                client.DownloadString("http://" + config.Http + "/hotelClient/getThemeList.nd?hotelId=" +
-                                                      information.HotelId);
-                            var jo = JObject.Parse(responseString);
-                            if (jo["themeRoomList"] != null)
+                            foreach (var item in jo["themeRoomList"])
                             {
-                                db.Database.ExecuteSqlCommand("DELETE FROM [Account]");
-                                db.Database.ExecuteSqlCommand("DELETE FROM [Invoice]");
-                                db.Database.ExecuteSqlCommand("DELETE FROM [User]");
-                                db.Database.ExecuteSqlCommand("DELETE FROM [Order]");
-                                db.Database.ExecuteSqlCommand("DELETE FROM Room");
-                                db.Database.ExecuteSqlCommand("DELETE FROM [Type]");
-
-                                foreach (var item in jo["themeRoomList"])
+                                var type = new Type
                                 {
-                                    var type = new Type
-                                    {
-                                        ServerId = (long) item["id"],
-                                        Name = (string) item["name"]
-                                    };
-                                    db.Type.Add(type);
-                                }
+                                    ServerId = (long)item["id"],
+                                    Name = (string)item["name"]
+                                };
+                                db.Type.Add(type);
                             }
-                            db.SaveChanges();
-                            responseString =
-                                client.DownloadString("http://" + config.Http + "/hotelClient/roomInfoById.nd?id=" +
-                                                      information.HotelId);
-                            jo = JObject.Parse(responseString);
-                            if (jo["roomList"] != null)
-                                foreach (var item in jo["roomList"])
-                                {
-                                    try
-                                    {
-                                        var room = new Room
-                                        {
-                                            No = (int)item["roomNum"],
-                                            ServerId = (long)item["id"],
-                                            Status = 1,
-                                            Price = (decimal)item["price"],
-                                            Limit = (int)item["numberLimit"],
-                                            Details = (string)item["roomDetails"],
-                                            Square = (double)item["roomSquare"]
-                                        };
-                                        var typeId = (long)item["roomThemeId"];
-                                        var type = db.Type.FirstOrDefault(x => x.ServerId == typeId);
-                                        if (type != null)
-                                            room.TypeId = type.Id;
-                                        db.Room.Add(room);
-                                    }
-                                    catch (Exception exception)
-                                    {
-                                        MessageBox.Show("房间"+ (string)item["roomNum"]+"数据有误,"+exception.Message);
-                                    }
-                                    
-                                }
-                            db.SaveChanges();
-                            MessageBox.Show("更新数据成功");
-                            var mainWindow=Application.Current.MainWindow as MainWindow;
-                            mainWindow.LoadThemeData();
-                            mainWindow.LoadRoomData();
-                            
                         }
+                        db.SaveChanges();
+                        responseString =
+                            client.DownloadString("http://" + _config.Http + "/hotelClient/roomInfoById.nd?id=" +
+                                                  information.HotelId);
+                        jo = JObject.Parse(responseString);
+                        if (jo["roomList"] != null)
+                            foreach (var item in jo["roomList"])
+                            {
+                                try
+                                {
+                                    var room = new Room
+                                    {
+                                        No = (int)item["roomNum"],
+                                        ServerId = (long)item["id"],
+                                        Status = 1,
+                                        Price = (decimal)item["price"],
+                                  
+                                        Details = (string)item["roomDetails"]
+                                      
+                                    };
+                                    var typeId = (long)item["roomThemeId"];
+                                    var type = db.Type.FirstOrDefault(x => x.ServerId == typeId);
+                                    if (type != null)
+                                        room.TypeId = type.Id;
+                                    db.Room.Add(room);
+                                }
+                                catch (Exception exception)
+                                {
+                                    MessageBox.Show("房间" + (string)item["roomNum"] + "数据有误," + exception.Message);
+                                }
+
+                            }
+                        db.SaveChanges();
+                    }
                 }
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                MessageBox.Show(exception.Message);
+                MessageBox.Show(ex.Message);
+                //Console.WriteLine(ex.Message);
             }
         }
     }

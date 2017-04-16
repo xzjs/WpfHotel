@@ -6,21 +6,24 @@
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:local="clr-namespace:WpfHotel"
                       mc:Ignorable="d"
-                      Title="登录" Height="600" Width="900" WindowStartupLocation="CenterScreen">
+                      Title="登录" Height="700" Width="1200" WindowStartupLocation="CenterScreen">
     <Window.Background>
         <ImageBrush ImageSource="img/login_bj.jpg" />
     </Window.Background>
     <Grid>
         <DockPanel>
             <StackPanel DockPanel.Dock="Top">
-                <TextBlock Text="720营地管理系统-营地前台" Foreground="White" FontSize="20" Margin="20" />
+                <TextBlock Text="720营地管理系统-餐厅前台" Foreground="White" FontSize="20" Margin="20" />
             </StackPanel>
-            <StackPanel DockPanel.Dock="Bottom">
-                <Image Source="img/logo.png" Width="150" Margin="0,20" />
-            </StackPanel>
-            <StackPanel>
-                <Frame x:Name="PageFrame" NavigationUIVisibility="Hidden" Width="400" Height="430" />
-            </StackPanel>
+            <DockPanel>
+                <DockPanel Dock="Top">
+                    <Image Source="img/图片logo.png" Width="200"></Image>
+                </DockPanel>
+                <DockPanel Dock="Bottom">
+                    <Image Source="img/星河露营地文字logo.png" Width="200" Margin="0,0,0,10"></Image>
+                </DockPanel>
+                <Frame x:Name="PageFrame" NavigationUIVisibility="Hidden" />
+            </DockPanel>
         </DockPanel>
     </Grid>
 </Controls:MetroWindow>

@@ -15,43 +15,38 @@
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel>
                     <StackPanel x:Name="ConfigStackPanel">
-                        <Border BorderBrush="White" BorderThickness="2" CornerRadius="10" Margin="0,20,0,5">
-                            <StackPanel Orientation="Horizontal" Height="55">
-                                <Image Source="img/zhangpeng.png" Margin="10" />
-                                <TextBlock Text="HTTP接口地址" Foreground="White" VerticalAlignment="Center" Margin="5,0"
-                                           Width="80" TextAlignment="Right" />
+                        <Border BorderBrush="White" BorderThickness="2" CornerRadius="10" Margin="0,5">
+                            <StackPanel Orientation="Horizontal" Width="360" Height="55">
+                                <TextBlock Width="80" Text="HTTP接口地址" VerticalAlignment="Center" TextAlignment="Right"
+                                           Margin="5,0" Foreground="White" />
                                 <TextBox Background="Transparent" Foreground="White" VerticalAlignment="Center"
-                                         Width="200" BorderBrush="Transparent" Margin="5,0" Text="{Binding Http}" />
+                                         Width="260" BorderBrush="#00ABADB3" Margin="5,0" Text="{Binding Path=Http}" />
                             </StackPanel>
                         </Border>
                         <Border BorderBrush="White" BorderThickness="2" CornerRadius="10" Margin="0,5">
-                            <StackPanel Orientation="Horizontal" Height="55">
-                                <Image Source="img/zhangpeng.png" Margin="10" />
-                                <TextBlock Text="TCP IP地址" Foreground="White" VerticalAlignment="Center" Margin="5,0"
-                                           Width="80" TextAlignment="Right" />
+                            <StackPanel Orientation="Horizontal" Height="55" Width="360">
+                                <TextBlock Width="80" Text="TCP IP地址" VerticalAlignment="Center" TextAlignment="Right"
+                                           Margin="5,0" Foreground="White" />
                                 <TextBox Background="Transparent" Foreground="White" VerticalAlignment="Center"
-                                         Width="200" BorderBrush="Transparent" Margin="5,0" Text="{Binding Tcp}" />
+                                         Width="260" BorderBrush="#00ABADB3" Margin="5,0" Text="{Binding Path=Tcp}" />
                             </StackPanel>
                         </Border>
                         <Border BorderBrush="White" BorderThickness="2" CornerRadius="10" Margin="0,5">
-                            <StackPanel Orientation="Horizontal" Height="55">
-                                <Image Source="img/zhangpeng.png" Margin="10" />
-                                <TextBlock Text="TCP端口" Foreground="White" VerticalAlignment="Center" Margin="5,0"
-                                           Width="80" TextAlignment="Right" />
+                            <StackPanel Orientation="Horizontal" Height="55" Width="360">
+                                <TextBlock Width="80" Text="TCP 端口" VerticalAlignment="Center" TextAlignment="Right"
+                                           Margin="5,0" Foreground="White" />
                                 <TextBox Background="Transparent" Foreground="White" VerticalAlignment="Center"
-                                         Width="200" BorderBrush="Transparent" Margin="5,0" Text="{Binding Port}" />
+                                         Width="260" BorderBrush="#00ABADB3" Margin="5,0" Text="{Binding Path=Port}" />
                             </StackPanel>
                         </Border>
                     </StackPanel>
                     <StackPanel>
-
-                        <Button Height="50" BorderBrush="{x:Null}" FontSize="20" Click="Button_Click" Width="290"
-                                Margin="0,20" Style="{DynamicResource SquareButtonStyle}" Foreground="White">
-                            <Button.Background>
-                                <ImageBrush ImageSource="img/grey_button.png" />
-                            </Button.Background>
-                            保存并返回登录页
-                        </Button>
+                        <Border Background="White" Padding="5" BorderThickness="2" CornerRadius="10" Margin="0 60">
+                            <Button Height="50" Background="White" BorderBrush="#00707070" FontSize="20"
+                                    Click="Button_Click">
+                                保存并返回登录页
+                            </Button>
+                        </Border>
                     </StackPanel>
                 </StackPanel>
 
