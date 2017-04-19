@@ -11,7 +11,9 @@ namespace WpfHotel
 {
     using System;
     using System.Collections.Generic;
+    using PropertyChanged;
     
+    [ImplementPropertyChanged]
     public partial class Room
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]

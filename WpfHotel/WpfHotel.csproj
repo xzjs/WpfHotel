@@ -215,6 +215,7 @@
     <Compile Include="MoneyReportWindow.xaml.cs">
       <DependentUpon>MoneyReportWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MyApp.cs" />
     <Compile Include="OnlinePage.xaml.cs">
       <DependentUpon>OnlinePage.xaml</DependentUpon>
     </Compile>

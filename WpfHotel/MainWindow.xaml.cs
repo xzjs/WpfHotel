@@ -31,6 +31,8 @@ namespace WpfHotel
         {
             InitializeComponent();
 
+            MyApp.RoomItems=new ObservableCollection<RoomItem>();
+            RoomList.ItemsSource = MyApp.RoomItems;
             //开启时间线程
             var showTimer = new DispatcherTimer();
             showTimer.Tick += ShowCurrentTimer;
@@ -53,6 +55,8 @@ namespace WpfHotel
             {
                 Config = db.Config.FirstOrDefault();
                 Information = db.Information.FirstOrDefault();
+                MyApp.Config = Config;
+                MyApp.Information = Information;
             }
             ListenOrderTcp();
         }
@@ -131,8 +135,9 @@ namespace WpfHotel
                 }
                 TotalTextBlock.Text = rooms.Count().ToString();
                 CheckInTextBlock.Text = db.Room.Count(r => r.Status == 3 || r.Status == 7).ToString();
-                var roomItems = rooms.Select(room => new RoomItem { Room = room }).ToList();
-                foreach (var roomItem in roomItems)
+                MyApp.ReloadRoomItems();
+                
+                foreach (var roomItem in MyApp.RoomItems)
                 {
                     //判断预抵
                     var order = roomItem.Room.Order.Where(o => o.Finish == 0).FirstOrDefault(o => o.Status == 1);
@@ -150,9 +155,7 @@ namespace WpfHotel
                         roomItem.SetRoomStatus(7);
                         roomItem.Room.Status = 7;
                     }
-                }
-                //roomItems = rooms.Select(room => new RoomItem { Room = room }).ToList();
-                RoomList.ItemsSource = roomItems;
+                }              
             }
         }
 
@@ -233,6 +236,18 @@ namespace WpfHotel
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            switch (ThemeComboBox.SelectedIndex)
+            {
+                case -1:
+                    return;
+                case 0:
+                    MyApp.TypeId = 0;
+                    break;
+                default:
+                    var type = ThemeComboBox.SelectedItem as Type;
+                    MyApp.TypeId = type.Id;
+                    break;
+            }
             LoadRoomData();
         }
 

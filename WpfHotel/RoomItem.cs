@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,7 +15,7 @@ using Newtonsoft.Json.Linq;
 
 namespace WpfHotel
 {
-    public class RoomItem
+    public class RoomItem:INotifyPropertyChanged
     {
         public Room Room { get; set; }
 
@@ -176,6 +178,7 @@ namespace WpfHotel
         {
             var menuItem = sender as MenuItem;
             var status = Convert.ToInt32(menuItem.Tag);
+            
             SetRoomStatus(status);
         }
 
@@ -229,15 +232,17 @@ namespace WpfHotel
                     ["roomId"] = Room.ServerId.ToString(),
                     ["status"] = status.ToString()
                 };
-                var config = ((App)Application.Current).Config;
+                var config = MyApp.Config;
                 try
                 {
                     //更新数据库
                     var room = db.Room.Find(Room.Id);
                     room.Status = status;
                     db.SaveChanges();
-                    MainWindow mainWindow = Application.Current.MainWindow as MainWindow;
-                    mainWindow.LoadRoomData();
+                    
+                    //更新数据源
+                    MyApp.ReloadRoomItems();
+
                     //更新服务器
 
                     using (var client = new WebClient())
@@ -288,6 +293,12 @@ namespace WpfHotel
             checkInWindow.ShowDialog();
         }
 
-        
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
