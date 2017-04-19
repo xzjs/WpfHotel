@@ -25,6 +25,8 @@ namespace WpfHotel
     {
         public Config Config;
         public Information Information;
+        public ObservableCollection<MessageWindow> MessageWindows;
+
         private ObservableCollection<Type> _types;
         private string str = "";
         public MainWindow()
@@ -49,7 +51,8 @@ namespace WpfHotel
             LoadThemeData();
             ThemeComboBox.ItemsSource = _types;
 
-            //LoadRoomData();
+            MessageWindows=new ObservableCollection<MessageWindow>();
+            MessageWindows.CollectionChanged += ArrageWindow;
 
             using (var db=new hotelEntities())
             {
@@ -59,6 +62,25 @@ namespace WpfHotel
                 MyApp.Information = Information;
             }
             ListenOrderTcp();
+        }
+
+        /// <summary>
+        /// 排列显示消息窗口
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ArrageWindow(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            double height = SystemParameters.WorkArea.Height;
+            double width = SystemParameters.WorkArea.Width;
+            int max =Convert.ToInt32(Math.Floor(height / 200));
+            
+            for (int i = 0; i < MessageWindows.Count; i++)
+            {
+                MessageWindows[i].Top = height - 200 * (i + 1);
+                int n = i % max;
+                MessageWindows[i].Left = width - 300 * (n + 1);
+            }
         }
 
         /// <summary>
@@ -438,12 +460,9 @@ namespace WpfHotel
 
         private void ShowMessageWindow()
         {
-            MessageWindow messageWindow = new MessageWindow(str)
-            {
-                Left = SystemParameters.PrimaryScreenWidth - 300,
-                Top = SystemParameters.WorkArea.Height - 300
-            };
+            MessageWindow messageWindow = new MessageWindow(str, this);
             messageWindow.Show();
+            MessageWindows.Add(messageWindow);
         }
 
         private void UploadQueue(object sender, EventArgs e)

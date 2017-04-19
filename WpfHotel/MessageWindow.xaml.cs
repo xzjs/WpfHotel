@@ -21,19 +21,27 @@ namespace WpfHotel
     /// </summary>
     public partial class MessageWindow : MetroWindow
     {
-        public MessageWindow(string message)
+        private readonly MainWindow _mainWindow;
+        public MessageWindow(string message, MainWindow mainWindow, string title="消息弹窗")
         {
+            _mainWindow = mainWindow;
             InitializeComponent();
             TextBlock.Text = message;
-            var dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += CloseWindow;
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 5);
-            dispatcherTimer.Start();
+            Title = title;
+            //var dispatcherTimer = new DispatcherTimer();
+            //dispatcherTimer.Tick += CloseWindow;
+            //dispatcherTimer.Interval = new TimeSpan(0, 0, 5);
+            //dispatcherTimer.Start();
         }
 
         private void CloseWindow(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void MessageWindow_OnClosed(object sender, EventArgs e)
+        {
+            _mainWindow.MessageWindows.Remove(this);
         }
     }
 }
