@@ -63,7 +63,8 @@ namespace WpfHotel
 
                         var responseString = Encoding.UTF8.GetString(response);
                         var jo = JObject.Parse(responseString);
-                        if (jo["id"] != null)
+                        var str = (string)jo["id"];
+                        if (str != null)
                         {
                             var i = new Information()
                             {
@@ -81,7 +82,7 @@ namespace WpfHotel
                             _loginWindow.Close();
                         }
                         else
-                            MessageBox.Show("登录失败");
+                            MessageBox.Show("登录失败,账号或密码错误");
                     }
                 }
             }

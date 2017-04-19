@@ -7,10 +7,10 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        Title="消息弹窗" Height="300" Width="300" Closed="MessageWindow_OnClosed">
+        Title="消息弹窗" Height="200" Width="300" Closed="MessageWindow_OnClosed" ShowActivated="False">
     <Grid>
         <DockPanel>
-            <TextBlock x:Name="TextBlock"></TextBlock>
+            <TextBlock x:Name="TextBlock" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
         </DockPanel>
     </Grid>
 </controls:MetroWindow>

@@ -29,7 +29,7 @@
                                 <Image Source="img/pwd.png" Margin="10" />
                                 <PasswordBox x:Name="PwdBox" Background="{x:Null}" Foreground="White"
                                              VerticalAlignment="Center" Width="285" BorderBrush="{x:Null}"
-                                             Password="weifang" FontSize="20" />
+                                             Password="123" FontSize="20" />
                             </StackPanel>
                         </Border>
                     </StackPanel>

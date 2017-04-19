@@ -33,7 +33,7 @@ namespace WpfHotel
         {
             InitializeComponent();
 
-            MyApp.RoomItems=new ObservableCollection<RoomItem>();
+            MyApp.RoomItems = new ObservableCollection<RoomItem>();
             RoomList.ItemsSource = MyApp.RoomItems;
             //开启时间线程
             var showTimer = new DispatcherTimer();
@@ -42,19 +42,19 @@ namespace WpfHotel
             showTimer.Start();
 
             //开启队列线程
-            var uploadQueue=new DispatcherTimer();
+            var uploadQueue = new DispatcherTimer();
             uploadQueue.Tick += UploadQueue;
-            uploadQueue.Interval=new TimeSpan(1,0,0);
+            uploadQueue.Interval = new TimeSpan(1, 0, 0);
             uploadQueue.Start();
 
             _types = new ObservableCollection<Type>();
             LoadThemeData();
             ThemeComboBox.ItemsSource = _types;
 
-            MessageWindows=new ObservableCollection<MessageWindow>();
+            MessageWindows = new ObservableCollection<MessageWindow>();
             MessageWindows.CollectionChanged += ArrageWindow;
 
-            using (var db=new hotelEntities())
+            using (var db = new hotelEntities())
             {
                 Config = db.Config.FirstOrDefault();
                 Information = db.Information.FirstOrDefault();
@@ -73,12 +73,12 @@ namespace WpfHotel
         {
             double height = SystemParameters.WorkArea.Height;
             double width = SystemParameters.WorkArea.Width;
-            int max =Convert.ToInt32(Math.Floor(height / 200));
-            
+            int max = Convert.ToInt32(Math.Floor(height / 200));
+
             for (int i = 0; i < MessageWindows.Count; i++)
             {
                 MessageWindows[i].Top = height - 200 * (i + 1);
-                int n = i % max;
+                int n = i / max;
                 MessageWindows[i].Left = width - 300 * (n + 1);
             }
         }
@@ -157,9 +157,8 @@ namespace WpfHotel
                 }
                 TotalTextBlock.Text = rooms.Count().ToString();
                 CheckInTextBlock.Text = db.Room.Count(r => r.Status == 3 || r.Status == 7).ToString();
-                MyApp.ReloadRoomItems();
-                
-                foreach (var roomItem in MyApp.RoomItems)
+
+                foreach (RoomItem roomItem in MyApp.RoomItems)
                 {
                     //判断预抵
                     var order = roomItem.Room.Order.Where(o => o.Finish == 0).FirstOrDefault(o => o.Status == 1);
@@ -168,16 +167,15 @@ namespace WpfHotel
                     if (inDateTime == DateTime.Today && roomItem.Room.Status != 2)
                     {
                         roomItem.SetRoomStatus(2);
-                        roomItem.Room.Status = 2;
                     }
                     //判断预离
                     var leaveDateTime = order.LeaveDate.Value.Date;
                     if (leaveDateTime == DateTime.Today && roomItem.Room.Status != 7)
                     {
                         roomItem.SetRoomStatus(7);
-                        roomItem.Room.Status = 7;
                     }
-                }              
+                }
+                MyApp.ReloadRoomItems();
             }
         }
 
@@ -303,15 +301,15 @@ namespace WpfHotel
         {
             try
             {
-                var msg = (ITextMessage) message;
+                var msg = (ITextMessage)message;
                 Console.WriteLine(msg.Text);
                 using (var db = new hotelEntities())
                 {
                     var jo = JArray.Parse(msg.Text);
                     foreach (var item in jo)
                     {
-                        int modifyType = (int) item["modifyType"];
-                        if ((int) item["modifyItem"] == 0) //修改房间
+                        int modifyType = (int)item["modifyType"];
+                        if ((int)item["modifyItem"] == 0) //修改房间
                         {
                             if (modifyType == 0) //添加
                             {
@@ -345,12 +343,12 @@ namespace WpfHotel
                                 Room room = db.Room.FirstOrDefault(t => t.ServerId == roomId);
                                 if (room != null)
                                 {
-                                    room.Limit = (int) item["roomInfo"]["numberLimit"];
-                                    room.Price = (decimal) item["roomInfo"]["price"];
-                                    room.Details = (string) item["roomInfo"]["roomDetails"];
-                                    room.No = (int) item["roomInfo"]["roomNum"];
-                                    room.Square = (double) item["roomInfo"]["roomSquare"];
-                                    long typeId = (long) item["roomInfo"]["roomThemeId"];
+                                    room.Limit = (int)item["roomInfo"]["numberLimit"];
+                                    room.Price = (decimal)item["roomInfo"]["price"];
+                                    room.Details = (string)item["roomInfo"]["roomDetails"];
+                                    room.No = (int)item["roomInfo"]["roomNum"];
+                                    room.Square = (double)item["roomInfo"]["roomSquare"];
+                                    long typeId = (long)item["roomInfo"]["roomThemeId"];
                                     Type type = db.Type.First(t => t.ServerId == typeId);
                                     room.TypeId = type.Id;
                                 }
@@ -360,7 +358,7 @@ namespace WpfHotel
                         {
                             if (modifyType == 0) //添加
                             {
-                                Type type=new Type
+                                Type type = new Type
                                 {
                                     ServerId = (long)item["themeInfo"]["id"],
                                     Name = (string)item["themeInfo"]["name"]
@@ -369,7 +367,7 @@ namespace WpfHotel
                             }
                             else if (modifyType == 1) //删除
                             {
-                                long typeId = (long) item["themeInfo"]["id"];
+                                long typeId = (long)item["themeInfo"]["id"];
                                 Type type = db.Type.FirstOrDefault(t => t.ServerId == typeId);
                                 if (type != null)
                                 {
@@ -382,7 +380,7 @@ namespace WpfHotel
                                 Type type = db.Type.FirstOrDefault(t => t.ServerId == typeId);
                                 if (type != null)
                                 {
-                                    type.Name = (string) item["themeInfo"]["name"];
+                                    type.Name = (string)item["themeInfo"]["name"];
                                 }
                             }
                         }
@@ -397,7 +395,7 @@ namespace WpfHotel
             }
             catch (Exception exception)
             {
-                MessageBox.Show("修改数据错误"+exception.Message);
+                MessageBox.Show("修改数据错误" + exception.Message);
 
             }
         }
@@ -406,7 +404,7 @@ namespace WpfHotel
         {
             try
             {
-                var msg = (ITextMessage) message;
+                var msg = (ITextMessage)message;
                 Console.WriteLine(msg.Text);
                 using (var db = new hotelEntities())
                 {
@@ -415,34 +413,38 @@ namespace WpfHotel
                     {
                         Order order = new Order
                         {
-                            InDate = Convert.ToDateTime((string) item["inDateStr"]),
-                            Day = (int) item["inDays"],
-                            LeaveDate = Convert.ToDateTime((string) item["leaveDateStr"]),
-                            Price = (decimal) item["price"],
-                            Remark = (string) item["remark"],
+                            InDate = Convert.ToDateTime((string)item["inDateStr"]),
+                            Day = (int)item["inDays"],
+                            LeaveDate = Convert.ToDateTime((string)item["leaveDateStr"]),
+                            Price = (decimal)item["price"],
+                            Remark = (string)item["remark"],
                             Finish = 0,
                             Status = 1, //已预订
-                            ServerId = (long) item["orderId"]
+                            ServerId = (long)item["orderId"]
                         };
-                        long roomId = (long) item["roomId"];
+                        long roomId = (long)item["roomId"];
                         Room room = db.Room.First(r => r.ServerId == roomId);
                         order.RoomId = room.Id;
                         db.Order.Add(order);
                         db.SaveChanges();
-                        foreach (var _user in item["userList"])
+
+                        User user = new User
                         {
-                            User user = new User
-                            {
-                                Code = (string) _user["cardCode"],
-                                Name = (string) _user["name"],
-                                OrderId = order.Id,
-                                Phone = 0,
-                                Sex = "男"
-                            };
-                            db.User.Add(user);
-                        }
+                            Code = "0",
+                            Name = (string)item["linkManName"],
+                            OrderId = order.Id,
+                            Phone = (long)item["linkMobile"],
+                            Sex = "男"
+                        };
+                        db.User.Add(user);
+
                         db.SaveChanges();
-                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(LoadRoomData));
+                        if (order.InDate.Value.Date == DateTime.Today)
+                        {
+                            RoomItem roomItem=new RoomItem {Room = room};
+                            roomItem.SetRoomStatus(2);
+                        }
+                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(RefreshRoomData));
                         str = "收到新订单";
                     }
                 }
@@ -456,6 +458,11 @@ namespace WpfHotel
             {
                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(ShowMessageWindow));
             }
+        }
+
+        private void RefreshRoomData()
+        {
+            MyApp.ReloadRoomItems();
         }
 
         private void ShowMessageWindow()
@@ -489,7 +496,7 @@ namespace WpfHotel
 
                                 var responseString = Encoding.Default.GetString(response);
                                 var jo = JObject.Parse(responseString);
-                                if ((string) jo["errorFlag"] == "false")
+                                if ((string)jo["errorFlag"] == "false")
                                 {
                                     db.Queue.Remove(queue);
                                     db.SaveChanges();
@@ -503,11 +510,11 @@ namespace WpfHotel
                             {
                                 MessageBox.Show(exception.Message);
                             }
-                            
+
                         }
                     }
                 }
-                
+
             }
         }
     }

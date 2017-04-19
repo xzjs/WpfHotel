@@ -180,6 +180,7 @@ namespace WpfHotel
             var status = Convert.ToInt32(menuItem.Tag);
             
             SetRoomStatus(status);
+            MyApp.ReloadRoomItems();
         }
 
         /// <summary>
@@ -239,9 +240,6 @@ namespace WpfHotel
                     var room = db.Room.Find(Room.Id);
                     room.Status = status;
                     db.SaveChanges();
-                    
-                    //更新数据源
-                    MyApp.ReloadRoomItems();
 
                     //更新服务器
 
