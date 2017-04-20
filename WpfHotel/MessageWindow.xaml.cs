@@ -22,7 +22,7 @@ namespace WpfHotel
     public partial class MessageWindow : MetroWindow
     {
         private readonly MainWindow _mainWindow;
-        public MessageWindow(string message, MainWindow mainWindow, string title="消息弹窗")
+        public MessageWindow(string message, MainWindow mainWindow, string title="通知")
         {
             _mainWindow = mainWindow;
             InitializeComponent();

@@ -316,11 +316,11 @@ namespace WpfHotel
                                 var room = new Room
                                 {
                                     ServerId = (long)item["roomInfo"]["id"],
-                                    Limit = (int)item["roomInfo"]["numberLimit"],
+                                 
                                     Price = (decimal)item["roomInfo"]["price"],
                                     Details = (string)item["roomInfo"]["roomDetails"],
                                     No = (int)item["roomInfo"]["roomNum"],
-                                    Square = (double)item["roomInfo"]["roomSquare"],
+                                    
                                     Status = 1
                                 };
                                 long typeId = (long)item["roomInfo"]["roomThemeId"];
@@ -343,11 +343,12 @@ namespace WpfHotel
                                 Room room = db.Room.FirstOrDefault(t => t.ServerId == roomId);
                                 if (room != null)
                                 {
-                                    room.Limit = (int)item["roomInfo"]["numberLimit"];
+                               
                                     room.Price = (decimal)item["roomInfo"]["price"];
                                     room.Details = (string)item["roomInfo"]["roomDetails"];
                                     room.No = (int)item["roomInfo"]["roomNum"];
-                                    room.Square = (double)item["roomInfo"]["roomSquare"];
+                                    room.Status = (int) item["roomInfo"]["roomStatus"];
+                                
                                     long typeId = (long)item["roomInfo"]["roomThemeId"];
                                     Type type = db.Type.First(t => t.ServerId == typeId);
                                     room.TypeId = type.Id;
@@ -385,18 +386,39 @@ namespace WpfHotel
                             }
                         }
                         db.SaveChanges();
-                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
+                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(LoadThemeData));
+                        str = "修改数据成功\n";
+                        switch (modifyType)
                         {
-                            LoadThemeData();
-                            LoadRoomData();
-                        }));
+                            case 0:
+                                str += "添加";
+                                break;
+                            case 1:
+                                str += "删除";
+                                break;
+                            default:
+                                str += "修改";
+                                break;
+                        }
+                        if ((int) item["modifyItem"] == 0)
+                        {
+                            str += "房间" + (int) item["roomInfo"]["roomNum"];
+                        }
+                        else
+                        {
+                            str += "主题" + (string) item["themeInfo"]["name"];
+                        }
                     }
                 }
             }
             catch (Exception exception)
             {
-                MessageBox.Show("修改数据错误" + exception.Message);
-
+                //MessageBox.Show("修改数据错误" + exception.Message);
+                str = "修改数据错误" + exception.Message;
+            }
+            finally
+            {
+                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(ShowMessageWindow));
             }
         }
 
@@ -445,7 +467,7 @@ namespace WpfHotel
                             roomItem.SetRoomStatus(2);
                         }
                         Dispatcher.Invoke(DispatcherPriority.Normal, new Action(RefreshRoomData));
-                        str = "收到新订单";
+                        str = "收到新订单\n用户名称："+user.Name+"\n联系方式"+user.Phone;
                     }
                 }
             }
@@ -457,7 +479,7 @@ namespace WpfHotel
             finally
             {
                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(ShowMessageWindow));
-            }
+            } 
         }
 
         private void RefreshRoomData()
