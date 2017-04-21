@@ -27,8 +27,10 @@ namespace WpfHotel
         public Information Information;
         public ObservableCollection<MessageWindow> MessageWindows;
 
-        private ObservableCollection<Type> _types;
-        private string str = "";
+        private readonly ObservableCollection<Type> _types;
+        private string _str = "";
+        private IConnection _connection;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -286,21 +288,73 @@ namespace WpfHotel
             try
             {
                 IConnectionFactory factory = new ConnectionFactory("tcp://" + Config.Tcp + ":" + Config.Port);
-                var connection = factory.CreateConnection();
-                connection.ClientId = Information.HotelId.ToString();
-                connection.Start();
+                _connection = factory.CreateConnection();
+                _connection.ClientId = Information.HotelId.ToString();
+                _connection.Start();
 
-                var session = connection.CreateSession();
+                var session = _connection.CreateSession();
                 var consumer = session.CreateConsumer(new ActiveMQQueue("hotelOrder" + Information.HotelId));
                 consumer.Listener += consumer_Listener;
 
-                var session1 = connection.CreateSession();
+                var session1 = _connection.CreateSession();
                 var consumer1 = session1.CreateConsumer(new ActiveMQQueue("hotelModifyModify" + Information.HotelId));
                 consumer1.Listener += Modify;
+
+                var cancelConsumer =
+                    session.CreateConsumer(new ActiveMQQueue("hotelOrderCancel" + MyApp.Information.HotelId));
+                cancelConsumer.Listener += OrderCancel;
+
             }
             catch (Exception exception)
             {
                 MessageBox.Show(exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// 取消订单接口
+        /// </summary>
+        /// <param name="message"></param>
+        private void OrderCancel(IMessage message)
+        {
+            try
+            {
+                var msg = (ITextMessage)message;
+                Console.WriteLine(msg.Text);
+                var jo = JArray.Parse(msg.Text);
+                foreach (var item in jo)
+                {
+                    long orderId = (long)item["orderId"];
+                    int status = (int)item["status"];
+                    using (var db = new hotelEntities())
+                    {
+                        Order order = db.Order.FirstOrDefault(o => o.ServerId == orderId);
+                        if (order == null)
+                            continue;
+                        if (status != 4) continue;
+                        
+                        if (order.InDate.Value.Date == DateTime.Today)
+                        {
+                            if (order.Room.Status.Value == 2)
+                            {
+                                RoomItem roomItem = new RoomItem { Room = order.Room };
+                                roomItem.SetRoomStatus(1);
+                            }
+                        }
+                        _str = "房间" + order.Room.No + "订单取消";
+                        db.Order.Remove(order);
+                        db.SaveChanges();
+                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(RefreshRoomData));
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                _str = exception.Message;
+            }
+            finally
+            {
+                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(ShowMessageWindow));
             }
         }
 
@@ -394,26 +448,26 @@ namespace WpfHotel
                         }
                         db.SaveChanges();
                         Dispatcher.Invoke(DispatcherPriority.Normal, new Action(LoadThemeData));
-                        str = "修改数据成功\n";
+                        _str = "修改数据成功\n";
                         switch (modifyType)
                         {
                             case 0:
-                                str += "添加";
+                                _str += "添加";
                                 break;
                             case 1:
-                                str += "删除";
+                                _str += "删除";
                                 break;
                             default:
-                                str += "修改";
+                                _str += "修改";
                                 break;
                         }
                         if ((int)item["modifyItem"] == 0)
                         {
-                            str += "房间" + (int)item["roomInfo"]["roomNum"];
+                            _str += "房间" + (int)item["roomInfo"]["roomNum"];
                         }
                         else
                         {
-                            str += "主题" + (string)item["themeInfo"]["name"];
+                            _str += "主题" + (string)item["themeInfo"]["name"];
                         }
                     }
                 }
@@ -421,7 +475,7 @@ namespace WpfHotel
             catch (Exception exception)
             {
                 //MessageBox.Show("修改数据错误" + exception.Message);
-                str = "修改数据错误" + exception.Message;
+                _str = "修改数据错误" + exception.Message;
             }
             finally
             {
@@ -474,14 +528,14 @@ namespace WpfHotel
                             roomItem.SetRoomStatus(2);
                         }
                         Dispatcher.Invoke(DispatcherPriority.Normal, new Action(RefreshRoomData));
-                        str = "收到新订单\n用户名称：" + user.Name + "\n联系方式" + user.Phone;
+                        _str = "收到新订单\n用户名称：" + user.Name + "\n联系方式" + user.Phone;
                     }
                 }
             }
             catch (Exception exception)
             {
                 //MessageBox.Show("预订订单数据错误" + exception.Message);
-                str = "接收订单失败，" + exception.Message;
+                _str = "接收订单失败，" + exception.Message;
             }
             finally
             {
@@ -496,7 +550,7 @@ namespace WpfHotel
 
         private void ShowMessageWindow()
         {
-            MessageWindow messageWindow = new MessageWindow(str, this);
+            MessageWindow messageWindow = new MessageWindow(_str, this);
             messageWindow.Show();
             MessageWindows.Add(messageWindow);
         }
@@ -527,6 +581,11 @@ namespace WpfHotel
                     db.SaveChanges();
                 }
             }
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            _connection.Close();
         }
     }
 }

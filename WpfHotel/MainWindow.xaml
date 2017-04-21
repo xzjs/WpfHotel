@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfHotel"
         mc:Ignorable="d"
         Title="720营地运营-营地管理系统" Height="579" Width="1024" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        AllowsTransparency="True" WindowStyle="None" MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        AllowsTransparency="True" WindowStyle="None" MouseLeftButtonDown="Window_MouseLeftButtonDown" Closed="Window_Closed"
         >
     <Grid>
         <DockPanel>
