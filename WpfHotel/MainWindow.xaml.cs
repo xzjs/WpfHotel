@@ -81,7 +81,8 @@ namespace WpfHotel
             {
                 MessageWindows[i].Top = height - 200 * (i + 1);
                 int n = i / max;
-                MessageWindows[i].Left = width - 300 * (n + 1);
+                int m = i % max;
+                MessageWindows[i].Left = width - 300 * (m + 1);
             }
         }
 
