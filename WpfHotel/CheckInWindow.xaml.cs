@@ -30,23 +30,23 @@ namespace WpfHotel
             UserDataGrid.ItemsSource = _users;
             using (var db = new hotelEntities())
             {
-                if (order == null || order.Id == 0)
+                if (order == null)
                 {
                     var roomIDs = db.Room.Where(x => x.Status == 1).Select(x => x.TypeId);
                     var types = db.Type.Include("Room").Where(x => roomIDs.Contains(x.Id)).ToList();
                     TypeList.ItemsSource = types;
-                    if (order != null)
-                    {
-                        foreach (var type in types)
-                        {
-                            foreach (var room in type.Room)
-                            {
-                                if (room.Id != order.RoomId.Value) continue;
-                                RoomList.SelectedItem = room;
-                                TypeList.SelectedItem = type;
-                            }
-                        }
-                    }
+                    //if (order != null)
+                    //{
+                    //    foreach (var type in types)
+                    //    {
+                    //        foreach (var room in type.Room)
+                    //        {
+                    //            if (room.Id != order.RoomId.Value) continue;
+                    //            RoomList.SelectedItem = room;
+                    //            TypeList.SelectedItem = type;
+                    //        }
+                    //    }
+                    //}
                     _order = new Order
                     {
                         InDate = DateTime.Today,
@@ -57,7 +57,7 @@ namespace WpfHotel
                         Status = 2
                     };
                 }
-                else
+                else //续住或预约到店
                 {
                     _order = order;
                     var room = db.Room.Find(order.RoomId);
@@ -70,8 +70,15 @@ namespace WpfHotel
                     var users = db.User.Where(x => x.OrderId == order.Id).ToList();
                     foreach (var user in users)
                         _users.Add(user);
-
-                    End.DisplayDateStart = order.LeaveDate;
+                    Start.DisplayDate = order.InDate.Value;
+                    Start.IsEnabled = false;
+                    if (order.Status == 2)
+                        End.DisplayDateStart = order.LeaveDate;
+                    else
+                    {
+                        End.DisplayDate = order.LeaveDate.Value;
+                        End.IsEnabled = false;
+                    }
 
                 }
                 OrderStackPanel.DataContext = _order;
@@ -110,18 +117,16 @@ namespace WpfHotel
         /// <param name="e"></param>
         private void Add_User(object sender, RoutedEventArgs e)
         {
-            if (UserDataGrid.SelectedIndex == -1)
+            if (UserDataGrid.SelectedIndex != -1) return;
+            if (string.IsNullOrEmpty(_user.Name) || string.IsNullOrEmpty(_user.Code) ||
+                string.IsNullOrEmpty(_user.Phone.ToString()))
             {
-                if (string.IsNullOrEmpty(_user.Name) || string.IsNullOrEmpty(_user.Code) ||
-                    string.IsNullOrEmpty(_user.Phone.ToString()))
-                {
-                    MessageBox.Show("请填写相关信息");
-                    return;
-                }
-                _users.Add(_user);
-                _user = new User { Sex = "男", CardType = "二代身份证" };
-                UserInformation.DataContext = _user;
+                MessageBox.Show("请填写相关信息");
+                return;
             }
+            _users.Add(_user);
+            _user = new User { Sex = "男", CardType = "二代身份证" };
+            UserInformation.DataContext = _user;
         }
 
         /// <summary>
@@ -176,123 +181,92 @@ namespace WpfHotel
                 using (var db = new hotelEntities())
                 {
                     var room = RoomList.SelectedItem as Room;
-                    List<Order> orders = db.Order.Where(o => o.RoomId == room.Id).Where(o => o.Finish == 0).ToList();
-                    if (orders.Any(order => order.InDate < _order.LeaveDate))
+                    if (_order.Id == 0)//现场入住
                     {
-                        throw new Exception("该房间在指定日期里有预定，请重新选择房间或日期");
-                    }
-                    _order.Price = room.Price * _order.Day;
-                    if (_order.Id == 0)
-                    {
+                        List<Order> orders = db.Order.Where(o => o.RoomId == room.Id).Where(o => o.Finish == 0).ToList();
+                        if (orders.Any(order => order.InDate < _order.LeaveDate))
+                        {
+                            throw new Exception("该房间在指定日期里有预定，请重新选择房间或日期");
+                        }
+
+                        _order.Price = room.Price * _order.Day;
+
                         //保存订单
                         _order.RoomId = room.Id;
-                        //上传订单
-                        var config = ((App)Application.Current).Config;
-                        var information = ((App)Application.Current).Information;
-                        try
-                        {
-                            using (var client = new WebClient())
-                            {
-                                var orderItem = new OrderItem
-                                {
-                                    hotelId = information.HotelId.Value,
-                                    roomId = room.ServerId.Value,
-                                    inDateStr = _order.InDate.Value.Date.ToString("yyyy-MM-dd"),
-                                    leaveDateStr = _order.LeaveDate.Value.Date.ToString("yyyy-MM-dd"),
-                                    inDays = _order.Day.Value,
-                                    remark = _order.Remark,
-                                    clStatus = 2,
-                                    users = new List<UserItem>()
-                                };
-                                foreach (var user in _users)
-                                {
-                                    var userItem = new UserItem
-                                    {
-                                        name = user.Name,
-                                        sex = user.Sex == "男" ? "male" : "female",
-                                        cardCode = user.Code,
-                                        mobile = user.Phone.Value.ToString()
-                                    };
-                                    orderItem.users.Add(userItem);
-                                }
-                                var json = JsonConvert.SerializeObject(orderItem);
-                                var values = new NameValueCollection
-                                {
-                                    ["details"] = json
-                                };
-                                try
-                                {
-                                    var response =
-                                    client.UploadValues("http://" + config.Http + "/hotelClient/buildOrder.nd", values);
 
-                                    var responseString = Encoding.UTF8.GetString(response);
-                                    var jo = JObject.Parse(responseString);
-                                    if ((string)jo["errorFlag"] != "false")
-                                        MessageBox.Show("上传订单失败");
-                                    else
-                                        _order.ServerId = (long)jo["orderId"];
-                                }
-                                catch (WebException webException)
-                                {
-                                    string parameter = JsonConvert.SerializeObject(new Dictionary<string, string>
-                                    {
-                                        ["details"] = json
-                                    }, Formatting.Indented);
-                                    Queue queue = new Queue()
-                                    {
-                                        Url = "http://" + config.Http + "/hotelClient/buildOrder.nd",
-                                        Type = "POST",
-                                        Time = DateTime.Now,
-                                        Parameter = parameter
-                                    };
-                                    db.Queue.Add(queue);
-                                    db.SaveChanges();
-                                }
-                                
-                            }
-                        }
-                        catch (Exception exception)
+                        #region 上传订单
+                        var orderItem = new OrderItem
                         {
-                            MessageBox.Show(exception.Message);
-                        }
-
-                        db.Order.Add(_order);
-                        db.SaveChanges();
-                        //保存用户
+                            hotelId = MyApp.Information.HotelId.Value,
+                            roomId = room.ServerId.Value,
+                            inDateStr = _order.InDate.Value.Date.ToString("yyyy-MM-dd"),
+                            leaveDateStr = _order.LeaveDate.Value.Date.ToString("yyyy-MM-dd"),
+                            inDays = _order.Day.Value,
+                            remark = _order.Remark,
+                            clStatus = 2,
+                            users = new List<UserItem>()
+                        };
                         foreach (var user in _users)
                         {
-                            user.OrderId = _order.Id;
-                            db.User.Add(user);
+                            var userItem = new UserItem
+                            {
+                                name = user.Name,
+                                sex = user.Sex == "男" ? "male" : "female",
+                                cardCode = user.Code,
+                                mobile = user.Phone.Value.ToString()
+                            };
+                            orderItem.users.Add(userItem);
                         }
-                    }
-                    else
-                    {
-                        //续住
-                        var order = db.Order.Find(_order.Id);
-                        order.LeaveDate = _order.LeaveDate;
-                        order.Day = _order.Day;
-                        order.Price = _order.Price;
-                        if (order.Status.Value == 1)
+                        var json = JsonConvert.SerializeObject(orderItem);
+                        var values = new NameValueCollection
                         {
+                            ["details"] = json
+                        };
+                        string result=MyApp.Upload("/hotelClient/buildOrder.nd", "POST", values);
+                        var jo = JObject.Parse(result);
+                        if ((string)jo["errorFlag"] != "false")
+                            MessageBox.Show("上传订单失败");
+                        else
+                            _order.ServerId = (long)jo["orderId"];
+                        #endregion
+
+                        _order.User = _users;
+                        db.Order.Add(_order);
+                        db.SaveChanges();
+                    }
+                    else//续住或预约到店
+                    {
+                        var order = db.Order.Find(_order.Id);
+
+                        if (order.Status.Value == 1) //预约到店
+                        {
+                            order.User = _users;
+
                             using (var client = new WebClient())
                             {
                                 var values = new NameValueCollection
                                 {
                                     ["orderId"] = order.ServerId.ToString(),
-                                    ["status"] = "1"
+                                    ["status"] = "2"
                                 };
-                                var config = db.Config.First();
                                 var response =
-                                    client.UploadValues("http://" + config.Http + "/hotelClient/setOrderStatus.nd", values);
+                                    client.UploadValues("http://" + MyApp.Config.Http + "/hotelClient/setOrderStatus.nd",
+                                        values);
 
                                 var responseString = Encoding.UTF8.GetString(response);
                                 var jo = JObject.Parse(responseString);
                                 if ((string)jo["errorFlag"] != "false")
                                     MessageBox.Show("上传订单失败");
-                               
+
                             }
                         }
-                        
+                        else//续住
+                        {
+                            order.LeaveDate = _order.LeaveDate;
+                            order.Day = _order.Day;
+                            order.Price = _order.Price;
+                        }
+
                     }
                     db.SaveChanges();
                     //更改房间状态

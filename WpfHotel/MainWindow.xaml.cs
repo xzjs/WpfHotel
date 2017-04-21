@@ -316,11 +316,11 @@ namespace WpfHotel
                                 var room = new Room
                                 {
                                     ServerId = (long)item["roomInfo"]["id"],
-                                 
+
                                     Price = (decimal)item["roomInfo"]["price"],
                                     Details = (string)item["roomInfo"]["roomDetails"],
                                     No = (int)item["roomInfo"]["roomNum"],
-                                    
+
                                     Status = 1
                                 };
                                 long typeId = (long)item["roomInfo"]["roomThemeId"];
@@ -343,12 +343,12 @@ namespace WpfHotel
                                 Room room = db.Room.FirstOrDefault(t => t.ServerId == roomId);
                                 if (room != null)
                                 {
-                               
+
                                     room.Price = (decimal)item["roomInfo"]["price"];
                                     room.Details = (string)item["roomInfo"]["roomDetails"];
                                     room.No = (int)item["roomInfo"]["roomNum"];
-                                    room.Status = (int) item["roomInfo"]["roomStatus"];
-                                
+                                    room.Status = (int)item["roomInfo"]["roomStatus"];
+
                                     long typeId = (long)item["roomInfo"]["roomThemeId"];
                                     Type type = db.Type.First(t => t.ServerId == typeId);
                                     room.TypeId = type.Id;
@@ -400,13 +400,13 @@ namespace WpfHotel
                                 str += "修改";
                                 break;
                         }
-                        if ((int) item["modifyItem"] == 0)
+                        if ((int)item["modifyItem"] == 0)
                         {
-                            str += "房间" + (int) item["roomInfo"]["roomNum"];
+                            str += "房间" + (int)item["roomInfo"]["roomNum"];
                         }
                         else
                         {
-                            str += "主题" + (string) item["themeInfo"]["name"];
+                            str += "主题" + (string)item["themeInfo"]["name"];
                         }
                     }
                 }
@@ -463,11 +463,11 @@ namespace WpfHotel
                         db.SaveChanges();
                         if (order.InDate.Value.Date == DateTime.Today)
                         {
-                            RoomItem roomItem=new RoomItem {Room = room};
+                            RoomItem roomItem = new RoomItem { Room = room };
                             roomItem.SetRoomStatus(2);
                         }
                         Dispatcher.Invoke(DispatcherPriority.Normal, new Action(RefreshRoomData));
-                        str = "收到新订单\n用户名称："+user.Name+"\n联系方式"+user.Phone;
+                        str = "收到新订单\n用户名称：" + user.Name + "\n联系方式" + user.Phone;
                     }
                 }
             }
@@ -479,7 +479,7 @@ namespace WpfHotel
             finally
             {
                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(ShowMessageWindow));
-            } 
+            }
         }
 
         private void RefreshRoomData()
@@ -494,49 +494,31 @@ namespace WpfHotel
             MessageWindows.Add(messageWindow);
         }
 
+        /// <summary>
+        /// 上传队列
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void UploadQueue(object sender, EventArgs e)
         {
             using (var db = new hotelEntities())
             {
-                List<Queue> queues = db.Queue.OrderBy(q => q.Id).ToList();
-                if (queues.Count > 0)
+                List<Queue> queues = db.Queue.ToList();
+                if (queues.Count == 0) return;
+                foreach (var queue in queues)
                 {
-                    using (var client = new WebClient())
+                    Dictionary<string, string> dictionary =
+                        JsonConvert.DeserializeObject<Dictionary<string, string>>(queue.Parameter);
+                    NameValueCollection values = new NameValueCollection();
+                    foreach (var item in dictionary)
                     {
-                        foreach (var queue in queues)
-                        {
-                            try
-                            {
-                                Dictionary<string, string> dictionary =
-                                    JsonConvert.DeserializeObject<Dictionary<string, string>>(queue.Parameter);
-                                NameValueCollection values = new NameValueCollection();
-                                foreach (var item in dictionary)
-                                {
-                                    values[item.Key] = item.Value;
-                                }
-                                var response = client.UploadValues(queue.Url, values);
-
-                                var responseString = Encoding.Default.GetString(response);
-                                var jo = JObject.Parse(responseString);
-                                if ((string)jo["errorFlag"] == "false")
-                                {
-                                    db.Queue.Remove(queue);
-                                    db.SaveChanges();
-                                }
-                            }
-                            catch (WebException webException)
-                            {
-                                break;
-                            }
-                            catch (Exception exception)
-                            {
-                                MessageBox.Show(exception.Message);
-                            }
-
-                        }
+                        values[item.Key] = item.Value;
                     }
+                    string result = MyApp.Upload(queue.Url, queue.Type, values, true);
+                    if (result == null) continue;
+                    db.Queue.Remove(queue);
+                    db.SaveChanges();
                 }
-
             }
         }
     }
