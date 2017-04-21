@@ -30,12 +30,24 @@ namespace WpfHotel
             UserDataGrid.ItemsSource = _users;
             using (var db = new hotelEntities())
             {
-                if (order == null)
+                if (order == null || order.Id == 0)
                 {
                     var roomIDs = db.Room.Where(x => x.Status == 1).Select(x => x.TypeId);
                     var types = db.Type.Include("Room").Where(x => roomIDs.Contains(x.Id)).ToList();
                     TypeList.ItemsSource = types;
-                    
+                    //点击房间入住
+                    if (order != null)
+                    {
+                        foreach (var type in types)
+                        {
+                            foreach (var room in type.Room)
+                            {
+                                if (room.Id != order.RoomId.Value) continue;
+                                RoomList.SelectedItem = room;
+                                TypeList.SelectedItem = type;
+                            }
+                        }
+                    }
                     _order = new Order
                     {
                         InDate = DateTime.Today,
