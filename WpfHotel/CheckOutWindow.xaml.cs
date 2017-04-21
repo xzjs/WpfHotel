@@ -101,49 +101,26 @@ namespace WpfHotel
                     db.Entry(_order).State = EntityState.Modified;
 
                     _order.Status = 3;
-                    using (var client = new WebClient())
-                    {
+                    
                         var values = new NameValueCollection
                         {
                             ["orderId"] = _order.ServerId.ToString(),
-                            ["status"] = "2"
+                            ["status"] = "2"//服务器上2代表已付款
                         };
-                        var config = db.Config.First();
-                        try
-                        {
-                            var response =
-                            client.UploadValues("http://" + config.Http + "/hotelClient/setOrderStatus.nd", values);
 
-                            var responseString = Encoding.UTF8.GetString(response);
-                            var jo = JObject.Parse(responseString);
-                            if ((string)jo["errorFlag"] != "false")
-                                MessageBox.Show("上传订单失败");
-                        }
-                        catch (WebException webException)
-                        {
-                            string parameter = JsonConvert.SerializeObject(new Dictionary<string, string>
-                            {
-                                ["orderId"] = values["orderId"],
-                                ["status"] = "2"
-                            }, Formatting.Indented);
-                            Queue queue = new Queue()
-                            {
-                                Url = "http://" + config.Http + "/hotelClient/setOrderStatus.nd",
-                                Type = "POST",
-                                Time = DateTime.Now,
-                                Parameter = parameter
-                            };
-                            db.Queue.Add(queue);
-                            db.SaveChanges();
-                        }
+                    var responseString = MyApp.Upload("/hotelClient/setOrderStatus.nd","POST",values);
+                    var jo = JObject.Parse(responseString);
+                    if ((string)jo["errorFlag"] != "false")
+                        MessageBox.Show("上传订单失败");
+                   
                         
                         
-
-                    }
+            
                     _order.Finish = 1;
                     db.SaveChanges();
                     var roomItem = new RoomItem {Room = _order.Room};
                     roomItem.SetRoomStatus(4);
+                    MyApp.ReloadRoomItems();
                     Close();
                 }
             }
