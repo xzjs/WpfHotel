@@ -162,17 +162,24 @@ namespace WpfHotel
                 {
                     //判断预抵
                     var order = roomItem.Room.Order.Where(o => o.Finish == 0).FirstOrDefault(o => o.Status == 1);
-                    if (order == null) continue;
-                    var inDateTime = order.InDate.Value.Date;
-                    if (inDateTime == DateTime.Today && roomItem.Room.Status != 2)
+                    if (order != null)
                     {
-                        roomItem.SetRoomStatus(2);
+                        var inDateTime = order.InDate.Value.Date;
+                        if (inDateTime == DateTime.Today && roomItem.Room.Status != 2)
+                        {
+                            roomItem.SetRoomStatus(2);
+                        }
                     }
                     //判断预离
-                    var leaveDateTime = order.LeaveDate.Value.Date;
-                    if (leaveDateTime == DateTime.Today && roomItem.Room.Status != 7)
+                    order = roomItem.Room.Order.Where(o => o.Finish == 0).FirstOrDefault(o => o.Status == 2);
+                    // ReSharper disable once InvertIf
+                    if (order != null)
                     {
-                        roomItem.SetRoomStatus(7);
+                        var leaveDateTime = order.LeaveDate.Value.Date;
+                        if (leaveDateTime == DateTime.Today && roomItem.Room.Status != 7)
+                        {
+                            roomItem.SetRoomStatus(7);
+                        }
                     }
                 }
                 MyApp.ReloadRoomItems();

@@ -35,18 +35,7 @@ namespace WpfHotel
                     var roomIDs = db.Room.Where(x => x.Status == 1).Select(x => x.TypeId);
                     var types = db.Type.Include("Room").Where(x => roomIDs.Contains(x.Id)).ToList();
                     TypeList.ItemsSource = types;
-                    //if (order != null)
-                    //{
-                    //    foreach (var type in types)
-                    //    {
-                    //        foreach (var room in type.Room)
-                    //        {
-                    //            if (room.Id != order.RoomId.Value) continue;
-                    //            RoomList.SelectedItem = room;
-                    //            TypeList.SelectedItem = type;
-                    //        }
-                    //    }
-                    //}
+                    
                     _order = new Order
                     {
                         InDate = DateTime.Today,
@@ -230,9 +219,16 @@ namespace WpfHotel
                             _order.ServerId = (long)jo["orderId"];
                         #endregion
 
-                        _order.User = _users;
+                        #region 更新用户
+                        List<User> users = _order.User.ToList();
+                        db.User.RemoveRange(users);
+                        foreach (var user in _users)
+                        {
+                            _order.User.Add(user);
+                        }
+                        #endregion
+
                         db.Order.Add(_order);
-                        db.SaveChanges();
                     }
                     else//续住或预约到店
                     {
@@ -240,25 +236,40 @@ namespace WpfHotel
 
                         if (order.Status.Value == 1) //预约到店
                         {
-                            order.User = _users;
+                            #region 更新用户
 
-                            using (var client = new WebClient())
+                            List<User> users = order.User.ToList();
+                            db.User.RemoveRange(users);
+                            foreach (var user in _users)
                             {
-                                var values = new NameValueCollection
+                                User u = new User
                                 {
-                                    ["orderId"] = order.ServerId.ToString(),
-                                    ["status"] = "2"
+                                    Name = user.Name,
+                                    Sex = user.Sex,
+                                    Code = user.Code,
+                                    Phone = user.Phone,
+                                    CardType = user.CardType
                                 };
-                                var response =
-                                    client.UploadValues("http://" + MyApp.Config.Http + "/hotelClient/setOrderStatus.nd",
-                                        values);
-
-                                var responseString = Encoding.UTF8.GetString(response);
-                                var jo = JObject.Parse(responseString);
-                                if ((string)jo["errorFlag"] != "false")
-                                    MessageBox.Show("上传订单失败");
-
+                                order.User.Add(u);
                             }
+                            order.Status = 2;
+
+                            #endregion
+
+                            #region 更新服务器订单状态
+
+                            var values = new NameValueCollection
+                            {
+                                ["orderId"] = order.ServerId.ToString(),
+                                ["status"] = "2"
+                            };
+                            var responseString = MyApp.Upload("/hotelClient/setOrderStatus.nd", "POST", values);
+                            var jo = JObject.Parse(responseString);
+                            if ((string)jo["errorFlag"] != "false")
+                                MessageBox.Show("更新服务器订单状态失败");
+
+                            #endregion
+
                         }
                         else//续住
                         {
@@ -272,6 +283,7 @@ namespace WpfHotel
                     //更改房间状态
                     var roomItem = new RoomItem { Room = room };
                     roomItem.SetRoomStatus(3);
+                    MyApp.ReloadRoomItems();
 
                     Close();
                 }

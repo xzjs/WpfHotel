@@ -15,7 +15,7 @@ using Newtonsoft.Json.Linq;
 
 namespace WpfHotel
 {
-    public class RoomItem:INotifyPropertyChanged
+    public class RoomItem : INotifyPropertyChanged
     {
         public Room Room { get; set; }
 
@@ -110,7 +110,7 @@ namespace WpfHotel
         /// <param name="e"></param>
         private void Cancel(object sender, RoutedEventArgs e)
         {
-            using (var db=new hotelEntities())
+            using (var db = new hotelEntities())
             {
                 Order order = db.Order.Where(o => o.RoomId == Room.Id).First(o => o.Finish == 0);
                 List<User> users = db.User.Where(u => u.OrderId == order.Id).ToList();
@@ -178,7 +178,7 @@ namespace WpfHotel
         {
             var menuItem = sender as MenuItem;
             var status = Convert.ToInt32(menuItem.Tag);
-            
+
             SetRoomStatus(status);
             MyApp.ReloadRoomItems();
         }
@@ -228,12 +228,6 @@ namespace WpfHotel
         {
             using (var db = new hotelEntities())
             {
-                var values = new NameValueCollection
-                {
-                    ["roomId"] = Room.ServerId.ToString(),
-                    ["status"] = status.ToString()
-                };
-                var config = MyApp.Config;
                 try
                 {
                     //更新数据库
@@ -241,43 +235,25 @@ namespace WpfHotel
                     room.Status = status;
                     db.SaveChanges();
 
-                    //更新服务器
+                    #region 更新服务器
 
-                    using (var client = new WebClient())
-                    {
-                        var response = client.UploadValues("http://" + config.Http + "/hotelClient/setRoomStatus.nd",
-                            values);
-
-                        var responseString = Encoding.Default.GetString(response);
-                        var jo = JObject.Parse(responseString);
-                        if ((string) jo["errorFlag"] != "false")
-                            MessageBox.Show("设置房间状态失败");
-                    }
-                    
-                }
-                catch (WebException)
-                {
-                    string parameter = JsonConvert.SerializeObject(new Dictionary<string,string>
+                    var values = new NameValueCollection
                     {
                         ["roomId"] = Room.ServerId.ToString(),
                         ["status"] = status.ToString()
-                    }, Formatting.Indented);
-                    Queue queue = new Queue
-                    {
-                        Url = "http://" + config.Http + "/hotelClient/setRoomStatus.nd",
-                        Type = "POST",
-                        Time = DateTime.Now,
-                        Parameter = parameter
                     };
-                    db.Queue.Add(queue);
-                    db.SaveChanges();
+                    var responseString = MyApp.Upload("/hotelClient/setRoomStatus.nd", "POST", values);
+                    var jo = JObject.Parse(responseString);
+                    if ((string)jo["errorFlag"] != "false")
+                        MessageBox.Show("设置房间状态失败");
+
+                    #endregion
                 }
                 catch (Exception exception)
                 {
                     MessageBox.Show(exception.Message);
                 }
             }
-
         }
 
         public void DoubleClick()
