@@ -15,7 +15,7 @@
                 <DockPanel DockPanel.Dock="Top">
                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
                         <Button Style="{DynamicResource SquareButtonStyle}" BorderBrush="{x:Null}" Width="100"
-                                Height="35" Margin="160,0,0,0" FontSize="16" Foreground="White" Content="客单">
+                                Height="35" Margin="160,0,0,0" FontSize="16" Foreground="White" Content="客单" Click="ShowOrder">
                             <Button.Background>
                                 <ImageBrush ImageSource="img/menu.png" />
                             </Button.Background>

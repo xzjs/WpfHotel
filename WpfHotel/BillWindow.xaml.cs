@@ -84,5 +84,12 @@ namespace WpfHotel
             BalanceTotalTextBlock.Text = balanceTotal.ToString(CultureInfo.InvariantCulture);
             RemainTextBlock.Text = remain.ToString(CultureInfo.InvariantCulture);
         }
+
+        private void ShowOrder(object sender, RoutedEventArgs e)
+        {
+            CheckInWindow checkInWindow=new CheckInWindow(_order);
+            checkInWindow.Show();
+            Close();
+        }
     }
 }
