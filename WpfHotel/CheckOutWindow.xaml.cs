@@ -34,6 +34,10 @@ namespace WpfHotel
                 //设置离开日期为当日日期
                 _order.LeaveDate = DateTime.Today;
                 _order.Day = _order.LeaveDate.Value.Subtract(_order.InDate.Value).Days;
+                if (_order.Day == 0)
+                {
+                    _order.Day = 1;
+                }
                 _order.Price = _order.Room.Price * _order.Day;
                 OrderStackPanel.DataContext = _order;
 
