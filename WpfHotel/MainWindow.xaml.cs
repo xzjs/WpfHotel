@@ -15,6 +15,7 @@ using Apache.NMS.ActiveMQ;
 using Apache.NMS.ActiveMQ.Commands;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Threading;
 
 namespace WpfHotel
 {
@@ -63,6 +64,7 @@ namespace WpfHotel
                 MyApp.Config = Config;
                 MyApp.Information = Information;
             }
+ 
             ListenOrderTcp();
         }
 
@@ -320,6 +322,7 @@ namespace WpfHotel
         {
             try
             {
+                Thread.Sleep(1000);
                 var msg = (ITextMessage)message;
                 Console.WriteLine(msg.Text);
                 var jo = JArray.Parse(msg.Text);
@@ -363,6 +366,7 @@ namespace WpfHotel
         {
             try
             {
+                Thread.Sleep(1000);
                 var msg = (ITextMessage)message;
                 Console.WriteLine(msg.Text);
                 using (var db = new hotelEntities())
@@ -488,6 +492,7 @@ namespace WpfHotel
         {
             try
             {
+                Thread.Sleep(1000);
                 var msg = (ITextMessage)message;
                 Console.WriteLine(msg.Text);
                 using (var db = new hotelEntities())

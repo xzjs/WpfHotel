@@ -109,7 +109,7 @@ namespace WpfHotel
                         var values = new NameValueCollection
                         {
                             ["orderId"] = _order.ServerId.ToString(),
-                            ["status"] = "2"//服务器上2代表已付款
+                            ["status"] = "3"//服务器上2代表已付款
                         };
 
                     var responseString = MyApp.Upload("/hotelClient/setOrderStatus.nd","POST",values);

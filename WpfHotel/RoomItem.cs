@@ -117,6 +117,15 @@ namespace WpfHotel
                 db.User.RemoveRange(users);
                 db.Order.Remove(order);
                 db.SaveChanges();
+                var values = new NameValueCollection
+                {
+                    ["orderId"] = order.ServerId.ToString(),
+                    ["status"] = "4"//服务器上2代表已取消
+                };
+                var responseString = MyApp.Upload("/hotelClient/setOrderStatus.nd", "POST", values);
+                var jo = JObject.Parse(responseString);
+                if ((string)jo["errorFlag"] != "false")
+                    MessageBox.Show("更新服务器订单状态失败");
             }
             SetRoomStatus(1);
         }
